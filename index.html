@@ -24,7 +24,6 @@
             height: 100vh;
             z-index: 1;
         }
-        /* Joustava käyttöliittymäkerros Canvasin päällä */
         .ui-container {
             position: absolute;
             top: 0;
@@ -93,14 +92,16 @@
 
     <canvas id="matrixCanvas"></canvas>
 
-    <!-- Puhdas käyttöliittymäkerros ilman päällekkäisiä piirtoja -->
     <div class="ui-container">
         <div class="center-panel">
             <div id="timer">00:00:00</div>
+            
+            <!-- TÄHÄN KOHTAAN SE TULI // VIRALLINEN A-ADS MAINOSTERMINAALI -->
             <div id="adSpace" class="ad-wrapper">
                 <div class="ad-text">Ad Content Matrix here</div>
                 <iframe data-aa="2456148" src="//://a-ads.com" block-mix="true"></iframe>
             </div>
+            
         </div>
     </div>
 
@@ -134,7 +135,6 @@
             ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 1. MATRIX-KOODISADE
             ctx.fillStyle = 'rgba(0, 255, 0, 0.15)';
             ctx.font = fontSize + 'px monospace';
 
@@ -148,7 +148,6 @@
                 rainDrops[i]++;
             }
 
-            // 2. AIKALASKENTA JA SYNKRONOINTI DOMIIN
             const now = Date.now();
             const elapsed = now - startTime;
             const remaining = TOTAL_DURATION_MS - (elapsed % TOTAL_DURATION_MS);
@@ -167,7 +166,6 @@
                 document.getElementById('timer').textContent = `${hours}:${minutes}:${seconds}`;
             }
 
-            // 3. PIIRRETÄÄN FIBONACCI-SPIRAALI (Skaalautuu automaattisesti ruutuun)
             if (progressRatio > 0) {
                 ctx.strokeStyle = '#39FF14';
                 ctx.lineWidth = 1.5;
