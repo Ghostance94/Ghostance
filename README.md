@@ -1,0 +1,2 @@
+# Ghostance
+Ghostance is Ghostlution! 
