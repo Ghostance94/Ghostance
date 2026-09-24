@@ -1,79 +1,202 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE VAULT // GHOSTARY SYSTEM</title>
     <style>
-        body {
-            background-color: #000000;
+        :root {
+            --matrix-green: #39FF14;
+            --obsidian-black: #000000;
+            --clean-white: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+        }
+
+        body {
+            background-color: var(--obsidian-black);
+            color: var(--matrix-green);
+            font-family: 'Courier New', Courier, monospace;
             width: 100vw;
             height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
-            font-family: 'Courier New', Courier, monospace;
         }
+
         canvas {
             display: block;
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             z-index: 1;
         }
+
         .ui-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            position: relative;
             z-index: 2;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             padding: 15px;
             pointer-events: none;
+            min-height: 100vh;
         }
+
         .center-panel {
             text-align: center;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.88);
             padding: 20px;
             border-radius: 4px;
             border: 1px solid rgba(57, 255, 20, 0.25);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.95);
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.95);
             pointer-events: auto;
             width: 100%;
-            max-width: 380px;
+            max-width: 440px;
+            margin-top: auto;
+            margin-bottom: auto;
         }
+
         #timer {
-            font-size: 2.5rem;
+            font-size: 2.6rem;
             font-weight: bold;
-            color: #FFFFFF;
+            color: var(--clean-white);
             text-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
             font-family: monospace;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
             letter-spacing: 1px;
         }
-        .ad-wrapper {
+
+        .chapters-container {
             margin-top: 15px;
             display: flex;
             flex-direction: column;
+            gap: 12px;
+        }
+
+        .chapter-node {
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chapter-node:hover {
+            border-color: var(--matrix-green);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+        }
+
+        .chapter-thumb {
+            width: 100%;
+            height: 110px;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+            background-color: #111;
+        }
+
+        .chapter-node:hover .chapter-thumb {
+            opacity: 0.9;
+        }
+
+        .chapter-meta {
+            padding: 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(57, 255, 20, 0.1);
+            background: rgba(0,0,0,0.5);
+            color: var(--matrix-green);
+        }
+
+        .story-view {
+            display: none;
+            text-align: left;
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid var(--matrix-green);
+            background: rgba(0, 0, 0, 0.95);
+            color: var(--clean-white);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .close-story-btn {
+            display: inline-block;
+            margin-bottom: 12px;
+            color: var(--matrix-green);
+            cursor: pointer;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border: 1px solid var(--matrix-green);
+            padding: 2px 6px;
+        }
+
+        .chat-terminal {
+            margin-top: 20px;
+            border-top: 1px solid rgba(57, 255, 20, 0.3);
+            padding-top: 15px;
+            text-align: left;
+        }
+
+        .chat-logs {
+            height: 120px;
+            overflow-y: auto;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
+            color: #4af626;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border: 1px solid rgba(57, 255, 20, 0.1);
+        }
+
+        .chat-input-row {
+            display: flex;
+        }
+
+        .chat-input-row input {
+            flex: 1;
+            background: #000;
+            border: 1px solid var(--matrix-green);
+            color: var(--clean-white);
+            padding: 6px 10px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            border-radius: 0;
+            -webkit-appearance: none;
+        }
+
+        .chat-input-row input:focus {
+            outline: none;
+            box-shadow: 0 0 5px var(--matrix-green);
+        }
+
+        .ad-wrapper {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             border-top: 1px dashed rgba(57, 255, 20, 0.3);
             padding-top: 15px;
         }
+
         .ad-text {
-            font-size: 0.65rem;
-            color: #39FF14;
+            font-size: 0.6rem;
+            color: var(--matrix-green);
             opacity: 0.5;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
+
         .ad-wrapper iframe {
             width: 120px;
             height: 60px;
@@ -81,10 +204,13 @@
             padding: 0;
             overflow: hidden;
             background-color: transparent;
+            filter: hue-rotate(45deg) saturate(1.5);
         }
+
         @media (min-width: 480px) {
             #timer { font-size: 3.2rem; }
-            .center-panel { max-width: 420px; }
+            .center-panel { max-width: 440px; padding: 25px; }
+            .chapter-thumb { height: 130px; }
         }
     </style>
 </head>
@@ -94,19 +220,44 @@
 
     <div class="ui-container">
         <div class="center-panel">
+            
             <div id="timer">00:00:00</div>
             
-            <!-- TÄHÄN KOHTAAN SE TULI // VIRALLINEN A-ADS MAINOSTERMINAALI -->
+            <div id="mainHub">
+                <div class="chapters-container">
+                    <!-- CHAPTER 1: ANONYMOUS REFS UP TO VAULT -->
+                    <div class="chapter-node" onclick="openStory('ch1')">
+                        <div class="chapter-thumb" style="background-image: url('POPcorn.jpg');"></div>
+                        <div class="chapter-meta">Chapter I // The Synthetic Network</div>
+                    </div>
+                    <!-- CHAPTER 2: SECURED ARCHIVE HUB -->
+                    <div class="chapter-node" onclick="openStory('ch2')">
+                        <div class="chapter-thumb" style="background-image: url('Library.jpg');"></div>
+                        <div class="chapter-meta">Chapter II // Digital Museum</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="storyBox" class="story-view">
+                <div class="close-story-btn" onclick="closeStory()">[ Back to Terminal ]</div>
+                <div id="storyContent" style="white-space: pre-wrap;"></div>
+            </div>
+
+            <div class="chat-terminal">
+                <div class="chat-logs" id="chatLogs">
+                    <div style="color: var(--clean-white);">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
+                    <div>[SYSTEM] Enter verification parameters...</div>
+                </div>
+                <div class="chat-input-row">
+                    <input type="text" id="chatInput" placeholder="Enter command..." autocomplete="off">
+                </div>
+            </div>
+
             <div id="adSpace" class="ad-wrapper">
                 <div class="ad-text">Ad Content Matrix here</div>
+                <iframe data-aa="2456148" src="https://a-ads.com" block-mix="true"></iframe>
+            </div>
             
-<div id="frame" style="width: 120px;margin: auto;z-index: 99998;height: auto">
-          <iframe data-aa='2456148' src='//ad.a-ads.com/2456148/?size=120x60'
-                            style='border:0; padding:0; width:120px; height:60px; overflow:hidden;display: block;margin: auto'></iframe>
-        </div>
-
-<!-- END AADS AD UNIT 2456148 -->
- 
         </div>
     </div>
 
@@ -133,15 +284,27 @@
 
         let rotationOffset = 0; 
 
-        function draw() {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
+        // STRICTLY CLEANED LOG DATABASES
+        const stories = {
+            ch1: `Time to get popcorns now and enjoy the multiple art combining a movie, theatre, a music concert and a couple shades of a museum as well as trueblooded presentation of textgasm – Unfortunately, I cannot sit by your side to see how you react, but I am close by, very close...`,
+            ch2: `This is a digital museum. It connects entirely to the story you will discover on this site over the next 14 weeks. It is built for the players—figure out what it means. This is an ARG unlike anything you have ever witnessed before! Welcome!`
+        };
 
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        function openStory(id) {
+            document.getElementById('mainHub').style.display = 'none';
+            document.getElementById('storyBox').style.display = 'block';
+            document.getElementById('storyContent').textContent = stories[id];
+        }
 
-            ctx.fillStyle = 'rgba(0, 255, 0, 0.15)';
-            ctx.font = fontSize + 'px monospace';
+        function closeStory() {
+            document.getElementById('storyBox').style.display = 'none';
+            document.getElementById('mainHub').style.display = 'block';
+        }
+
+        const chatInput = document.getElementById('chatInput');
+        const chatLogs = document.getElementById('chatLogs');
+
+        chatInput.addEventListener('keypress', (e) =>             ctx.font = fontSize + 'px monospace';
 
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
@@ -206,4 +369,60 @@
         });
     </script>
 </body>
+</html>        function draw() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 255, 0, 0.15)';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+            const now = Date.now();
+            const elapsed = now - startTime;
+            const remaining = TOTAL_DURATION_MS - (elapsed % TOTAL_DURATION_MS);
+            const progressRatio = remaining / TOTAL_DURATION_MS;
+            if (remaining > 0) {
+                let totalSeconds = Math.floor(remaining / 1000);
+                let hours = Math.floor(totalSeconds / 3600);
+                let minutes = Math.floor((totalSeconds % 3600) / 60);
+                let seconds = totalSeconds % 60;
+                document.getElementById('timer').textContent = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+            if (progressRatio > 0) {
+                ctx.strokeStyle = '#39FF14';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                let angle = 0;
+                let a = 0.35 * progressRatio; 
+                let b = 0.14; 
+                const currentScale = Math.min(canvas.width, canvas.height) * 0.0011 * progressRatio;
+                for (let i = 0; i < 280; i++) {
+                    angle = i * 0.1 + rotationOffset; 
+                    let r = a * Math.exp(b * (i * 0.1)) * (currentScale * 550);
+                    let x = centerX + r * Math.cos(angle);
+                    let y = centerY + r * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                rotationOffset += 0.025; 
+            }
+        }
+        setInterval(draw, 33);
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            columns = canvas.width / fontSize;
+            rainDrops = Array(Math.floor(columns)).fill(1);
+        });
+    </script>
+</body>
 </html>
+
