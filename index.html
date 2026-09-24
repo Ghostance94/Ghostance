@@ -2,427 +2,129 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-4width, initial-scale=1.0">
     <title>THE VAULT // GHOSTARY SYSTEM</title>
     <style>
-        :root {
-            --matrix-green: #39FF14;
-            --obsidian-black: #000000;
-            --clean-white: #FFFFFF;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: var(--obsidian-black);
-            color: var(--matrix-green);
-            font-family: 'Courier New', Courier, monospace;
-            width: 100vw;
-            height: 100vh;
-            overflow-x: hidden;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        canvas {
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1;
-        }
-
-        .ui-container {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 15px;
-            pointer-events: none;
-            min-height: 100vh;
-        }
-
-        .center-panel {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.88);
-            padding: 20px;
-            border-radius: 4px;
-            border: 1px solid rgba(57, 255, 20, 0.25);
-            box-shadow: 0 0 35px rgba(0, 0, 0, 0.95);
-            pointer-events: auto;
-            width: 100%;
-            max-width: 440px;
-            margin-top: auto;
-            margin-bottom: auto;
-        }
-
-        #timer {
-            font-size: 2.6rem;
-            font-weight: bold;
-            color: var(--clean-white);
-            text-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
-            font-family: monospace;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-
-        .chapters-container {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .chapter-node {
-            border: 1px solid rgba(57, 255, 20, 0.2);
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 4px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .chapter-node:hover {
-            border-color: var(--matrix-green);
-            box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
-        }
-
-        .chapter-thumb {
-            width: 100%;
-            height: 110px;
-            background-size: cover;
-            background-position: center;
-            opacity: 0.6;
-            transition: opacity 0.2s ease;
-            background-color: #111;
-        }
-
-        .chapter-node:hover .chapter-thumb {
-            opacity: 0.9;
-        }
-
-        .chapter-meta {
-            padding: 8px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            border-top: 1px solid rgba(57, 255, 20, 0.1);
-            background: rgba(0,0,0,0.5);
-            color: var(--matrix-green);
-        }
-
-        .story-view {
-            display: none;
-            text-align: left;
-            margin-top: 15px;
-            padding: 15px;
-            border: 1px solid var(--matrix-green);
-            background: rgba(0, 0, 0, 0.95);
-            color: var(--clean-white);
-            font-size: 0.8rem;
-            line-height: 1.4;
-        }
-
-        .close-story-btn {
-            display: inline-block;
-            margin-bottom: 12px;
-            color: var(--matrix-green);
-            cursor: pointer;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            border: 1px solid var(--matrix-green);
-            padding: 2px 6px;
-        }
-
-        .chat-terminal {
-            margin-top: 20px;
-            border-top: 1px solid rgba(57, 255, 20, 0.3);
-            padding-top: 15px;
-            text-align: left;
-        }
-
-        .chat-logs {
-            height: 120px;
-            overflow-y: auto;
-            font-size: 0.7rem;
-            margin-bottom: 8px;
-            color: #4af626;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px;
-            border: 1px solid rgba(57, 255, 20, 0.1);
-        }
-
-        .chat-input-row {
-            display: flex;
-        }
-
-        .chat-input-row input {
-            flex: 1;
-            background: #000;
-            border: 1px solid var(--matrix-green);
-            color: var(--clean-white);
-            padding: 6px 10px;
-            font-family: monospace;
-            font-size: 0.75rem;
-            border-radius: 0;
-            -webkit-appearance: none;
-        }
-
-        .chat-input-row input:focus {
-            outline: none;
-            box-shadow: 0 0 5px var(--matrix-green);
-        }
-
-        .ad-wrapper {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            border-top: 1px dashed rgba(57, 255, 20, 0.3);
-            padding-top: 15px;
-        }
-
-        .ad-text {
-            font-size: 0.6rem;
-            color: var(--matrix-green);
-            opacity: 0.5;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .ad-wrapper iframe {
-            width: 120px;
-            height: 60px;
-            border: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: transparent;
-            filter: hue-rotate(45deg) saturate(1.5);
-        }
-
-        @media (min-width: 480px) {
-            #timer { font-size: 3.2rem; }
-            .center-panel { max-width: 440px; padding: 25px; }
-            .chapter-thumb { height: 130px; }
-        }
+        body { background:#000; color:#39FF14; font-family:monospace; margin:0; overflow:hidden; }
+        canvas { position:fixed; top:0; left:0; z-index:1; }
+        .ui-container { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; padding:15px; }
+        .center-panel { text-align:center; background:rgba(0,0,0,0.88); padding:20px; border:1px solid rgba(57,255,20,0.25); max-width:440px; width:100%; margin-top:10vh; }
+        #timer { font-size:2.6rem; color:#FFF; text-shadow:0 0 20px #39FF14; margin-bottom:15px; }
+        .chapters-container { display:flex; flex-direction:column; gap:12px; margin-top:15px; }
+        .chapter-node { border:1px solid rgba(57,255,20,0.2); background:rgba(0,0,0,0.6); cursor:pointer; }
+        .chapter-thumb { width:100%; height:110px; background-size:cover; background-position:center; }
+        .chapter-meta { padding:8px; font-size:0.7rem; text-transform:uppercase; }
+        .story-view { display:none; text-align:left; margin-top:15px; padding:15px; border:1px solid #39FF14; color:#FFF; font-size:0.8rem; }
+        .close-story-btn { color:#39FF14; cursor:pointer; font-size:0.7rem; border:1px solid #39FF14; padding:2px 6px; display:inline-block; margin-bottom:12px; }
+        .chat-terminal { margin-top:20px; border-top:1px solid rgba(57,255,20,0.3); padding-top:15px; text-align:left; }
+        .chat-logs { height:120px; overflow-y:auto; font-size:0.7rem; margin-bottom:8px; background:rgba(0,0,0,0.5); padding:5px; }
+        .chat-input-row input { width:100%; background:#000; border:1px solid #39FF14; color:#FFF; padding:6px; font-family:monospace; }
+        .ad-wrapper { margin-top:20px; border-top:1px dashed rgba(57,255,20,0.3); padding-top:15px; }
+        .ad-wrapper iframe { width:120px; height:60px; border:0; filter:hue-rotate(45deg); }
     </style>
 </head>
 <body>
-
     <canvas id="matrixCanvas"></canvas>
-
     <div class="ui-container">
         <div class="center-panel">
-            
             <div id="timer">00:00:00</div>
-            
             <div id="mainHub">
                 <div class="chapters-container">
-                    <!-- CHAPTER 1: ANONYMOUS REFS UP TO VAULT -->
                     <div class="chapter-node" onclick="openStory('ch1')">
-                        <div class="chapter-thumb" style="background-image: url('POPcorn.jpg');"></div>
+                        <div class="chapter-thumb" style="background-image:url('POPcorn.jpg');"></div>
                         <div class="chapter-meta">Chapter I // The Synthetic Network</div>
                     </div>
-                    <!-- CHAPTER 2: SECURED ARCHIVE HUB -->
                     <div class="chapter-node" onclick="openStory('ch2')">
-                        <div class="chapter-thumb" style="background-image: url('Library.jpg');"></div>
+                        <div class="chapter-thumb" style="background-image:url('Library.jpg');"></div>
                         <div class="chapter-meta">Chapter II // Digital Museum</div>
                     </div>
                 </div>
             </div>
-
             <div id="storyBox" class="story-view">
-                <div class="close-story-btn" onclick="closeStory()">[ Back to Terminal ]</div>
-                <div id="storyContent" style="white-space: pre-wrap;"></div>
+                <div class="close-story-btn" onclick="closeStory()">[ Back ]</div>
+                <div id="storyContent" style="white-space:pre-wrap;"></div>
             </div>
-
             <div class="chat-terminal">
                 <div class="chat-logs" id="chatLogs">
-                    <div style="color: var(--clean-white);">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
-                    <div>[SYSTEM] Enter verification parameters...</div>
+                    <div style="color:#FFF;">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chatInput" placeholder="Enter command..." autocomplete="off">
                 </div>
             </div>
-
-            <div id="adSpace" class="ad-wrapper">
-                <div class="ad-text">Ad Content Matrix here</div>
-                <iframe data-aa="2456148" src="https://a-ads.com" block-mix="true"></iframe>
+            <div class="ad-wrapper">
+                <iframe src="https://a-ads.com"></iframe>
             </div>
-            
         </div>
     </div>
-
     <script>
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         resizeCanvas();
-
         const TOTAL_DURATION_MS = 96 * 60 * 60 * 1000;
         let startTime = localStorage.getItem('ghostary_inception_time') || Date.now();
         localStorage.setItem('ghostary_inception_time', startTime);
         startTime = parseInt(startTime, 10);
-
-        const katakana = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const alphabet = katakana.split("");
+        const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
         const fontSize = 16;
         let columns = canvas.width / fontSize;
         let rainDrops = Array(Math.floor(columns)).fill(1);
-
-        let rotationOffset = 0; 
-
-        // STRICTLY CLEANED LOG DATABASES
+        let rotationOffset = 0;
         const stories = {
             ch1: `Time to get popcorns now and enjoy the multiple art combining a movie, theatre, a music concert and a couple shades of a museum as well as trueblooded presentation of textgasm – Unfortunately, I cannot sit by your side to see how you react, but I am close by, very close...`,
             ch2: `This is a digital museum. It connects entirely to the story you will discover on this site over the next 14 weeks. It is built for the players—figure out what it means. This is an ARG unlike anything you have ever witnessed before! Welcome!`
         };
-
-        function openStory(id) {
-            document.getElementById('mainHub').style.display = 'none';
-            document.getElementById('storyBox').style.display = 'block';
-            document.getElementById('storyContent').textContent = stories[id];
-        }
-
-        function closeStory() {
-            document.getElementById('storyBox').style.display = 'none';
-            document.getElementById('mainHub').style.display = 'block';
-        }
-
+        function openStory(id) { document.getElementById('mainHub').style.display = 'none'; document.getElementById('storyBox').style.display = 'block'; document.getElementById('storyContent').textContent = stories[id]; }
+        function closeStory() { document.getElementById('storyBox').style.display = 'none'; document.getElementById('mainHub').style.display = 'block'; }
         const chatInput = document.getElementById('chatInput');
         const chatLogs = document.getElementById('chatLogs');
-
-        chatInput.addEventListener('keypress', (e) =>             ctx.font = fontSize + 'px monospace';
-
-            for (let i = 0; i < rainDrops.length; i++) {
-                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
-                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-
-                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    rainDrops[i] = 0;
-                }
-                rainDrops[i]++;
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && chatInput.value.trim() !== '') {
+                const cmd = chatInput.value.trim();
+                const logLine = document.createElement('div'); logLine.textContent = `> ${cmd}`; chatLogs.appendChild(logLine);
+                const lowerCmd = cmd.toLowerCase();
+                const responseLine = document.createElement('div'); responseLine.style.color = '#FFF';
+                if (lowerCmd === 'get einstein to shovel secrets') { responseLine.textContent = '[GHOSTNEL] SEQUENCE CONFIRMED. Off-chain alignment locked.'; }
+                else if (lowerCmd === 'help') { responseLine.textContent = '[SYSTEM] Terminal active.'; }
+                else { responseLine.textContent = '[SYSTEM] Access restricted.'; }
+                setTimeout(() => { chatLogs.appendChild(responseLine); chatLogs.scrollTop = chatLogs.scrollHeight; }, 200);
+                chatInput.value = '';
             }
-
-            const now = Date.now();
-            const elapsed = now - startTime;
-            const remaining = TOTAL_DURATION_MS - (elapsed % TOTAL_DURATION_MS);
-            const progressRatio = remaining / TOTAL_DURATION_MS;
-
-            if (remaining > 0) {
-                let totalSeconds = Math.floor(remaining / 1000);
-                let hours = Math.floor(totalSeconds / 3600);
-                let minutes = Math.floor((totalSeconds % 3600) / 60);
-                let seconds = totalSeconds % 60;
-
-                hours = String(hours).padStart(2, '0');
-                minutes = String(minutes).padStart(2, '0');
-                seconds = String(seconds).padStart(2, '0');
-
-                document.getElementById('timer').textContent = `${hours}:${minutes}:${seconds}`;
-            }
-
-            if (progressRatio > 0) {
-                ctx.strokeStyle = '#39FF14';
-                ctx.lineWidth = 1.5;
-                
-                ctx.beginPath();
-                let angle = 0;
-                let a = 0.35 * progressRatio; 
-                let b = 0.14; 
-                
-                const currentScale = Math.min(canvas.width, canvas.height) * 0.0011 * progressRatio;
-
-                for (let i = 0; i < 280; i++) {
-                    angle = i * 0.1 + rotationOffset; 
-                    let r = a * Math.exp(b * (i * 0.1)) * (currentScale * 550);
-                    let x = centerX + r * Math.cos(angle);
-                    let y = centerY + r * Math.sin(angle);
-                    
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-
-                rotationOffset += 0.025; 
-            }
-        }
-
-        setInterval(draw, 33);
-
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            columns = canvas.width / fontSize;
-            rainDrops = Array(Math.floor(columns)).fill(1);
         });
-    </script>
-</body>
-</html>        function draw() {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(0, 255, 0, 0.15)';
-            ctx.font = fontSize + 'px monospace';
+        function draw() {
+            const centerX = canvas.width / 2; const centerY = canvas.height / 2;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 255, 0, 0.15)'; ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
                 ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    rainDrops[i] = 0;
-                }
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) rainDrops[i] = 0;
                 rainDrops[i]++;
             }
-            const now = Date.now();
-            const elapsed = now - startTime;
+            const now = Date.now(); const elapsed = now - startTime;
             const remaining = TOTAL_DURATION_MS - (elapsed % TOTAL_DURATION_MS);
             const progressRatio = remaining / TOTAL_DURATION_MS;
             if (remaining > 0) {
                 let totalSeconds = Math.floor(remaining / 1000);
-                let hours = Math.floor(totalSeconds / 3600);
-                let minutes = Math.floor((totalSeconds % 3600) / 60);
-                let seconds = totalSeconds % 60;
-                document.getElementById('timer').textContent = 
-                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                let hours = Math.floor(totalSeconds / 3600); let minutes = Math.floor((totalSeconds % 3600) / 60); let seconds = totalSeconds % 60;
+                document.getElementById('timer').textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             }
             if (progressRatio > 0) {
-                ctx.strokeStyle = '#39FF14';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                let angle = 0;
-                let a = 0.35 * progressRatio; 
-                let b = 0.14; 
+                ctx.strokeStyle = '#39FF14'; ctx.lineWidth = 1.5; ctx.beginPath();
+                let angle = 0; let a = 0.35 * progressRatio; let b = 0.14;
                 const currentScale = Math.min(canvas.width, canvas.height) * 0.0011 * progressRatio;
                 for (let i = 0; i < 280; i++) {
-                    angle = i * 0.1 + rotationOffset; 
+                    angle = i * 0.1 + rotationOffset;
                     let r = a * Math.exp(b * (i * 0.1)) * (currentScale * 550);
-                    let x = centerX + r * Math.cos(angle);
-                    let y = centerY + r * Math.sin(angle);
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
+                    let x = centerX + r * Math.cos(angle); let y = centerY + r * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
                 }
-                ctx.stroke();
-                rotationOffset += 0.025; 
+                ctx.stroke(); rotationOffset += 0.025;
             }
         }
         setInterval(draw, 33);
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            columns = canvas.width / fontSize;
-            rainDrops = Array(Math.floor(columns)).fill(1);
-        });
+        window.addEventListener('resize', () => { resizeCanvas(); columns = canvas.width / fontSize; rainDrops = Array(Math.floor(columns)).fill(1); });
     </script>
 </body>
 </html>
-
