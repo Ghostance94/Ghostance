@@ -106,10 +106,10 @@
                 <p>J01-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories.</p>
             </div>
 
-            <!-- ADSTERRA SUOJATTU LAATIKKO -->
+            <!-- PUHDAS SCIFI BANNERPAIKKA (Ei jumiuta sivua) -->
             <div class="ad-wrapper">
-                <div style="color: #FF3333; font-size: 0.6rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase;">[ INCOMING ENCRYPTED TRANSMISSION ]</div>
-                <div id="container-9d7e72a2ce69dd43ecd9a5133cb8d11e" style="width:100%; min-height:60px;"></div>
+                <div style="color: #FF3333; font-size: 0.6rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase;">[ INCOMING ENCRYPTED TRANSMISSION ]</div>
+                <div style="color: #FFF; font-size: 0.7rem; text-shadow: 0 0 5px #39FF14;">> ADSTERRA NETWORK LINK STABILIZING... <</div>
             </div>
         </div>
     </div>
@@ -165,8 +165,8 @@
             if (timeRemainingMs <= 0) {
                 storedTarget = Date.now() + TOTAL_DURATION_MS;
                 localStorage.setItem('ghostance_timer_target', storedTarget);
-                timeRemainingMs = TOTAL_DURATION_MS;
-            }
+timeRemainingMs = TOTAL_DURATION_MS;
+}
 let displayString = "00:00:00";
 let progressRatio = timeRemainingMs / TOTAL_DURATION_MS;
 let totalSeconds = Math.floor(timeRemainingMs / 1000);
@@ -225,7 +225,7 @@ const promptDatabase = {
 "02ad28a2a7f5a0cc25c48b28efbd72f4460eb3a339908deef55be12d5d78df11c": "Good, you have learned to ask right questions, hmm? This is an epic ARG!",
 "bdf64879faef55be12d5d78df11c02ad28a2a7f5a0cc25c48b28efbd72f4460e": "Good, you have learned to ask right questions, hmm? This is an epic ARG!",
 "1a0c5bd68bb89faef55de16a5d78d061d36d8d69784535e612879faef55be12d": "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately!",
-"061d36d8d69784535e612879faef55be12d5d78df11c02ad28a2a7f5a0cc25c4": "Great, you are on the right track! Keep searching."
+"061d36d8d69784535e612879faef55be12d5d78df11c02ad28a2a7f5a0cc25c4定位": "Great, you are on the right track! Keep searching."
 };
 async function sha256(message) {
 const msgBuffer = new TextEncoder().encode(message);
@@ -257,11 +257,3 @@ chatLogs.scrollTop = chatLogs.scrollHeight;
 }
 });
 }
-// PAKOTETAAN ADSTERRA LATAUTUMAAN VASTA MOOTTORIN KÄYNNISTYKSEN JÄLKEEN SEPARATISTISESTI
-window.addEventListener('DOMContentLoaded', () => {
-const adScript = document.createElement('script');
-adScript.type = 'text/javascript';
-adScript.async = true;
-adScript.src = 'profitableratecpmnetwork.com';
-document.body.appendChild(adScript);
-});
