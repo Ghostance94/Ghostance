@@ -122,7 +122,6 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // PALAURTETAAN ALKUPERÄINEN ANKKUROINTI JOTTA MOOTTORI EI SAKKAA
         const TOTAL_DURATION_MS = 96 * 60 * 60 * 1000;
         let storedTarget = localStorage.getItem('ghostance_timer_target');
         
@@ -163,7 +162,8 @@
 
             const now = Date.now();
             let timeRemainingMs = storedTarget - now;
-if (timeRemainingMs <= 0) {
+
+            if (timeRemainingMs <= 0) {
 storedTarget = Date.now() + TOTAL_DURATION_MS;
 localStorage.setItem('ghostance_timer_target', storedTarget);
 timeRemainingMs = TOTAL_DURATION_MS;
