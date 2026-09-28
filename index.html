@@ -36,10 +36,11 @@
                 <iframe data-aa='2456148' src='https://a-ads.com' style='border:0; padding:0; width:120px; height:60px; overflow:hidden; display:block; margin:auto'></iframe>
             </div>
 
-            <div id="timer">00:00:00</div>
+            <!-- Kello alkaa tilasta 96:00:00 -->
+            <div id="timer">96:00:00</div>
             
-            <!-- Korjattu avoin tagi -->
-            <div class="user-tag" id="userTag">ID: GUEST_TERMINAL_ALPHA</div>
+            <!-- Korjattu HTML-rakenne -->
+            <div class="user-tag">ID: INITIALIZING...</div>
 
             <div id="mainHub">
                 <div class="chapters-container">
@@ -70,7 +71,7 @@
             <div class="chat-terminal">
                 <div class="chat-logs" id="chatLogs">
                     <div style="color:#FFF;">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
-                    <div id="userLogWelcome" style="color:#00FFD8;">[NODE] Encrypted prompt database operational.</div>
+                    <div id="userLogWelcome" style="color:#00FFD8;"></div>
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chatInput" placeholder="Enter command..." autocomplete="off">
@@ -79,32 +80,30 @@
 
             <div class="telemetry-box">
                 <div style="color:#FFF; font-weight:bold; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">// SYSTEM ENGINE TELEMETRY</div>
-                <p>J01-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories.</p>
+                <p>J01-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories. Blockchain verification mechanisms operate with optimal stability when processing off-chain ledger metadata streams independently.</p>
+                <p style="margin-top:8px;">Relational statistics map algorithmic behavioral game theory vectors across encrypted archives. System parameters maximize expected value metrics for active terminals.</p>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript koodi kääritty oikeaoppisesti script-tagiin -->
     <script>
-        const stories = {
-            ch1: "SYSTEM LOG: The Synthetic Network is expanding. Nodes are aligning autonomously.",
-            ch2: "ARCHIVE: Digital Museum contains logs from the early web. The traces are cold but deep."
-        };
-
         const chatLogs = document.getElementById('chatLogs');
+        const stories = {
+            ch1: "[DATA] POPcorn network established. Multi-threaded pathways clear.",
+            ch2: "[DATA] Digital Library indexes verified. Core indices archived."
+        };
 
         function openStory(id) {
             document.getElementById('mainHub').style.display = 'none';
             document.getElementById('storyBox').style.display = 'block';
-            document.getElementById('storyContent').textContent = stories[id] || "No data available.";
+            document.getElementById('storyContent').textContent = stories[id] || "No local data.";
         }
-
+        
         function closeStory() {
             document.getElementById('storyBox').style.display = 'none';
             document.getElementById('mainHub').style.display = 'block';
         }
 
-        // Korjattu triggerTool lainausmerkeillä
         function triggerTool(id) {
             const responseLine = document.createElement('div');
             responseLine.style.color = '#00FFD8';
@@ -117,38 +116,50 @@
             chatLogs.scrollTop = chatLogs.scrollHeight;
         }
 
-        // Toimiva reaaliaikainen kello
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('timer').textContent = now.toTimeString().split(' ')[0];
-        }, 1000);
+        // 96 TUNNIN LOOPPAAVA ALASLASKURI
+        const TOTAL_SECONDS = 96 * 3600; // 96 tuntia sekunteina
+        let currentSeconds = TOTAL_SECONDS;
 
-        // Matrix-taustagrafiikan animointi
+        function updateCountdown() {
+            if (currentSeconds < 0) {
+                currentSeconds = TOTAL_SECONDS; // Pomppaa takaisin 96 tuntiin
+            }
+
+            let hrs = Math.floor(currentSeconds / 3600);
+            let mins = Math.floor((currentSeconds % 3600) / 60);
+            let secs = currentSeconds % 60;
+
+            let displayHrs = hrs < 10 ? "0" + hrs : hrs;
+            let displayMins = mins < 10 ? "0" + mins : mins;
+            let displaySecs = secs < 10 ? "0" + secs : secs;
+
+            document.getElementById('timer').textContent = `${displayHrs}:${displayMins}:${displaySecs}`;
+            currentSeconds--;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Matrix-tausta efektille
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
-        const fontSize = 10;
-        const columns = canvas.width / fontSize;
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const letters = "01"; const fontSize = 11; const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
-
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#0F0';
-            ctx.font = fontSize + 'px monospace';
-
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(57, 255, 20, 0.15)'; ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < drops.length; i++) {
-                const text = letters[Math.floor(Math.random() * letters.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                ctx.fillText(letters[Math.floor(Math.random() * letters.length)], i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) drops[i] = 0;
                 drops[i]++;
             }
         }
-        setInterval(drawMatrix, 33);
+        setInterval(drawMatrix, 40);
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-    </script>
-</body>
-</html>
+
+        // CRYPTO PROTECTED HASH DATABASE
+        const promptDatabase = {
+            "21a084c7e2b86bb32d8495f54f15d7f26c043fb94b7da3c52a0572e42a0b3e6e": "Not an organic link between human and a bot",
+            "e78b7a974b6a9a3b6f2e82ee8f99ad88d929b922a8749aeb51f496a7dd7be121": "Not a way to bake anything tasty!",
+            "5b72f4460eb3a339908deef66b17da20e0ffbdf64879faef55be12d5d78df11c": "Figure it out, hmh?",
+85848bb247bc77f223bbde66a17da20e0ffbdf64879faef55be12d5d78df11c3": "Pythagoras would tell hell yes!","c94e82ee8f99ad88d929b922a8749aeb51f496a7dd7be1215b72f4460eb3a339": "Pythagoras would tell hell yes!","02ad28a2a7f5a0cc25c48b28efbd72f4460eb3a339908deef55be12d5d78df11c": "Good, you have learned to ask right questions, hmm? This is an epic ARG!","bdf64879faef55be12d5d78df11c02ad28a2a7f5a0cc25c48b28efbd72f4460e": "Good, you have learned to ask right questions, hmm? This is an epic ARG!","1a0c5bd68bb89faef55de16a5d78d061d36d8d69784535e612879faef55be12d": "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately!","061d36d8d69784535e612879faef55be12d5d78df11c02ad28a2a7f5a0cc25c4": "Great, you are on"};
