@@ -216,3 +216,61 @@ ctx.shadowColor = '#39FF14';
 
 ctx.fillText(displayString, centerX, centerY);
 ctx.shadowBlur = 0; 
+        setInterval(draw, 33);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        const chatLogs = document.getElementById('chatLogs');
+        const promptDatabase = {
+            "21a084c7e2b86bb32d8495f54f15d7f26c043fb94b7da3c52a0572e42a0b3e6e": "Not an organic link between human and a bot",
+            "e78b7a974b6a9a3b6f2e82ee8f99ad88d929b922a8749aeb51f496a7dd7be121": "Not a way to bake anything tasty!",
+            "5b72f4460eb3a339908deef66b17da20e0ffbdf64879faef55be12d5d78df11c": "Figure it out, hmh?",
+            "85848bb247bc77f223bbde66a17da20e0ffbdf64879faef55be12d5d78df11c3": "Pythagoras would tell hell yes!",
+            "c94e82ee8f99ad88d929b922a8749aeb51f496a7dd7be1215b72f4460eb3a339": "Pythagoras would tell hell yes!",
+            "02ad28a2a7f5a0cc25c48b28efbd72f4460eb3a339908deef55be12d5d78df11c": "Good, you have learned to ask right questions, hmm? This is an epic ARG!",
+            "bdf64879faef55be12d5d78df11c02ad28a2a7f5a0cc25c48b28efbd72f4460e": "Good, you have learned to ask right questions, hmm? This is an epic ARG!",
+            "1a0c5bd68bb89faef55de16a5d78d061d36d8d69784535e612879faef55be12d": "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately!",
+            "061d36d8d69784535e612879faef55be12d5d78df11c02ad28a2a7f5a0cc25c4": "Great, you are on the right track! Keep searching."
+        };
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        const chatInput = document.getElementById('chatInput');
+        if (chatInput) {
+            chatInput.addEventListener('keypress', async function(e) {
+                if (e.key === 'Enter' && this.value.trim() !== '') {
+                    const cmd = this.value.trim();
+                    this.value = '';
+
+                    const userLine = document.createElement('div');
+                    userLine.style.color = '#FFF';
+                    userLine.textContent = `> ${cmd}`;
+                    chatLogs.appendChild(userLine);
+
+                    const hashedCmd = await sha256(cmd);
+                    const responseLine = document.createElement('div');
+                    
+                    if (promptDatabase[hashedCmd]) {
+                        responseLine.style.color = '#00FFD8';
+                        responseLine.textContent = `[SYSTEM] ${promptDatabase[hashedCmd]}`;
+                    } else {
+                        responseLine.style.color = '#FF3333';
+                        responseLine.textContent = `[ERROR] UNKNOWN COMMAND OR INVALID HASH CRITERIA.`;
+                    }
+
+                    chatLogs.appendChild(responseLine);
+                    chatLogs.scrollTop = chatLogs.scrollHeight;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
