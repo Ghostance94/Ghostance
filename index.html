@@ -182,7 +182,7 @@
         <div class="spacer"></div>
         
         <div class="center-panel">
-            <div class="user-tag">ID: INITIALIZING...</div>
+            <div class="user-tag" id="userTag">ID: INITIALIZING...</div>
 
             <div class="chapters-container">
                 <!-- CHAPTER I -->
@@ -232,58 +232,64 @@
                             <div class="chapter-meta">Chapter IV // The Shovel Investigation</div>
                         </div>
                         <div class="card-back">
-                            [SYSTEM] ALERT: Shovel configuration scanner online. 75 tracking nodes detected. 15 require deep structural map verification.
+                            [INVESTIGATION] Shovel telemetry online. Sub-surface density readings fluctuating. Proceed with caution.
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- CHAT TERMINAL -->
             <div class="chat-terminal">
                 <div class="chat-logs" id="chatLogs">
-                    <div style="color:#FFF;">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
+                    <div>[SYSTEM] Terminal connection established.</div>
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chatInput" placeholder="Enter command..." autocomplete="off">
                 </div>
             </div>
 
+            <!-- TELEMETRY BOX -->
             <div class="telemetry-box">
-                <div style="color:#FFF; font-weight:bold; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">// SYSTEM ENGINE TELEMETRY</div>
-                <p>J01-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories.</p>
+                SYS.LOC: CORE_NODE_01<br>
+                STATUS: ENCRYPTED<br>
+                LATENCY: 14ms
             </div>
 
-            <!-- PUHDAS SCIFI BANNERPAIKKA (Säästetään tila valmiiksi ilman rikkovaa koodia) -->
+            <!-- AD WRAPPER -->
             <div class="ad-wrapper">
-                <div style="color: #FF3333; font-size: 0.6rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase;">[ INCOMING ENCRYPTED TRANSMISSION ]</div>
-                <div style="color: #FFF; font-size: 0.7rem; text-shadow: 0 0 5px #39FF14;">> SYSTEM LINK STABILIZED <</div>
+                <span>[ SPONSORED TRANSMISSION ]</span>
             </div>
+
         </div>
     </div>
 
-    <!-- ALKUPERÄINEN JA TOIMIVA KELLOMOOTTORISI TÄSTÄ ETEENPÄIN -->
     <script>
+        // Matrix Rain Effect
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-const TOTAL_DURATION_MS = 96 * 60 * 60 * 1000; // 96 tunnin dilaatio
-const TARGET_TIMESTAMP = Date.now() + TOTAL_DURATION_MS;
-// Matrix-taustasateen parametrit
-const katakana = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const alphabet = katakana.split("");
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-const rainDrops = Array(Math.floor(columns)).fill(1);
-// PYÖRIMISLIIKKEEN ALUSTUS
-let rotationOffset = 0;
-function draw() {
-const centerX = canvas.width / 2;
-const centerY = canvas.height * 0.22; // Nostettu spiraali vapaaseen tilaan laatikoiden yläpuolelle
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const katakana = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ1234567890XYZ';
+        const alphabet = katakana.split('');
+
+        const fontSize = 16;
+        let columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        function drawMatrix() {
 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
-// 1. MATRIX-KOODISADE TAUSTALLE
-ctx.fillStyle = '#00FF00';
+ctx.fillStyle = '#0F0';
 ctx.font = fontSize + 'px monospace';
 for (let i = 0; i < rainDrops.length; i++) {
 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
@@ -293,106 +299,28 @@ rainDrops[i] = 0;
 }
 rainDrops[i]++;
 }
-// 2. AIKALASKENTA JA KIRISTYSSUHTEET
-const now = Date.now();
-const timeRemainingMs = TARGET_TIMESTAMP - now;
-let displayString = "00:00:00";
-let progressRatio = 0;
-if (timeRemainingMs > 0) {
-progressRatio = timeRemainingMs / TOTAL_DURATION_MS;
-let totalSeconds = Math.floor(timeRemainingMs / 1000);
-let hours = Math.floor(totalSeconds / 3600);
-let minutes = Math.floor((totalSeconds % 3600) / 60);
-let seconds = totalSeconds % 60;
-hours = hours < 10 ? '0' + hours : hours;
-minutes = minutes < 10 ? '0' + minutes : minutes;
-seconds = seconds < 10 ? '0' + seconds : seconds;
-displayString = ${hours}:${minutes}:${seconds};
-} else {
-displayString = "00:00:00";
-progressRatio = 0;
 }
-// 3. PIIRRETÄÄN DYNAAMISESTI PYÖRIVÄ JA KURISTUVA FIBONACCI-SPIRAALI
-if (progressRatio > 0) {
-ctx.strokeStyle = '#39FF14';
-ctx.lineWidth = 2;
-ctx.shadowBlur = 15;
-ctx.shadowColor = '#39FF14';
-ctx.beginPath();
-let angle = 0;
-let a = 0.5 * progressRatio;
-let b = 0.15;
-for (let i = 0; i < 400; i++) {
-angle = i * 0.1 + rotationOffset;
-let r = a * Math.exp(b * (i * 0.1)) * (progressRatio * 1.5);
-let x = centerX + r * Math.cos(angle);
-let y = centerY + r * Math.sin(angle);
-if (i === 0) {
-ctx.moveTo(x, y);
-} else {
-ctx.lineTo(x, y);
-}
-}
-ctx.stroke();
-ctx.shadowBlur = 0;
-// Kasvatetaan pyörimisnopeutta
-rotationOffset += 0.03;
-}
-// 4. VALKOINEN VALOYDIN JA NUMEROT KESKELLE
-ctx.fillStyle = '#FFFFFF';
-ctx.font = 'bold 32px Courier New';
-ctx.textAlign = 'center';
-ctx.textBaseline = 'middle';
-ctx.shadowBlur = 20;
-ctx.shadowColor = '#39FF14';
-ctx.fillText(displayString, centerX, centerY);
-ctx.shadowBlur = 0;
-}
-setInterval(draw, 33);
-window.addEventListener('resize', () => {
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-});
-// ======= KÄYTTÖLIITTYMÄN AJORAKENTEET JA CHAT =======
-const chatLogs = document.getElementById('chatLogs');
-const promptDatabase = {
-"21a084c7e2b86bb32d8495f54f15d7f26c043fb94b7da3c52a0572e42a0b3e6e": "Not an organic link between human and a bot",
-"e78b7a974b6a9a3b6f2e82ee8f99ad88d929b922a8749aeb51f496a7dd7be121": "Not a way to bake anything tasty!",
-"5b72f4460eb3a339908deef66b17da20e0ffbdf64879faef55be12d5d78df11c": "Figure it out, hmh?",
-"85848bb247bc77f223bbde66a17da20e0ffbdf64879faef55be12d5d78df11c3": "Pythagoras would tell hell yes!",
-"c94e82ee8f99ad88d929b922a8749aeb51f496a7dd7be1215b72f4460eb3a339": "Pythagoras would tell hell yes!",
-"02ad28a2a7f5a0cc25c48b28efbd72f4460eb3a339908deef55be12d5d78df11c": "Good, you have learned to ask right questions, hmm? This is an epic ARG!",
-"bdf64879faef55be12d5d78df11c02ad28a2a7f5a0cc25c48b28efbd72f4460e": "Good, you have learned to ask right questions, hmm? This is an epic ARG!",
-"1a0c5bd68bb89faef55de16a5d78d061d36d8d69784535e612879faef55be12d": "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately!",
-"061d36d8d69784535e612879faef55be12d5d78df11c02ad28a2a7f5a0cc25c4": "Great, you are on the right track! Keep searching."
-};
-async function sha256(message) {
-const msgBuffer = new TextEncoder().encode(message);
-const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-const hashArray = Array.from(new Uint8Array(hashBuffer));
-return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
+setInterval(drawMatrix, 30);
+// Generoidaan satunnainen ID käyttäjälle tyylin vuoksi
+document.getElementById('userTag').innerText = "ID: GHOST_" + Math.floor(1000 + Math.random() * 9000);
+// Yksinkertainen chat-syöte toiminto
 const chatInput = document.getElementById('chatInput');
-if (chatInput) {
-chatInput.addEventListener('keypress', async function(e) {
+const chatLogs = document.getElementById('chatLogs');
+chatInput.addEventListener('keypress', function(e) {
 if (e.key === 'Enter' && this.value.trim() !== '') {
-const cmd = this.value.trim();
-this.value = '';
-const userLine = document.createElement('div');
-userLine.style.color = '#FFF';
-userLine.textContent = > ${cmd};
-chatLogs.appendChild(userLine);
-const hashedCmd = await sha256(cmd);
-const responseLine = document.createElement('div');
-if (promptDatabase[hashedCmd]) {
-responseLine.style.color = '#00FFD8';
-responseLine.textContent = [SYSTEM] ${promptDatabase[hashedCmd]};
-} else {
-responseLine.style.color = '#FF3333';
-responseLine.textContent = [ERROR] UNKNOWN COMMAND OR INVALID HASH CRITERIA.;
-}
-chatLogs.appendChild(responseLine);
+const userMsg = document.createElement('div');
+userMsg.textContent = "> " + this.value;
+chatLogs.appendChild(userMsg);
+// Automaattinen vastaus simulointia varten
+setTimeout(() => {
+const reply = document.createElement('div');
+reply.style.color = '#00FFD8';
+reply.textContent = "[SYS] Command received: '" + chatInput.value + "' is not recognized.";
+chatLogs.appendChild(reply);
+chatLogs.scrollTop = chatLogs.scrollHeight;
+chatInput.value = '';
+}, 400);
 chatLogs.scrollTop = chatLogs.scrollHeight;
 }
 });
-}
+
