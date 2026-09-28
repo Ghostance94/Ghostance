@@ -106,10 +106,9 @@
                 <p>J01-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories.</p>
             </div>
 
-            <!-- ADSTERRA NATIVE BANNER LAATIKKO -->
+            <!-- ADSTERRA SUOJATTU LAATIKKO -->
             <div class="ad-wrapper">
                 <div style="color: #FF3333; font-size: 0.6rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase;">[ INCOMING ENCRYPTED TRANSMISSION ]</div>
-                <script async="async" data-cfasync="false" src="https://profitableratecpmnetwork.com"></script>
                 <div id="container-9d7e72a2ce69dd43ecd9a5133cb8d11e" style="width:100%; min-height:60px;"></div>
             </div>
         </div>
@@ -164,10 +163,10 @@
             let timeRemainingMs = storedTarget - now;
 
             if (timeRemainingMs <= 0) {
-storedTarget = Date.now() + TOTAL_DURATION_MS;
-localStorage.setItem('ghostance_timer_target', storedTarget);
-timeRemainingMs = TOTAL_DURATION_MS;
-}
+                storedTarget = Date.now() + TOTAL_DURATION_MS;
+                localStorage.setItem('ghostance_timer_target', storedTarget);
+                timeRemainingMs = TOTAL_DURATION_MS;
+            }
 let displayString = "00:00:00";
 let progressRatio = timeRemainingMs / TOTAL_DURATION_MS;
 let totalSeconds = Math.floor(timeRemainingMs / 1000);
@@ -258,3 +257,11 @@ chatLogs.scrollTop = chatLogs.scrollHeight;
 }
 });
 }
+// PAKOTETAAN ADSTERRA LATAUTUMAAN VASTA MOOTTORIN KÄYNNISTYKSEN JÄLKEEN SEPARATISTISESTI
+window.addEventListener('DOMContentLoaded', () => {
+const adScript = document.createElement('script');
+adScript.type = 'text/javascript';
+adScript.async = true;
+adScript.src = 'profitableratecpmnetwork.com';
+document.body.appendChild(adScript);
+});
