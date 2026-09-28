@@ -1,70 +1,243 @@
-h<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE VAULT // GHOSTARY SYSTEM</title>
+    <title>THE VAULT // SCAMBUST PORTAL</title>
     <style>
-        body { background:#000; color:#39FF14; font-family:monospace; margin:0; overflow:hidden; }
-        canvas { position:fixed; top:0; left:0; z-index:1; }
-        .ui-container { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; padding:15px; }
-        .center-panel { text-align:center; background:rgba(0,0,0,0.88); padding:20px; border:1px solid rgba(57,255,20,0.25); max-width:440px; width:100%; margin-top:5vh; box-sizing: border-box; }
-        #timer { font-size:2.6rem; color:#FFF; text-shadow:0 0 20px #39FF14; margin-bottom:15px; }
-        .user-tag { font-size:0.75rem; color:#00FFD8; font-weight:bold; letter-spacing:1px; margin-bottom:15px; border-bottom:1px solid rgba(0,255,216,0.2); padding-bottom:6px; text-transform:uppercase; }
-        .chapters-container { display:flex; flex-direction:column; gap:12px; margin-top:15px; }
-        .chapter-node { border:1px solid rgba(57,255,20,0.2); background:rgba(0,0,0,0.6); cursor:pointer; transition: 0.2s; }
-        .chapter-node:hover { border-color:#39FF14; box-shadow: 0 0 10px rgba(57,255,20,0.3); }
-        .chapter-thumb { width:100%; height:110px; background-size:cover; background-position:center; background-color: #111; }
-        .chapter-meta { padding:8px; font-size:0.7rem; text-transform:uppercase; text-align:left; letter-spacing:1px; }
-        .story-view { display:none; text-align:left; margin-top:15px; padding:15px; border:1px solid #39FF14; color:#FFF; font-size:0.8rem; background:rgba(0,0,0,0.9); }
-        .close-story-btn { color:#39FF14; cursor:pointer; font-size:0.7rem; border:1px solid #39FF14; padding:4px 8px; display:inline-block; margin-bottom:12px; text-transform:uppercase; }
-        .chat-terminal { margin-top:20px; border-top:1px solid rgba(57,255,20,0.3); padding-top:15px; text-align:left; }
-        .chat-logs { height:140px; overflow-y:auto; font-size:0.7rem; margin-bottom:8px; background:rgba(0,0,0,0.7); padding:8px; border:1px solid rgba(57,255,20,0.15); line-height:1.4; }
-        .chat-input-row input { width:100%; background:#000; border:1px solid #39FF14; color:#FFF; padding:8px; font-family:monospace; box-sizing: border-box; }
-        .chat-input-row input:focus { outline:none; box-shadow: 0 0 8px #39FF14; }
-        .telemetry-box { margin-top:20px; border-top:1px dashed rgba(57,255,20,0.3); padding-top:15px; text-align:left; font-size:0.7rem; color:#a2ffa2; line-height:1.4; }
+        /* Sallitaan skrollaus, jotta laatikot ja terminaali mahtuvat mobiiliin */
+        body {
+            background-color: #000000;
+            color: #39FF14;
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+        .ui-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        /* Jätetään yläreunaan tyhjää tilaa (esim. 45vh), jotta keskellä pyörivä spiraali näkyy taustalla vapaana */
+        .spacer {
+            height: 48vh;
+            width: 100%;
+        }
+        .center-panel {
+            background: rgba(0,0,0,0.85);
+            padding: 20px;
+            border: 1px solid rgba(57,255,20,0.3);
+            max-width: 440px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .user-tag {
+            font-size: 0.75rem;
+            color: #00FFD8;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(0,255,216,0.2);
+            padding-bottom: 6px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        .chapters-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 15px;
+        }
+        
+        /* 3D KORTINKÄÄNTÖÖN VAADITTAVAT TYYLIT */
+        .card-perspective {
+            perspective: 1000px;
+            width: 100%;
+            height: 140px;
+            cursor: pointer;
+        }
+        .card-flipper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        /* Kun kortissa on luokka 'flipped', se pyörähtää ympäri */
+        .card-perspective.flipped .card-flipper {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border: 1px solid rgba(57,255,20,0.25);
+            box-sizing: border-box;
+        }
+        .card-front {
+            background: rgba(5,5,5,0.8);
+            display: flex;
+            flex-direction: column;
+        }
+        .chapter-thumb {
+            width: 100%;
+            height: 105px;
+            background-size: cover;
+            background-position: center;
+            background-color: #111;
+        }
+        .chapter-meta {
+            padding: 6px 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            text-align: left;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.9);
+        }
+        .card-back {
+            background: rgba(0, 15, 0, 0.95);
+            color: #FFF;
+            transform: rotateY(180deg);
+            padding: 12px;
+            font-size: 0.75rem;
+            text-align: left;
+            overflow-y: auto;
+            border-color: #39FF14;
+            box-shadow: inset 0 0 10px rgba(57,255,20,0.3);
+            line-height: 1.4;
+        }
+        
+        /* TERMINAALI JA TELEMETRIA */
+        .chat-terminal {
+            margin-top: 20px;
+            border-top: 1px solid rgba(57,255,20,0.3);
+            padding-top: 15px;
+            text-align: left;
+        }
+        .chat-logs {
+            height: 120px;
+            overflow-y: auto;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
+            background: rgba(0,0,0,0.8);
+            padding: 8px;
+            border: 1px solid rgba(57,255,20,0.15);
+            line-height: 1.4;
+        }
+        .chat-input-row input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #39FF14;
+            color: #FFF;
+            padding: 8px;
+            font-family: monospace;
+            box-sizing: border-box;
+        }
+        .chat-input-row input:focus {
+            outline: none;
+            box-shadow: 0 0 8px #39FF14;
+        }
+        .telemetry-box {
+            margin-top: 20px;
+            border-top: 1px dashed rgba(57,255,20,0.3);
+            padding-top: 15px;
+            text-align: left;
+            font-size: 0.7rem;
+            color: #a2ffa2;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
-    <canvas id="matrixCanvas"></canvas>
-    <div class="ui-container">
-        <div class="center-panel">
 
-            <!-- KELLO ALKAA TÄSTÄ -->
-            <div id="timer">96:00:00</div>
-            
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="ui-container">
+        <!-- Spacer pitää huolen, että yläosan kello ja spiraali eivät peity -->
+        <div class="spacer"></div>
+        
+        <div class="center-panel">
             <div class="user-tag">ID: INITIALIZING...</div>
 
-            <div id="mainHub">
-                <div class="chapters-container">
-                    <div class="chapter-node" onclick="openStory('ch1')">
-                        <div class="chapter-thumb" style="background-image:url('POPcorn.jpg');"></div>
-                        <div class="chapter-meta">Chapter I // The Synthetic Network</div>
-                    </div>
-                    <div class="chapter-node" onclick="openStory('ch2')">
-                        <div class="chapter-thumb" style="background-image:url('Library.jpg');"></div>
-                        <div class="chapter-meta">Chapter II // Digital Museum</div>
-                    </div>
-                    <div class="chapter-node" onclick="triggerTool('ch3')">
-                        <div class="chapter-thumb" style="background-image:url('Einstein.jpg');"></div>
-                        <div class="chapter-meta">Chapter III // Einstein Telemetry Matrix</div>
-                    </div>
-                    <div class="chapter-node" onclick="triggerTool('ch4')">
-                        <div class="chapter-thumb" style="background-image:url('Shovel.jpg');"></div>
-                        <div class="chapter-meta">Chapter IV // The Shovel Investigation</div>
+            <div class="chapters-container">
+                
+                <!-- CHAPTER I -->
+                <div class="card-perspective" onclick="this.classList.toggle('flipped')">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <div class="chapter-thumb" style="background-image:url('POPcorn.jpg');"></div>
+                            <div class="chapter-meta">Chapter I // The Synthetic Network</div>
+                        </div>
+                        <div class="card-back">
+                            Time to get popcorns now and enjoy the multiple art combining a movie, theatre, a music concert and a couple shades of a museum as well as trueblooded presentation of textgasm – Unfortunately, I cannot sit by your side to see how you react, but I am close by, very close...
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="storyBox" class="story-view">
-                <div class="close-story-btn" onclick="closeStory()">[ Back ]</div>
-                <div id="storyContent" style="white-space:pre-wrap;"></div>
+                <!-- CHAPTER II -->
+                <div class="card-perspective" onclick="this.classList.toggle('flipped')">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <div class="chapter-thumb" style="background-image:url('Library.jpg');"></div>
+                            <div class="chapter-meta">Chapter II // Digital Museum</div>
+                        </div>
+                        <div class="card-back">
+                            [DATA] Digital Library indexes verified. Core indices archived. Cryptographic node configuration sequence operational.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAPTER III -->
+                <div class="card-perspective" onclick="handleToolTrigger('ch3', this)">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <div class="chapter-thumb" style="background-image:url('Einstein.jpg');"></div>
+                            <div class="chapter-meta">Chapter III // Einstein Telemetry Matrix</div>
+                        </div>
+                        <div class="card-back" id="back-ch3">
+                            [SYSTEM] Einstein Matrix standby mode active. Click logs in terminal below.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAPTER IV -->
+                <div class="card-perspective" onclick="handleToolTrigger('ch4', this)">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <div class="chapter-thumb" style="background-image:url('Shovel.jpg');"></div>
+                            <div class="chapter-meta">Chapter IV // The Shovel Investigation</div>
+                        </div>
+                        <div class="card-back" id="back-ch4">
+                            [SYSTEM] Shovel configuration database locked. Scan results outputted to terminal log sequence.
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="chat-terminal">
                 <div class="chat-logs" id="chatLogs">
                     <div style="color:#FFF;">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
-                    <div id="userLogWelcome" style="color:#00FFD8;"></div>
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chatInput" placeholder="Enter command..." autocomplete="off">
@@ -73,33 +246,156 @@ h<!DOCTYPE html>
 
             <div class="telemetry-box">
                 <div style="color:#FFF; font-weight:bold; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">// SYSTEM ENGINE TELEMETRY</div>
-                <p>J01-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories. Blockchain verification mechanisms operate with optimal stability when processing off-chain ledger metadata streams independently.</p>
-                <p style="margin-top:8px;">Relational statistics map algorithmic behavioral game theory vectors across encrypted archives. System parameters maximize expected value metrics for active terminals.</p>
+                <p>J01-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories.</p>
             </div>
         </div>
     </div>
-
     <script>
-        // Matrix-tausta
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const letters = "01"; const fontSize = 11; const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-        
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(57, 255, 20, 0.15)'; ctx.font = fontSize + 'px monospace';
-            for (let i = 0; i < drops.length; i++) {
-                ctx.fillText(letters[Math.floor(Math.random() * letters.length)], i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) drops[i] = 0;
-                drops[i]++;
+
+        // Alustetaan canvaksen koko kattamaan koko ruutu
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const TOTAL_DURATION_MS = 96 * 60 * 60 * 1000; // 96 tunnin dilaatio
+        const TARGET_TIMESTAMP = Date.now() + TOTAL_DURATION_MS; 
+
+        // Matrix-taustasateen parametrit
+        const katakana = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const alphabet = katakana.split("");
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const rainDrops = Array(Math.floor(columns)).fill(1);
+
+        // PYÖRIMISLIIKKEEN ALUSTUS
+        let rotationOffset = 0; 
+
+        function draw() {
+            const centerX = canvas.width / 2;
+            // Nostetaan spiraalin ja kellon painopistettä ylemmäs (22% ruudun korkeudesta),
+            // jotta ne pysyvät täydellisesti vapaassa tilassa laatikoiden yläpuolella mobiilissakin.
+            const centerY = canvas.height * 0.22;
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 1. MATRIX-KOODISADE TAUSTALLE
+            ctx.fillStyle = '#00FF00';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+
+            // 2. AIKALASKENTA JA KIRISTYSSUHTEET
+            const now = Date.now();
+            const timeRemainingMs = TARGET_TIMESTAMP - now;
+
+            let displayString = "00:00:00";
+            let progressRatio = 0; 
+
+            if (timeRemainingMs > 0) {
+                progressRatio = timeRemainingMs / TOTAL_DURATION_MS;
+
+                let totalSeconds = Math.floor(timeRemainingMs / 1000);
+                let hours = Math.floor(totalSeconds / 3600);
+                let minutes = Math.floor((totalSeconds % 3600) / 60);
+                let seconds = totalSeconds % 60;
+
+                hours = hours < 10 ? '0' + hours : hours;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                displayString = `${hours}:${minutes}:${seconds}`;
+            } else {
+                displayString = "00:00:00";
+                progressRatio = 0;
+            }
+
+            // 3. PIIRRETÄÄN DYNAAMISESTI PYÖRIVÄ JA KURISTUVA FIBONACCI-SPIRAALI
+            if (progressRatio > 0) {
+                ctx.strokeStyle = '#39FF14';
+                ctx.lineWidth = 2;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#39FF14';
+                
+                ctx.beginPath();
+                let angle = 0;
+                let a = 0.5 * progressRatio; 
+                let b = 0.15; 
+                
+                for (let i = 0; i < 400; i++) {
+                    angle = i * 0.1 + rotationOffset; 
+                    
+                    let r = a * Math.exp(b * (i * 0.1)) * (progressRatio * 1.5);
+                    let x = centerX + r * Math.cos(angle);
+                    let y = centerY + r * Math.sin(angle);
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+                ctx.shadowBlur = 0; 
+
+                rotationOffset += 0.03; 
+            }
+
+            // 4. VALKOINEN VALOYDIN JA NUMEROT KESKELLE
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 32px Courier New';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#39FF14';
+            
+            ctx.fillText(displayString, centerX, centerY);
+            ctx.shadowBlur = 0; 
+        }
+
+        // Ajetaan looppia 33ms välein (30 FPS)
+        setInterval(draw, 33);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // ======= LISÄTOIMINNOT JOTKA KYTKEVÄT UTKULIITTYMÄN AJORAKENTEISIIN =======
+
+        const chatLogs = document.getElementById('chatLogs');
+
+        // Työkalujen laukaisin Chapter III ja IV korteille
+        function handleToolTrigger(id, cardElement) {
+            // Pyöräytetään kortti ympäri 3D-efektillä
+            cardElement.classList.toggle('flipped');
+            
+            // Jos kortti pyörähtää näkyviin, tulostetaan lokitiedot terminaaliin
+            if (cardElement.classList.contains('flipped')) {
+                const responseLine = document.createElement('div');
+                responseLine.style.color = '#00FFD8';
+                
+                if (id === 'ch3') {
+                    responseLine.textContent = "[SYSTEM] ALERT: Einstein Matrix activated. Process frame 40-96 hours locked into current parameters.";
+                } else if (id === 'ch4') {
+                    responseLine.textContent = "[SYSTEM] ALERT: Shovel configuration scanner online. 75 tracking nodes detected. 15 require deep structural map verification.";
+                }
+                
+                chatLogs.appendChild(responseLine);
+                chatLogs.scrollTop = chatLogs.scrollHeight;
             }
         }
-        setInterval(drawMatrix, 40);
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
-        // Vihjetietokanta komennoille
+        // CRYPTO HASH TIETOKANTA TERMINAALIKOMENNOILLE
         const promptDatabase = {
             "21a084c7e2b86bb32d8495f54f15d7f26c043fb94b7da3c52a0572e42a0b3e6e": "Not an organic link between human and a bot",
             "e78b7a974b6a9a3b6f2e82ee8f99ad88d929b922a8749aeb51f496a7dd7be121": "Not a way to bake anything tasty!",
@@ -112,6 +408,7 @@ h<!DOCTYPE html>
             "061d36d8d69784535e612879faef55be12d5d78df11c02ad28a2a7f5a0cc25c4": "Great, you are on the right track! Keep searching."
         };
 
+        // SHA-256 muunnos syötteiden vertailua varten
         async function sha256(message) {
             const msgBuffer = new TextEncoder().encode(message);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -119,35 +416,35 @@ h<!DOCTYPE html>
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        const chatLogs = document.getElementById('chatLogs');
-        const stories = {
-            ch1: "[DATA] POPcorn network established. Multi-threaded pathways clear.",
-            ch2: "[DATA] Digital Library indexes verified. Core indices archived."
-        };
-
-        function openStory(id) {
-            document.getElementById('mainHub').style.display = 'none';
-            document.getElementById('storyBox').style.display = 'block';
-            document.getElementById('storyContent').textContent = stories[id] || "No local data.";
-        }
-        
-        function closeStory() {
-            document.getElementById('storyBox').style.display = 'none';
-            document.getElementById('mainHub').style.display = 'block';
-        }
-
-        function triggerTool(id) {
-            const responseLine = document.createElement('div');
-            responseLine.style.color = '#00FFD8';
-            if (id === 'ch3') {
-                responseLine.textContent = "[SYSTEM] ALERT: Einstein Matrix activated. Process frame 40-96 hours locked into current parameters.";
-            } else if (id === 'ch4') {
-                responseLine.textContent = "[SYSTEM] ALERT: Shovel configuration scanner online. 75 tracking nodes detected. 15 require deep structural map verification.";
-            }
-            chatLogs.appendChild(responseLine);
-            chatLogs.scrollTop = chatLogs.scrollHeight;
-        }
-
-        // Syötteiden lukija terminaaliin
+        // Kuunnellaan terminaalin syötteitä
         const chatInput = document.getElementById('chatInput');
-if (chatInput) {chatInput.addEventListener('keypress', async function(e) {if (e.key === 'Enter' && this.value.trim() !== '') {const cmd = this.value.trim();this.value = '';const userLine = document.createElement('div');userLine.style.color = '#FFF';userLine.textContent = > ${cmd};chatLogs.appendChild(userLine);const hashedCmd = await sha256(cmd);const responseLine = document.createElement('div');if (promptDatabase[hashedCmd]) {responseLine.style.color = '#00FFD8';responseLine.textContent = [SYSTEM] ${promptDatabase[hashedCmd]};} else {responseLine.style.color = '#FF3333';responseLine.textContent = [ERROR] UNKNOWN COMMAND OR INVALID HASH CRITERIA.;}chatLogs.appendChild(responseLine);chatLogs.scrollTop = chatLogs.scrollHeight;}});}// 96 TUNNIN LOOPPAAVA KELLOconst TOTAL_SECONDS = 96 * 3600;let currentSeconds = TOTAL_SECONDS;function updateCountdown() {currentSeconds--;if (currentSeconds < 0) {currentSeconds = TOTAL_SECONDS;}let hrs = Math.floor(currentSeconds / 3600);let mins = Math.floor((currentSeconds % 3600) / 60);let secs = currentSeconds % 60;let displayHrs = hrs < 10 ? "0" + hrs : hrs;let displayMins = mins < 10 ? "0" + mins : mins;let displaySecs = secs < 10 ? "0" + secs : secs;const timerElement = document.getElementById('timer');if (timerElement) {timerElement.textContent = ${displayHrs}:${displayMins}:${displaySecs};}}// Pyöritetään automaattisesti sekunnin väleinsetInterval(updateCountdown, 1000);
+        if (chatInput) {
+            chatInput.addEventListener('keypress', async function(e) {
+                if (e.key === 'Enter' && this.value.trim() !== '') {
+                    const cmd = this.value.trim();
+                    this.value = '';
+
+                    const userLine = document.createElement('div');
+                    userLine.style.color = '#FFF';
+                    userLine.textContent = `> ${cmd}`;
+                    chatLogs.appendChild(userLine);
+
+                    const hashedCmd = await sha256(cmd);
+                    const responseLine = document.createElement('div');
+                    
+                    if (promptDatabase[hashedCmd]) {
+                        responseLine.style.color = '#00FFD8';
+                        responseLine.textContent = `[SYSTEM] ${promptDatabase[hashedCmd]}`;
+                    } else {
+                        responseLine.style.color = '#FF3333';
+                        responseLine.textContent = `[ERROR] UNKNOWN COMMAND OR INVALID HASH CRITERIA.`;
+                    }
+
+                    chatLogs.appendChild(responseLine);
+                    chatLogs.scrollTop = chatLogs.scrollHeight;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
