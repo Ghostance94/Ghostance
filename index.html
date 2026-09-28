@@ -163,59 +163,49 @@
 
                 if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
 let totalSeconds = Math.floor(timeRemainingMs / 1000);
-let hours = Math.floor(totalSeconds / 3600);
-let minutes = Math.floor((totalSeconds % 3600) / 60);
-let seconds = totalSeconds % 60;
+            // 3. PIIRRETÄÄN DYNAAMISESTI PYÖRIVÄ JA KURISTUVA FIBONACCI-SPIRAALI
+            if (progressRatio > 0) {
+                ctx.strokeStyle = '#39FF14';
+                ctx.lineWidth = 2;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#39FF14';
+                
+                ctx.beginPath();
+                let angle = 0;
+                let a = 0.5 * progressRatio; 
+                let b = 0.15; 
+                
+                for (let i = 0; i < 400; i++) {
+                    angle = i * 0.1 + rotationOffset; 
+                    let r = a * Math.exp(b * (i * 0.1)) * (progressRatio * 1.5);
+                    let x = centerX + r * Math.cos(angle);
+                    let y = centerY + r * Math.sin(angle);
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+                ctx.shadowBlur = 0; 
 
-hours = hours < 10 ? '0' + hours : hours;
-minutes = minutes < 10 ? '0' + minutes : minutes;
-seconds = seconds < 10 ? '0' + seconds : seconds;
+                rotationOffset += 0.03; 
+            }
 
-displayString = `${hours}:${minutes}:${seconds}`;
-
-const timerElement = document.getElementById('timer');
-if (timerElement) {
-    timerElement.textContent = displayString;
-}
-
-if (progressRatio > 0) {
-    ctx.strokeStyle = '#39FF14';
-    ctx.lineWidth = 2;
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = '#39FF14';
-    
-    ctx.beginPath();
-    let angle = 0;
-    let a = 0.5 * progressRatio; 
-    let b = 0.15; 
-    
-    for (let i = 0; i < 400; i++) {
-        angle = i * 0.1 + rotationOffset; 
-        let r = a * Math.exp(b * (i * 0.1)) * (progressRatio * 1.5);
-        let x = centerX + r * Math.cos(angle);
-        let y = centerY + r * Math.sin(angle);
-        
-        if (i === 0) {
-            ctx.moveTo(x, y);
-        } else {
-            ctx.lineTo(x, y);
+            // 4. VALKOINEN VALOYDIN JA NUMEROT KESKELLE
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 32px Courier New';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#39FF14';
+            
+            ctx.fillText(displayString, centerX, centerY);
+            ctx.shadowBlur = 0; 
         }
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0; 
 
-    rotationOffset += 0.03; 
-}
-
-ctx.fillStyle = '#FFFFFF';
-ctx.font = 'bold 32px Courier New';
-ctx.textAlign = 'center';
-ctx.textBaseline = 'middle';
-ctx.shadowBlur = 20;
-ctx.shadowColor = '#39FF14';
-
-ctx.fillText(displayString, centerX, centerY);
-ctx.shadowBlur = 0; 
+        // Käynnistetään spiraalimoottori ja kello livenä (30 FPS)
         setInterval(draw, 33);
 
         window.addEventListener('resize', () => {
@@ -223,6 +213,7 @@ ctx.shadowBlur = 0;
             canvas.height = window.innerHeight;
         });
 
+        // ======= KÄYTTÖLIITTYMÄN AJORAKENTEET JA CHAT =======
         const chatLogs = document.getElementById('chatLogs');
         const promptDatabase = {
             "21a084c7e2b86bb32d8495f54f15d7f26c043fb94b7da3c52a0572e42a0b3e6e": "Not an organic link between human and a bot",
@@ -274,3 +265,4 @@ ctx.shadowBlur = 0;
     </script>
 </body>
 </html>
+
