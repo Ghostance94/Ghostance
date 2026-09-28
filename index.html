@@ -172,7 +172,6 @@
             line-height: 1.4;
             transition: border-color 0.5s ease;
         }
-        /* KORJATTU LUOKKA: Poistettu sana 'ad' */
         .bottom-panel {
             margin-top: 25px;
             display: flex;
@@ -248,7 +247,7 @@
                     </div>
                 </div>
 
-                <!-- CHAPTER IV -->
+                <!-- CHAPTER IV (KORJATTU RAKENNE TÄSSÄ) -->
                 <div class="card-perspective" onclick="this.classList.toggle('flipped')">
                     <div class="card-flipper">
                         <div class="card-front">
@@ -279,5 +278,141 @@
                 LATENCY: 14ms
             </div>
 
-            <!-- PUHDISTETTU ELEMENTTI -->
-[ TRANSMISSION ENCRYPTED ]let currentR = 57;let currentG = 255;let currentB = 20;const canvas = document.getElementById('matrixCanvas');const ctx = canvas.getContext('2d');function resizeCanvas() {canvas.width = window.innerWidth;canvas.height = window.innerHeight;}resizeCanvas();window.addEventListener('resize', resizeCanvas);const characters = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄ1234567890XYZ'.split('');const fontSize = 14;let columns = canvas.width / fontSize;const rainDrops = Array(Math.floor(columns)).fill(1);let spiralRotation = 0;function drawMatrixAndSpiral() {ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';ctx.fillRect(0, 0, canvas.width, canvas.height);ctx.save();ctx.translate(canvas.width / 2, canvas.height / 2);ctx.rotate(spiralRotation);ctx.strokeStyle = rgba(${currentR}, ${currentG}, ${currentB}, 0.15);ctx.lineWidth = 1.5;ctx.beginPath();let a = 0, b = 1, scale = 0.5;for (let i = 0; i < 15; i++) {let next = a + b; a = b; b = next;ctx.arc(0, 0, b * scale, 0, Math.PI / 2);ctx.translate(b * scale, 0);ctx.rotate(Math.PI / 2);}ctx.stroke();ctx.restore();spiralRotation += 0.002;ctx.fillStyle = rgb(${currentR}, ${currentG}, ${currentB});ctx.font = fontSize + 'px monospace';for (let i = 0; i < rainDrops.length; i++) {const text = characters[Math.floor(Math.random() * characters.length)];ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {rainDrops[i] = 0;}rainDrops[i]++;}}setInterval(drawMatrixAndSpiral, 33);const myGhostID = "GHOST_" + Math.floor(1000 + Math.random() * 9000);document.getElementById('userTag').innerText = "ID: " + myGhostID;const TOTAL_SECONDS = 96 * 60 * 60;let targetTime = localStorage.getItem('einstein_target_time');function setNextTarget() {targetTime = Date.now() + (TOTAL_SECONDS * 1000);localStorage.setItem('einstein_target_time', targetTime);}if (!targetTime || targetTime < Date.now()) {setNextTarget();}function updateEinsteinClock() {let timeLeft = Math.floor((targetTime - Date.now()) / 1000);if (timeLeft <= 0) {setNextTarget();timeLeft = TOTAL_SECONDS;}if (timeLeft <= 30 && timeLeft > 0) {let ratio = (30 - timeLeft) / 30;currentR = Math.floor(57 + (255 - 57) * ratio);currentG = Math.floor(255 - (255 - 59) * ratio);currentB = Math.floor(20 + (48 - 20) * ratio);document.getElementById('centerPanel').style.borderColor = rgba(${currentR}, ${currentG}, ${currentB}, 0.6);} else {currentR = 57; currentG = 255; currentB = 20;document.getElementById('centerPanel').style.borderColor = "rgba(57,255,20,0.3)";}const hrs = Math.floor(timeLeft / 3600);const mins = Math.floor((timeLeft % 3600) / 60);const secs = timeLeft % 60;document.getElementById('systemClock').innerText = MATRIX LOCK: ${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')};}setInterval(updateEinsteinClock, 1000);updateEinsteinClock();const inputField = document.getElementById('chatInput');const chatLogs = document.getElementById('chatLogs');const centerPanel = document.getElementById('centerPanel');const dataBox = document.getElementById('telemetryBox');const TRIGGER_WORDS = ["SECRET", "VAULT", "GHOST", "KEY", "OPEN", "SYSTEM"];function appendToChat(sender, message, isSystem = false) {const msgDiv = document.createElement('div');msgDiv.style.color = isSystem ? '#39FF14' : '#ffffff';msgDiv.textContent = isSystem ? [${sender}] ${message} : <${sender}> ${message};chatLogs.appendChild(msgDiv);chatLogs.scrollTop = chatLogs.scrollHeight;}inputField.addEventListener('keypress', function(e) {if (e.key === 'Enter') {const rawInput = inputField.value;const cleanInput = rawInput.trim().toUpperCase();if (cleanInput === '') return;if (cleanInput === "COINING" || cleanInput === "PROFIT" || cleanInput === "MOLECULAR" || cleanInput === "MATRIX") {appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...", true);setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers.", true); }, 800);setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret.", true); }, 1800);inputField.value = ''; return;}if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || cleanInput === "QUEEN" || cleanInput.includes("COORDINATES")) {appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...", true);setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified.", true); }, 800);setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously.", true); }, 1800);inputField.value = ''; return;}if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...", true);setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters.", true); }, 800);setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation.", true); }, 1800);inputField.value = ''; return;}if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.", true);setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously.", true); }, 800);setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens.", true); }, 1800);setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10.", true); }, 2800);inputField.value = ''; return;}let isMatch = TRIGGER_WORDS.some(word => cleanInput.includes(word));if (cleanInput.includes("TIME TO GET POPCORNS")) isMatch = true;if (isMatch) {centerPanel.classList.add('laser-flash');setTimeout(() => centerPanel.classList.remove('laser-flash'), 500);dataBox.style.display = 'block';appendToChat('SYSTEM', "UNSEALED CORE KEY!", true);inputField.value = ''; return;}appendToChat(myGhostID, rawInput);inputField.value = '';}});
+            <div class="bottom-panel" id="adWrapper">
+[ TRANSMISSION ENCRYPTED ]
+let currentR = 57;
+let currentG = 255;
+let currentB = 20;
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() {
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+const characters = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄ1234567890XYZ'.split('');
+const fontSize = 14;
+let columns = canvas.width / fontSize;
+const rainDrops = Array(Math.floor(columns)).fill(1);
+let spiralRotation = 0;
+function drawMatrixAndSpiral() {
+ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.save();
+ctx.translate(canvas.width / 2, canvas.height / 2);
+ctx.rotate(spiralRotation);
+ctx.strokeStyle = rgba(${currentR}, ${currentG}, ${currentB}, 0.15);
+ctx.lineWidth = 1.5;
+ctx.beginPath();
+let a = 0, b = 1, scale = 0.5;
+for (let i = 0; i < 15; i++) {
+let next = a + b; a = b; b = next;
+ctx.arc(0, 0, b * scale, 0, Math.PI / 2);
+ctx.translate(b * scale, 0);
+ctx.rotate(Math.PI / 2);
+}
+ctx.stroke();
+ctx.restore();
+spiralRotation += 0.002;
+ctx.fillStyle = rgb(${currentR}, ${currentG}, ${currentB});
+ctx.font = fontSize + 'px monospace';
+for (let i = 0; i < rainDrops.length; i++) {
+const text = characters[Math.floor(Math.random() * characters.length)];
+ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+rainDrops[i] = 0;
+}
+rainDrops[i]++;
+}
+}
+setInterval(drawMatrixAndSpiral, 33);
+const myGhostID = "GHOST_" + Math.floor(1000 + Math.random() * 9000);
+document.getElementById('userTag').innerText = "ID: " + myGhostID;
+const TOTAL_SECONDS = 96 * 60 * 60;
+let targetTime = localStorage.getItem('einstein_target_time');
+function setNextTarget() {
+targetTime = Date.now() + (TOTAL_SECONDS * 1000);
+localStorage.setItem('einstein_target_time', targetTime);
+}
+if (!targetTime || targetTime < Date.now()) {
+setNextTarget();
+}
+function updateEinsteinClock() {
+let timeLeft = Math.floor((targetTime - Date.now()) / 1000);
+if (timeLeft <= 0) {
+setNextTarget();
+timeLeft = TOTAL_SECONDS;
+}
+if (timeLeft <= 30 && timeLeft > 0) {
+let ratio = (30 - timeLeft) / 30;
+currentR = Math.floor(57 + (255 - 57) * ratio);
+currentG = Math.floor(255 - (255 - 59) * ratio);
+currentB = Math.floor(20 + (48 - 20) * ratio);
+document.getElementById('centerPanel').style.borderColor = rgba(${currentR}, ${currentG}, ${currentB}, 0.6);
+} else {
+currentR = 57; currentG = 255; currentB = 20;
+document.getElementById('centerPanel').style.borderColor = "rgba(57,255,20,0.3)";
+}
+const hrs = Math.floor(timeLeft / 3600);
+const mins = Math.floor((timeLeft % 3600) / 60);
+const secs = timeLeft % 60;
+document.getElementById('systemClock').innerText = MATRIX LOCK: ${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')};
+}
+setInterval(updateEinsteinClock, 1000);
+updateEinsteinClock();
+const inputField = document.getElementById('chatInput');
+const chatLogs = document.getElementById('chatLogs');
+const centerPanel = document.getElementById('centerPanel');
+const dataBox = document.getElementById('telemetryBox');
+const TRIGGER_WORDS = ["SECRET", "VAULT", "GHOST", "KEY", "OPEN", "SYSTEM"];
+function appendToChat(sender, message, isSystem = false) {
+const msgDiv = document.createElement('div');
+msgDiv.style.color = isSystem ? '#39FF14' : '#ffffff';
+msgDiv.textContent = isSystem ? [${sender}] ${message} : <${sender}> ${message};
+chatLogs.appendChild(msgDiv);
+chatLogs.scrollTop = chatLogs.scrollHeight;
+}
+inputField.addEventListener('keypress', function(e) {
+if (e.key === 'Enter') {
+const rawInput = inputField.value;
+const cleanInput = rawInput.trim().toUpperCase();
+if (cleanInput === '') return;
+if (cleanInput === "COINING" || cleanInput === "PROFIT" || cleanInput === "MOLECULAR" || cleanInput === "MATRIX") {
+appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...", true);
+setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers.", true); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret.", true); }, 1800);
+inputField.value = ''; return;
+}
+if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || cleanInput === "QUEEN" || cleanInput.includes("COORDINATES")) {
+appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...", true);
+setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified.", true); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously.", true); }, 1800);
+inputField.value = ''; return;
+}
+if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {
+appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...", true);
+setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters.", true); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation.", true); }, 1800);
+inputField.value = ''; return;
+}
+if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {
+appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.", true);
+setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously.", true); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens.", true); }, 1800);
+setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10.", true); }, 2800);
+inputField.value = ''; return;
+}
+let isMatch = TRIGGER_WORDS.some(word => cleanInput.includes(word));
+if (cleanInput.includes("TIME TO GET POPCORNS")) isMatch = true;
+if (isMatch) {
+centerPanel.classList.add('laser-flash');
+setTimeout(() => centerPanel.classList.remove('laser-flash'), 500);
+dataBox.style.display = 'block';
+appendToChat('SYSTEM', "UNSEALED CORE KEY!", true);
+inputField.value = ''; return;
+}
+appendToChat(myGhostID, rawInput);
+inputField.value = '';
+}
+});
