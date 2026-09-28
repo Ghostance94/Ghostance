@@ -55,12 +55,13 @@
             margin-bottom: 5px;
             text-transform: uppercase;
         }
+        /* EINSTEIN MATRIX ALASPÄIN LASKEVA KELLO */
         .system-clock {
             font-size: 0.85rem;
-            color: #39FF14;
+            color: #FF3B30; /* Punainen korostamaan countdownia */
             letter-spacing: 2px;
             margin-bottom: 15px;
-            border-bottom: 1px solid rgba(0,255,216,0.2);
+            border-bottom: 1px solid rgba(255,59,48,0.2);
             padding-bottom: 8px;
             font-weight: bold;
         }
@@ -179,7 +180,6 @@
             box-sizing: border-box;
             background: rgba(0,10,0,0.8);
         }
-        /* Laser-salamaefekti komennon onnistuessa */
         .laser-flash {
             animation: flashAnimation 0.5s ease-out;
         }
@@ -199,7 +199,8 @@
         <div class="center-panel" id="centerPanel">
             <div class="user-tag" id="userTag">ID: INITIALIZING...</div>
             
-            <div class="system-clock" id="systemClock">SYS.TIME: 00:00:00</div>
+            <!-- 96H LOOPPAAVA ALASPÄIN LASKEVA KELLO -->
+            <div class="system-clock" id="systemClock">MATRIX LOCK: 96:00:00</div>
 
             <div class="chapters-container">
                 <!-- CHAPTER I -->
@@ -210,7 +211,7 @@
                             <div class="chapter-meta">Chapter I // The Synthetic Network</div>
                         </div>
                         <div class="card-back">
-                            Time to get popcorns now and enjoy the multiple art combining a movie, theatre, a music concert and a couple shades of a museum as well as trueblooded presentation of textgasm – Unfortunately, I cannot sit by your side to see how you react, but I am close by, very close...
+                            Time to get popcorns now and enjoy the multiple art combining a movie, theatre, a music concert and a couple shades of a museum as well as trueblooded presentation of textgasm...
                         </div>
                     </div>
                 </div>
@@ -281,8 +282,8 @@
     </div>
 
     <script>
-        // --- VISUAALISET FUNKTIOT: MATRIX & SPIRAALI ---
-        const canvas = document.getElementById('matrixCanvas');
+        // --- VISUAALISET EFREKTIT (MATRIX & SPIRAALI) ---
+const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 function resizeCanvas() {
 canvas.width = window.innerWidth;
@@ -298,7 +299,7 @@ let spiralRotation = 0;
 function drawMatrixAndSpiral() {
 ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
-// Fibonacci Spiraali taustalla
+// Fibonacci Spiraali
 ctx.save();
 ctx.translate(canvas.width / 2, canvas.height / 2);
 ctx.rotate(spiralRotation);
@@ -328,30 +329,47 @@ rainDrops[i]++;
 }
 }
 setInterval(drawMatrixAndSpiral, 33);
-// Kello ja ID generointi
+// Generoidaan käyttäjä-ID
 const myGhostID = "GHOST_" + Math.floor(1000 + Math.random() * 9000);
 document.getElementById('userTag').innerText = "ID: " + myGhostID;
-function updateClock() {
-const now = new Date();
-document.getElementById('systemClock').innerText = SYS.TIME: ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')};
+// --- LOGIIKKA: 96 TUNNIN LOOPPAAVA COUNTDOWN ---
+const TOTAL_SECONDS = 96 * 60 * 60; // 96 tuntia sekunneissa (345600 sekuntia)
+// Haetaan tallennettu päättymisaika tai luodaan uusi jos sitä ei löydy
+let targetTime = localStorage.getItem('einstein_target_time');
+function setNextTarget() {
+targetTime = Date.now() + (TOTAL_SECONDS * 1000);
+localStorage.setItem('einstein_target_time', targetTime);
 }
-setInterval(updateClock, 1000); updateClock();
-// --- CHAT LOGIIKKA (SERKUN SÄHKÖPOSTISTA) ---
+if (!targetTime || targetTime < Date.now()) {
+setNextTarget();
+}
+function updateEinsteinClock() {
+let timeLeft = Math.floor((targetTime - Date.now()) / 1000);
+// Kun ajastin saavuttaa nollan, se resetoi itsensä takaisin 96 tuntiin
+if (timeLeft <= 0) {
+setNextTarget();
+timeLeft = TOTAL_SECONDS;
+}
+const hrs = Math.floor(timeLeft / 3600);
+const mins = Math.floor((timeLeft % 3600) / 60);
+const secs = timeLeft % 60;
+const displayHrs = String(hrs).padStart(2, '0');
+const displayMins = String(mins).padStart(2, '0');
+const displaySecs = String(secs).padStart(2, '0');
+document.getElementById('systemClock').innerText = MATRIX LOCK: ${displayHrs}:${displayMins}:${displaySecs};
+}
+setInterval(updateEinsteinClock, 1000);
+updateEinsteinClock();
+// --- CHAT LOGIIKKA JA KOMENNOT ---
 const inputField = document.getElementById('chatInput');
 const chatLogs = document.getElementById('chatLogs');
 const centerPanel = document.getElementById('centerPanel');
 const dataBox = document.getElementById('telemetryBox');
-// Määritellään laukaisusanat koodia varten
 const TRIGGER_WORDS = ["SECRET", "VAULT", "GHOST", "KEY", "OPEN", "SYSTEM"];
 function appendToChat(sender, message, isSystem = false) {
 const msgDiv = document.createElement('div');
-if (isSystem) {
-msgDiv.style.color = '#39FF14';
-msgDiv.textContent = [${sender}] ${message};
-} else {
-msgDiv.style.color = '#ffffff';
-msgDiv.textContent = <${sender}> ${message};
-}
+msgDiv.style.color = isSystem ? '#39FF14' : '#ffffff';
+msgDiv.textContent = isSystem ? [${sender}] ${message} : <${sender}> ${message};
 chatLogs.appendChild(msgDiv);
 chatLogs.scrollTop = chatLogs.scrollHeight;
 }
@@ -360,40 +378,31 @@ if (e.key === 'Enter') {
 const rawInput = inputField.value;
 const cleanInput = rawInput.trim().toUpperCase();
 if (cleanInput === '') return;
-// 1. COINING / MOLECULAR MATRIX
 if (cleanInput === "COINING" || cleanInput === "PROFIT" || cleanInput === "MOLECULAR" || cleanInput === "MATRIX") {
 appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...", true);
 setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers.", true); }, 800);
 setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret.", true); }, 1800);
-inputField.value = '';
-return;
+inputField.value = ''; return;
 }
-// 2. CHESS / QUEEN
 if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || cleanInput === "QUEEN" || cleanInput.includes("COORDINATES")) {
 appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...", true);
 setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified.", true); }, 800);
 setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously.", true); }, 1800);
-inputField.value = '';
-return;
+inputField.value = ''; return;
 }
-// 3. FIBONACCI / CRYPTEX
 if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {
 appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...", true);
 setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters.", true); }, 800);
 setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation.", true); }, 1800);
-inputField.value = '';
-return;
+inputField.value = ''; return;
 }
-// 4. GAUSS / FRACTAL
 if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {
 appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.", true);
 setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously.", true); }, 800);
 setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens.", true); }, 1800);
 setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10.", true); }, 2800);
-inputField.value = '';
-return;
+inputField.value = ''; return;
 }
-// 5. TRIGGER_WORDS & POPCORNS VAPAUTUS
 let isMatch = TRIGGER_WORDS.some(word => cleanInput.includes(word));
 if (cleanInput.includes("TIME TO GET POPCORNS")) isMatch = true;
 if (isMatch) {
@@ -401,10 +410,8 @@ centerPanel.classList.add('laser-flash');
 setTimeout(() => centerPanel.classList.remove('laser-flash'), 500);
 dataBox.style.display = 'block';
 appendToChat('SYSTEM', "UNSEALED CORE KEY!", true);
-inputField.value = '';
-return;
+inputField.value = ''; return;
 }
-// Tavallinen viesti jos mitään koodia ei tunnistettu
 appendToChat(myGhostID, rawInput);
 inputField.value = '';
 }
