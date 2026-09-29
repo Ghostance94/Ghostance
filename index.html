@@ -180,7 +180,10 @@
         <div class="decoy-countdown" id="timer-display">96:00:00</div>
 
         <!-- REAALIAIKAINEN DATALOGI -->
-        <div class="text-terminal" id="output-log"><div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>Järjestelmä alustettu. Odotetaan syötettä datamatriisin aktivoimiseksi...</div>
+        <div class="text-terminal">
+            <div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>
+            <div id="output-log-content">INSERT A DECRYPTING KEY! .</div>
+        </div>
 
         <!-- SYÖTEKENTTÄ PROMPTAAMISTA VARTEN -->
         <div class="input-terminal">
@@ -239,10 +242,7 @@
             const elapsedSeconds = Math.floor((now - startTime) / 1000);
             let remainingSeconds = TOTAL_SECONDS - elapsedSeconds;
 
-            if (remainingSeconds <= 0) {
-                remainingSeconds = 0;
-                clearInterval(timerInterval);
-            }
+            if (remainingSeconds < 0) remainingSeconds = 0;
 
             const hours = Math.floor(remainingSeconds / 3600);
             const minutes = Math.floor((remainingSeconds % 3600) / 60);
@@ -257,25 +257,27 @@
         updateTimer();
         const timerInterval = setInterval(updateTimer, 1000);
 
-        // 2. KANVAS-MATRIX MOOTTORI
+        // 2. KANVAS-MATRIX MOOTTORI KORJATULLA RESIZE-LASKENNALLA
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
+        const alphabet = ["0", "1"];
+        const fontSize = 14;
+        let rainDrops = [];
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            let columns = Math.floor(canvas.width / fontSize) + 1;
+            
+            // Päivitetään sadepisarat vastaamaan uutta ruudun leveyttä
+            if (rainDrops.length < columns) {
+                for (let x = rainDrops.length; x < columns; x++) {
+                    rainDrops[x] = Math.random() * -100;
+                }
+            }
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
-
-        const alphabet = ["0", "1"];
-        const fontSize = 14;
-        let columns = Math.floor(canvas.width / fontSize) + 1;
-
-        const rainDrops = [];
-        for (let x = 0; x < columns; x++) {
-            rainDrops[x] = Math.random() * -100;
-        }
 
         function drawMatrix() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
@@ -290,14 +292,13 @@
 
                 if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                     rainDrops[i] = 0;
-                }
-                rainDrops[i]++;
-            }
-        }
-        setInterval(drawMatrix, 30);
-
-        // 3. PROMPT-VASTAUKSET SUOJATTUNA (BASE64)
-        const encryptedDatabase = {
+}
+rainDrops[i]++;
+}
+}
+setInterval(drawMatrix, 30);
+// 3. PROMPT-VASTAUKSET SUOJATTUNA (BASE64) JA TURVALLINEN LOKIKIRJAUS
+const encryptedDatabase = {
 "YmxvbmRl": "Check Chapter 3! [14-41]",
 "Zm9sZA==": "Check Chapter 4! [14-41]",
 "Y2hvdXg=": "Check Chapter 14! [14-41]",
@@ -342,7 +343,8 @@
 "aG1n": "Figure it out, hmh?"
 };
 const inputField = document.getElementById('user-prompt');
-const outputLog = document.getElementById('output-log');
+const logContent = document.getElementById('output-log-content');
+const textTerminal = document.querySelector('.text-terminal');
 inputField.addEventListener('keypress', function(e) {
 if (e.key === 'Enter') {
 e.preventDefault();
@@ -351,32 +353,32 @@ let cleanQuery = originalInput.replace(/[?!/]/g, '');
 let found = false;
 let response = "";
 if (cleanQuery === "what imagesphotos are" || cleanQuery === "what images are" || cleanQuery === "what photos are") {
-response = "\n[SYSTEM RESPONSE]: They are your game solution, tips and map.";
+response = "They are your game solution, tips and map.";
 found = true;
 } else if (cleanQuery === "is this nonsense" || cleanQuery === "what is this nonsense") {
-response = "\n[SYSTEM RESPONSE]: This is just the opposite, and You will find out why, soon, very soon...";
+response = "This is just the opposite, and You will find out why, soon, very soon...";
 found = true;
 } else if (cleanQuery === "how to use map") {
-response = "\n[SYSTEM RESPONSE]: Choose, red or green? Its a serious tip.";
+response = "Choose, red or green? Its a serious tip.";
 found = true;
 } else if (cleanQuery === "is thisnreal arg") {
-response = "\n[SYSTEM RESPONSE]: Check Chapter 2! [14-41]";
+response = "Check Chapter 2! [14-41]";
 found = true;
 } else if (cleanQuery === "what should i do") {
-response = "\n[SYSTEM RESPONSE]: You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]";
+response = "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]";
 found = true;
 } else if (cleanQuery === "what to do") {
-response = "\n[SYSTEM RESPONSE]: Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!";
+response = "Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!";
 found = true;
 } else if (cleanQuery === "cbet") {
-response = "\n[SYSTEM RESPONSE]: 92,7.";
+response = "92,7.";
 found = true;
 }
 if (!found && cleanQuery !== "") {
 for (const key in encryptedDatabase) {
 try {
 if (atob(key) === cleanQuery) {
-response = "\n[SYSTEM RESPONSE]: " + encryptedDatabase[key];
+response = encryptedDatabase[key];
 found = true;
 break;
 }
@@ -386,11 +388,16 @@ continue;
 }
 }
 if (!found && cleanQuery !== "") {
-response = "\n[ERROR]: Unknown query. Access denied. Trace active.";
+response = "Unknown query. Access denied. Trace active.";
 }
 if (response !== "") {
-outputLog.innerText += response;
-outputLog.scrollTop = outputLog.scrollHeight;
+// Lisätään teksti turvallisesti erillisinä riveinä ilman että rikotaan HTML-rakennetta
+const newEntry = document.createElement('div');
+newEntry.style.marginTop = "10px";
+newEntry.innerText = > ${originalInput}\n[SYSTEM]: ${response};
+logContent.appendChild(newEntry);
+// Skrollataan automaattisesti alas asti
+textTerminal.scrollTop = textTerminal.scrollHeight;
 }
 inputField.value = '';
 }
