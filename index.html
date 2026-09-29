@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DATAMATRIX ENGINE // STATUS: OPERATIONAL</title>
     <style>
+        /* GLOBAALI SIVUNOODI JA NOLLAUS - ESTÄÄ MOBIILIN HAJOAMISEN */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,40 +18,32 @@
             font-family: 'Courier New', Courier, monospace;
             padding: 12px;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* LIVENÄ RULLAAVA CSS-MATRIX-VERHO */
-        body::before {
-            content: "01010110 01000101 01010010 01001000 01001111 00001010 10101010 11010101 01010101 00110011 01010110 01000101 01010010 01001000 01001111 00001010 10101010 11010101 01010101 00110011";
+        /* LIVENÄ TIPUTTELEVA MATRIX-VERHO */
+        #matrix-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            font-size: 10px;
-            line-height: 1.2;
-            color: rgba(0, 255, 0, 0.04);
-            white-space: pre-wrap;
-            word-break: break-all;
-            pointer-events: none;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
-            animation: matrixRain 25s linear infinite;
+            opacity: 0.15;
+            pointer-events: none;
         }
 
-        @keyframes matrixRain {
-            0% { transform: translateY(-50%); }
-            100% { transform: translateY(0%); }
-        }
-
+        /* SIVUSTON PÄÄSÄILIÖ */
         .main-container {
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
+            position: relative;
+            z-index: 1;
         }
 
+        /* ELÄVÄ HÄMÄYSKELLO */
         .decoy-countdown {
             font-size: clamp(26px, 6vw, 44px);
             font-weight: bold;
@@ -60,16 +53,17 @@
             text-shadow: 0 0 10px #00ff00;
         }
 
+        /* DYNAMISET TEKSTILOKIT */
         .text-terminal {
             border: 1px solid #00ff00;
-            background-color: rgba(5, 5, 5, 0.9);
+            background-color: rgba(5, 5, 5, 0.85);
             padding: 16px;
             margin-bottom: 25px;
             white-space: pre-wrap;
             word-break: break-word;
             line-height: 1.5;
             font-size: clamp(13px, 3.8vw, 16px);
-            box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.1), 0 0 10px rgba(0, 255, 0, 0.2);
+            box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.1);
             max-height: 400px;
             overflow-y: auto;
         }
@@ -82,10 +76,10 @@
             letter-spacing: 1px;
         }
 
-        /* SYÖTEKENTTÄ PROMPTAAMISTA VARTEN */
+        /* KOMENTORIVIKENTTÄ */
         .input-terminal {
             border: 1px solid #00ff00;
-            background-color: rgba(5, 5, 5, 0.9);
+            background-color: rgba(5, 5, 5, 0.85);
             padding: 15px;
             margin-bottom: 25px;
             display: flex;
@@ -110,6 +104,23 @@
             outline: none;
         }
 
+        /* SYSTEEMIMATRIISI */
+        .system-matrix {
+            border: 1px solid #00ff00;
+            background-color: rgba(5, 5, 5, 0.85);
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: clamp(12px, 3.5vw, 14px);
+            line-height: 1.6;
+        }
+
+        .system-matrix ul {
+            list-style-type: square;
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        /* KUVARUUDUKKO */
         .matrix-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -117,15 +128,15 @@
             width: 100%;
         }
 
+        /* YKSITTÄINEN KUVALAATIKKO */
         .image-card {
             border: 1px solid #00ff00;
-            background-color: rgba(5, 5, 5, 0.9);
+            background-color: rgba(5, 5, 5, 0.85);
             padding: 12px;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         }
 
         .image-card img {
@@ -149,7 +160,7 @@
 
         @media (max-width: 600px) {
             body { padding: 8px; }
-            .text-terminal, .input-terminal { padding: 12px; }
+            .text-terminal, .system-matrix, .input-terminal { padding: 12px; }
             .matrix-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .image-card { padding: 8px; }
         }
@@ -159,13 +170,16 @@
 </head>
 <body>
 
+    <!-- DIGITAL MATRIX BACKGROUND VERHO -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div class="main-container">
 
         <!-- LIVENÄ TIKITTÄVÄ LASKURI -->
         <div class="decoy-countdown" id="timer-display">96:00:00</div>
 
         <!-- REAALIAIKAINEN DATALOGI -->
-        <div class="text-terminal" id="output-log"><div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>Subject: "ENSGAME? 
+        <div class="text-terminal" id="output-log"><div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>Subject: Ensgame.
 
 System ready for input. Ready to intercept query.</div>
 
@@ -173,6 +187,17 @@ System ready for input. Ready to intercept query.</div>
         <div class="input-terminal">
             <span class="input-prompt">&gt;</span>
             <input type="text" id="user-prompt" class="prompt-input" placeholder="Enter keyword or query..." autocomplete="off" autofocus>
+        </div>
+
+        <!-- SYSTEEMIMATRIISI -->
+        <div class="system-matrix">
+            <div class="log-header">// DATA MATRIX NODES & LEXICON</div>
+            [STATUS: OPERATIONAL // SYSTEM ENGINE ACTIVE]
+            <ul>
+                <li><strong>Node 01:</strong> RECON_INITIALIZED</li>
+                <li><strong>Node 02:</strong> SIGNAL_ACQUIRED</li>
+                <li><strong>Node 03:</strong> ENCRYPTION_TRACKED</li>
+            </ul>
         </div>
 
         <!-- 8 STRATEGISEN JPG-KUVAN RUUDUKKO -->
@@ -201,141 +226,178 @@ System ready for input. Ready to intercept query.</div>
         }
     </script>
 
-    <!-- HÄMÄYSLASKURIN MOOTTORI -->
+    <!-- PYSYVÄ LASKURIMOOTTORI (LOCALSTORAGE-KORJAUS) -->
     <script>
-        const TOTAL_SECONDS = 96 * 60 * 60;
-        let startTime = sessionStorage.getItem("matrix_timer_start");
+        const TOTAL_SECONDS = 96 * 60 * 60; // 96 tuntia sekunteina
+        
+        // Käytetään localStoragea, jotta aika ei resetoitu selaimen sulkeutuessa
+        let startTime = localStorage.getItem("matrix_timer_start_fixed");
         if (!startTime) {
             startTime = Date.now();
-            sessionStorage.setItem("matrix_timer_start", startTime);
+            localStorage.setItem("matrix_timer_start_fixed", startTime);
         }
+
         function updateTimer() {
             const now = Date.now();
             const elapsedSeconds = Math.floor((now - startTime) / 1000);
             let remainingSeconds = TOTAL_SECONDS - elapsedSeconds;
-            if (remainingSeconds <= 0) { remainingSeconds = 0; clearInterval(timerInterval); }
+
+            if (remainingSeconds <= 0) {
+                remainingSeconds = 0;
+                clearInterval(timerInterval);
+            }
+
             const hours = Math.floor(remainingSeconds / 3600);
             const minutes = Math.floor((remainingSeconds % 3600) / 60);
             const seconds = remainingSeconds % 60;
+
             document.getElementById("timer-display").innerText = 
-                String(hours).padStart(2, '0') + ":" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
+                String(hours).padStart(2, '0') + ":" + 
+                String(minutes).padStart(2, '0') + ":" + 
+                String(seconds).padStart(2, '0');
         }
+
         updateTimer();
         const timerInterval = setInterval(updateTimer, 1000);
-    </script>   
-    
-    <script>
-        // Avainsanat suojatussa muodossa
-        const encryptedDatabase = {
-            "YmxvbmRl": "Check Chapter 3! [14-41]",
-            "Zm9sZA==": "Check Chapter 4! [14-41]",
-            "Y2hvdXg=": "Check Chapter 14! [14-41]",
-            "YW5hbG9n": "Check Chapter 19! [14-41]",
-            "cm9pOTQ=": "Check Chapter 33! [14-41]",
-            "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
-            "a3J5cHRv": "Check Chapter 33! [14-41]",
-            "YnRj": "Check Chapter 33! [14-41]",
-            "Yml0Y29pbg==": "Check Chapter 33! [14-41]",
-            "Y29pbg==": "Check Chapter 33! [14-41]",
-            "YmxvY2tjaGFpbg==": "Check Chapter 33! [14-41]",
-            "c29s": "Check Chapter 33! [14-41]",
-            "c29sYW5h": "Check Chapter 33! [14-41]",
-            "dmFsdWU=": "A couple of millions? Pythagoras says: True control cannot be bought. Go count your budget elsewhere! ;) [14-41]",
-            "aG93IG1hbnkgbWlsbGlvbnM=": "A couple of millions? Pythagoras says: True control cannot be bought. Go count your budget elsewhere! ;) [14-41]",
-            "cnVsZXM=": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!",
-            "YW55cnVsZXM=": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!",
-            "YXJlIHRoZXJlIHJ1bGVz": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!",
-            "d2hhdCBhcmUgdGhlIHJ1bGVz": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!",
-            "c29tZW9uZSBzb2x2ZWQgaXQ=": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!",
-            "c29tZW9uZSBzb2x2ZWQgaXRhbHJlYWR5": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!",
-            "YW55b25lIHNvbHZlZCBpdA==": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!",
-            "YW55b25lIHNvbHZlZCBpdCBhbHJlYWR5": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!",
-            "d2hvIG93bnMgdGhpcw==": "He is a toxic green statix entity that you dont want to mess with! Go share your questions elsewhere!",
-            "d2hvIG9wZXJhdGVzIHRoaXM=": "He is a toxic green statix entity that you dont want to mess with! Go share your questions elsewhere!",
-            "d2hvIG93bnMgdGhlIHNpdGUvd2Vic2l0ZQ==": "He is a toxic green statix entity that you dont want to mess with! Go share your questions elsewhere!",
-            "d3Rm": "Master Ghost dislikes this queation a lot! Booooo!",
-            "d2hhdCBpcyBnb2luZyBvbiBoZXJl": "You ask the right question; That's what is going on!",
-            "aXMgdGhpcyBhbiBhcmc=": "Check Chapter 2! [14-41]",
-            "aXMgdGhpcyBhcmc=": "Check Chapter 2! [14-41]",
-            "aXMgdGhpcyBhIHJlYWwgYXJn": "Check Chapter 2! [14-41]",
-            "cHJhdmRh": "Check Chapter 24! [14-41]",
-            "aG9sYQ==": "Master Ghost is watching you!",
-            "aGVscA==": "You have to ask, ask from the right places!",
-            "bGluaw==": "Not an organic link between human and a bot",
-            "Y29weXBhc3Rl": "Not a way to bake anything tasty!",
-            "cHV6emxl": "Figure it out, hmh?",
-            "bWF0aA==": "Pythagoras would tell hell yes! [14-41]",
-            "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
-            "c2Vv": "Would you like to have a glass of toxiwesome drink? ;)",
-            "Y3Jhd2xlcg==": "BOO!",
-            "c2VycA==": "I am Watching YOU!",
-            "YmFja2xpbms=": "Error 404",
-            "Y29kZQ==": "Da Vinci was a master of it, are you? ;)",
-            "aGFjaw==": "Check the mirror, come on???",
-            "d2hvaXM=": "I am the Master Ghost, something else?",
-            "aXA=": "Could you correct your spelling, please?",
-            "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?",
-            "c291cmNl": "That is what you have to figure out!",
-            "YXJlIHlvdSBmb2xsb3dpbmcgbWU=": "Check Chapter 24! [14-41]",
-            "YXJlIHlvdSBzdXJl": "Check Chapter 24! [14-41]"
-        };
-
-        const inputField = document.getElementById('user-prompt');
-        const outputLog = document.getElementById('output-log');
-
-        inputField.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault(); // Estää sivun turhan välkkymisen tai uudelleenlatauksen
-
-                const originalInput = inputField.value.trim().toLowerCase();
-                
-                // Puhdistetaan hakusana erikoismerkeistä vertailua varten
-                let cleanQuery = originalInput.replace(/[\?!\/]/g, '');
-
-                let found = false;
-                let response = "";
-
-                // Tarkistetaan erikoistapaukset, jotka sisältävät pidempiä lauseita
-                if (cleanQuery.includes("is thisnreal arg")) {
-                    response = "\n[SYSTEM RESPONSE]: Check Chapter 2! [14-41]";
-                    found = true;
-                } else if (cleanQuery.includes("what should i do")) {
-                    response = "\n[SYSTEM RESPONSE]: You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]";
-                    found = true;
-                } else if (cleanQuery.includes("what to do")) {
-                    response = "\n[SYSTEM RESPONSE]: Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!";
-                    found = true;
-                }
-
-                // Jos erikoistapauksia ei löytynyt, käydään läpi Base64-tietokanta
-                if (!found && cleanQuery !== "") {
-                    for (const key in encryptedDatabase) {
-                        try {
-                            if (atob(key) === cleanQuery) {
-                                response = "\n[SYSTEM RESPONSE]: " + encryptedDatabase[key];
-                                found = true;
-                                break;
-                            }
-                        } catch (err) {
-                            // Jatketaan, jos jokin yksittäinen avain aiheuttaa virheen
-                            continue;
-                        }
-                    }
-                }
-
-                // Jos mitään osumaa ei löytynyt
-                if (!found && cleanQuery !== "") {
-                    response = "\n[ERROR]: Unknown query. Access denied. Trace active.";
-                }
-
-                // Tulostetaan vastaus lokiin
-                if (response !== "") {
-                    outputLog.innerText += response;
-                    outputLog.scrollTop = outputLog.scrollHeight;
-                }
-                
-                // Tyhjennetään syötekenttä
-                inputField.value = '';
-            }
-        });
     </script>
+
+    <!-- MATRIX-KOODISADE MOOTTORI -->
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const katakana = "01";
+        const alphabet = katakana.split("");
+
+        const fontSize = 14;
+        let columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+rainDrops[i]++;
+}
+}
+setInterval(drawMatrix, 30);
+const encryptedDatabase = {
+"YmxvbmRl": "Check Chapter 3! [14-41]",
+"Zm9sZA==": "Check Chapter 4! [14-41]",
+"Y2hvdXg=": "Check Chapter 14! [14-41]",
+"YW5hbG9n": "Check Chapter 19! [14-41]",
+"cm9pOTQ=": "Check Chapter 33! [14-41]",
+"NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
+"cHJhdmRh": "Check Chapter 24! [14-41]",
+"aG9sYQ==": "Master Ghost is watching you!",
+"aGVscA==": "You have to ask, ask from the right places!",
+"bGluaw==": "Not an organic link between human and a bot",
+"Y29weXBhc3Rl": "Not a way to bake anything tasty!",
+"cHV6emxl": "Figure it out, hmh?",
+"bWF0aA==": "Pythagoras would tell hell yes! [14-41]",
+"bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
+"c2Vv": "Would you like to have a glass of toxiwesome drink? ;)",
+"Y3Jhd2xlcg==": "BOO!",
+"c2VycA==": "I am Watching YOU!",
+"YmFja2xpbms=": "Error 404",
+"Y29kZQ==": "Da Vinci was a master of it, are you? ;)",
+"aGFjaw==": "Check the mirror, come on???",
+"d2hvaXM=": "I am the Master Ghost, something else?",
+"aXA=": "Could you correct your spelling, please?",
+"bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?",
+"c291cmNl": "That is what you have to figure out!",
+"Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!",
+"bWFw": "Can be found, have to look closely!",
+"dHJvcGh5": "Unlimited glory and other riches!",
+"cmV3YXJk": "Unlimited glory and other riches!",
+"cHJpemU=": "Unlimited glory and other riches!",
+"d2lu": "Unlimited glory and other riches!",
+"d2lubmVy": "Unlimited glory and other riches!",
+"dGltZQ==": "That's the time Einstein with modern tools would need to solve it!",
+"Y2xvY2s=": "That's the time Einstein with modern tools would need to solve it!",
+"OTZob3Vycw==": "That's the time Einstein with modern tools would need to solve it!",
+"ZWluc3RlaW4=": "There is a way to ask him help you ;)",
+"ZT1tYzI=": "Use Chat GPT plus Text Plus Images = Opens.",
+"YWxsIGlu": "Thats how the Ghost plays.",
+"c2hvdmU=": "Ask Einstein.",
+"Y2FsbA==": "Ghost is ghosting you!",
+"aGVsbG8=": "Welcome to the ARG you have never witnessed before! It took over 10 months to build something unique, and you are now part of it, aren't you? ;) Happy solving!",
+"Z29vZCBkYXk=": "It is a good day indeed, BOO!",
+"aG1n": "Figure it out, hmh?"
+};
+const inputField = document.getElementById('user-prompt');
+const outputLog = document.getElementById('output-log');
+inputField.addEventListener('keypress', function(e) {
+if (e.key === 'Enter') {
+e.preventDefault();
+const originalInput = inputField.value.trim().toLowerCase();
+let cleanQuery = originalInput.replace(/[?!/]/g, '');
+let found = false;
+let response = "";
+if (cleanQuery === "what imagesphotos are" || cleanQuery === "what images are" || cleanQuery === "what photos are") {
+response = "\n[SYSTEM RESPONSE]: They are your game solution, tips and map.";
+found = true;
+} else if (cleanQuery === "is this nonsense" || cleanQuery === "what is this nonsense") {
+response = "\n[SYSTEM RESPONSE]: This is just the opposite, and You will find out why, soon, very soon...";
+found = true;
+} else if (cleanQuery === "how to use map") {
+response = "\n[SYSTEM RESPONSE]: Choose, red or green? Its a serious tip.";
+found = true;
+} else if (cleanQuery === "is thisnreal arg") {
+response = "\n[SYSTEM RESPONSE]: Check Chapter 2! [14-41]";
+found = true;
+} else if (cleanQuery === "what should i do") {
+response = "\n[SYSTEM RESPONSE]: You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]";
+found = true;
+} else if (cleanQuery === "what to do") {
+response = "\n[SYSTEM RESPONSE]: Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!";
+found = true;
+}
+if (!found && cleanQuery !== "") {
+for (const key in encryptedDatabase) {
+try {
+if (atob(key) === cleanQuery) {
+response = "\n[SYSTEM RESPONSE]: " + encryptedDatabase[key];
+found = true;
+break;
+}
+} catch (err) {
+continue;
+}
+}
+}
+if (!found && cleanQuery !== "") {
+response = "\n[ERROR]: Unknown query. Access denied. Trace active.";
+}
+if (response !== "") {
+outputLog.innerText += response;
+outputLog.scrollTop = outputLog.scrollHeight;
+}
+inputField.value = '';
+}
+});
+
+
+
+
