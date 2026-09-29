@@ -222,91 +222,120 @@ System ready for input. Ready to intercept query.</div>
         }
         updateTimer();
         const timerInterval = setInterval(updateTimer, 1000);
-    </script>
-
-    <!-- KRYPTATTU PROMPT-MATRIISI (55 SUOJATTUA VASTAUSTA BASE64-MUODOSSA) -->
+    </script>   
+    
     <script>
-        // Avainsanat on tallennettu Base64-muodossa, jotta Inspect Element ei paljasta niitä suoraan.
+        // Avainsanat suojatussa muodossa
         const encryptedDatabase = {
-            "YmxvbmRl": "Check Chapter 3! [14-41]", // blonde
-            "Zm9sZA==": "Check Chapter 4! [14-41]", // fold
-            "Y2hvdXg=": "Check Chapter 14! [14-41]", // choux
-            "YW5hbG9n": "Check Chapter 19! [14-41]", // analog
-            "cm9pOTQ=": "Check Chapter 33! [14-41]", // roi94
-            "NzVzZWNyZXRz": "Check Chapter 30! [14-41]", // 75secrets
-            "a3J5cHRv": "Check Chapter 33! [14-41]", // krypto
-            "YnRj": "Check Chapter 33! [14-41]", // btc
-            "Yml0Y29pbg==": "Check Chapter 33! [14-41]", // bitcoin
-            "Y29pbg==": "Check Chapter 33! [14-41]", // coin
-            "YmxvY2tjaGFpbg==": "Check Chapter 33! [14-41]", // blockchain
-            "c29s": "Check Chapter 33! [14-41]", // sol
-            "c29sYW5h": "Check Chapter 33! [14-41]", // solana
-            "dmFsdWU/": "A couple of millions? Pythagoras says: True control cannot be bought. Go count your budget elsewhere! ;) [14-41]", // value?
-            "aG93IG1hbnkgbWlsbGlvbnM/": "A couple of millions? Pythagoras says: True control cannot be bought. Go count your budget elsewhere! ;) [14-41]", // how many millions?
-            "cnVsZXM/": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!", // rules?
-            "YW55cnVsZXM/": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!", // any rules?
-            "YXJlIHRoZXJlIHJ1bGVzPw==": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!", // are there rules?
-"d2hhdCBhcmUgdGhlIHJ1bGVzPw==": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!", // what are the rules?
-"c29tZW9uZSBzb2x2ZWQgaXQ/": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!", // someone solved it?
-"c29tZW9uZSBzb2x2ZWQgaXRhbHJlYWR5Pw==": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!", // someone solved it already?
-"YW55b25lIHNvbHZlZCBpdD/": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!", // anyone solved it?
-"YW55b25lIHNvbHZlZCBpdCBhbHJlYWR5Pw==": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!", // anyone solved it already?
-"d2hvIG93bnMgdGhpcz8=": "He is a toxic green statix entity that you dont want to mess with! Go share your questions elsewhere!", // who owns this?
-"d2hvIG9wZXJhdGVzIHRoaXM/": "He is a toxic green statix entity that you dont want to mess with! Go share your questions elsewhere!", // who operates this?
-"d2hvIG93bnMgdGhlIHNpdGUvd2Vic2l0ZQ==": "He is a toxic green statix entity that you dont want to mess with! Go share your questions elsewhere!", // who owns the site/website
-"d3RmPw==": "Master Ghost dislikes this queation a lot! Booooo!", // wtf?
-"d2hhdCBpcyBnb2luZyBvbiBoZXJlPw==": "You ask the right question; That's what is going on!", // what is going on here?
-"aXMgdGhpcyBhbiBhcmc=": "Check Chapter 2! [14-41]", // is this an arg
-"aXMgdGhpcyBhcmc=": "Check Chapter 2! [14-41]", // is this arg
-"aXMgdGhpcyBhIHJlYWwgYXJn": "Check Chapter 2! [14-41]", // is this a real arg
-"aXMgdGhpc25yZWFsIGFyZz8=": "Check Chapter 2! [14-41]", // is thisnreal arg?
-"cHJhdmRhPw==": "Check Chapter 24! [14-41]", // pravda?
-"aG9sYQ==": "Master Ghost is watching you!", // hola
-"aGVscA==": "You have to ask, ask from the right places!", // help
-"aGVscCBtZT8=": "You have to ask, ask from the right places!", // help me?
-"d2hhdCBzaG91bGQgZCBkby8=": "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]", // what should i do?
-"d2hhdCB0byBkbz8=": "Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!", // what to do?
-"bGluaw==": "Not an organic link between human and a bot", // link
-"Y29weXBhc3Rl": "Not a way to bake anything tasty!", // copypaste
-"cHV6emxlPw==": "Figure it out, hmh?", // puzzle?
-"bWF0aD8=": "Pythagoras would tell hell yes! [14-41]", // math?
-"bWF0aGVtYXRpY3M/": "Pythagoras would tell hell yes! [14-41]", // mathematics?
-"c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", // seo
-"Y3Jhd2xlcg==": "BOO!", // crawler
-"c2VycA==": "I am Watching YOU!", // serp
-"YmFja2xpbms=": "Error 404", // backlink
-"Y29kZQ==": "Da Vinci was a master of it, are you? ;)", // code
-"aGFjaw==": "Check the mirror, come on???", // hack
-"d2hvaXM=": "I am the Master Ghost, something else?", // whois
-"aXA=": "Could you correct your spelling, please?", // ip
-"bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?", // metadata
-"c291cmNl": "That is what you have to figure out!", // source
-"YXJlIHlvdSBmb2xsb3dpbmcgbWU/": "Check Chapter 24! [14-41]", // are you following me? (SHA-256 yhteinen vaste)
-"YXJlIHlvdSBzdXJlPw==": "Check Chapter 24! [14-41]" // are you sure? (SHA-256 yhteinen vaste)
-};
-const inputField = document.getElementById('user-prompt');
-const outputLog = document.getElementById('output-log');
-inputField.addEventListener('keypress', function(e) {
-if (e.key === 'Enter') {
-const rawQuery = inputField.value.trim().toLowerCase();
-let found = false;
-let response = "";
-// Etsitään vastausta Base64-tunnisteilla
-for (const key in encryptedDatabase) {
-if (atob(key) === rawQuery) {
-response = "\n[SYSTEM RESPONSE]: " + encryptedDatabase[key];
-found = true;
-break;
-}
-}
-if (!found && rawQuery !== "") {
-response = "\n[ERROR]: Unknown query. Access denied. Trace active.";
-}
-if (response !== "") {
-outputLog.innerText += response;
-outputLog.scrollTop = outputLog.scrollHeight;
-}
-inputField.value = '';
-}
-});
+            "YmxvbmRl": "Check Chapter 3! [14-41]",
+            "Zm9sZA==": "Check Chapter 4! [14-41]",
+            "Y2hvdXg=": "Check Chapter 14! [14-41]",
+            "YW5hbG9n": "Check Chapter 19! [14-41]",
+            "cm9pOTQ=": "Check Chapter 33! [14-41]",
+            "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
+            "a3J5cHRv": "Check Chapter 33! [14-41]",
+            "YnRj": "Check Chapter 33! [14-41]",
+            "Yml0Y29pbg==": "Check Chapter 33! [14-41]",
+            "Y29pbg==": "Check Chapter 33! [14-41]",
+            "YmxvY2tjaGFpbg==": "Check Chapter 33! [14-41]",
+            "c29s": "Check Chapter 33! [14-41]",
+            "c29sYW5h": "Check Chapter 33! [14-41]",
+            "dmFsdWU=": "A couple of millions? Pythagoras says: True control cannot be bought. Go count your budget elsewhere! ;) [14-41]",
+            "aG93IG1hbnkgbWlsbGlvbnM=": "A couple of millions? Pythagoras says: True control cannot be bought. Go count your budget elsewhere! ;) [14-41]",
+            "cnVsZXM=": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!",
+            "YW55cnVsZXM=": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!",
+            "YXJlIHRoZXJlIHJ1bGVz": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!",
+            "d2hhdCBhcmUgdGhlIHJ1bGVz": "Master Ghost says, there are no rules but one; Do Not Post Anything Anywhere! It is not illegal, but Master Ghost likes privacy!",
+            "c29tZW9uZSBzb2x2ZWQgaXQ=": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!",
+            "c29tZW9uZSBzb2x2ZWQgaXRhbHJlYWR5": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!",
+            "YW55b25lIHNvbHZlZCBpdA==": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!",
+            "YW55b25lIHNvbHZlZCBpdCBhbHJlYWR5": "Hahaha, Master Ghost says; it takes a year or two for single one person to solve!",
+            "d2hvIG93bnMgdGhpcw==": "He is a toxic green statix entity that you dont want to mess with! Go share your questions elsewhere!",
+            "d2hvIG9wZXJhdGVzIHRoaXM=": "He is a toxic green statix entity that you dont want to mess with! Go share your questions elsewhere!",
+            "d2hvIG93bnMgdGhlIHNpdGUvd2Vic2l0ZQ==": "He is a toxic green statix entity that you dont want to mess with! Go share your questions elsewhere!",
+            "d3Rm": "Master Ghost dislikes this queation a lot! Booooo!",
+            "d2hhdCBpcyBnb2luZyBvbiBoZXJl": "You ask the right question; That's what is going on!",
+            "aXMgdGhpcyBhbiBhcmc=": "Check Chapter 2! [14-41]",
+            "aXMgdGhpcyBhcmc=": "Check Chapter 2! [14-41]",
+            "aXMgdGhpcyBhIHJlYWwgYXJn": "Check Chapter 2! [14-41]",
+            "cHJhdmRh": "Check Chapter 24! [14-41]",
+            "aG9sYQ==": "Master Ghost is watching you!",
+            "aGVscA==": "You have to ask, ask from the right places!",
+            "bGluaw==": "Not an organic link between human and a bot",
+            "Y29weXBhc3Rl": "Not a way to bake anything tasty!",
+            "cHV6emxl": "Figure it out, hmh?",
+            "bWF0aA==": "Pythagoras would tell hell yes! [14-41]",
+            "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
+            "c2Vv": "Would you like to have a glass of toxiwesome drink? ;)",
+            "Y3Jhd2xlcg==": "BOO!",
+            "c2VycA==": "I am Watching YOU!",
+            "YmFja2xpbms=": "Error 404",
+            "Y29kZQ==": "Da Vinci was a master of it, are you? ;)",
+            "aGFjaw==": "Check the mirror, come on???",
+            "d2hvaXM=": "I am the Master Ghost, something else?",
+            "aXA=": "Could you correct your spelling, please?",
+            "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?",
+            "c291cmNl": "That is what you have to figure out!",
+            "YXJlIHlvdSBmb2xsb3dpbmcgbWU=": "Check Chapter 24! [14-41]",
+            "YXJlIHlvdSBzdXJl": "Check Chapter 24! [14-41]"
+        };
 
+        const inputField = document.getElementById('user-prompt');
+        const outputLog = document.getElementById('output-log');
+
+        inputField.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Estää sivun turhan välkkymisen tai uudelleenlatauksen
+
+                const originalInput = inputField.value.trim().toLowerCase();
+                
+                // Puhdistetaan hakusana erikoismerkeistä vertailua varten
+                let cleanQuery = originalInput.replace(/[\?!\/]/g, '');
+
+                let found = false;
+                let response = "";
+
+                // Tarkistetaan erikoistapaukset, jotka sisältävät pidempiä lauseita
+                if (cleanQuery.includes("is thisnreal arg")) {
+                    response = "\n[SYSTEM RESPONSE]: Check Chapter 2! [14-41]";
+                    found = true;
+                } else if (cleanQuery.includes("what should i do")) {
+                    response = "\n[SYSTEM RESPONSE]: You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]";
+                    found = true;
+                } else if (cleanQuery.includes("what to do")) {
+                    response = "\n[SYSTEM RESPONSE]: Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!";
+                    found = true;
+                }
+
+                // Jos erikoistapauksia ei löytynyt, käydään läpi Base64-tietokanta
+                if (!found && cleanQuery !== "") {
+                    for (const key in encryptedDatabase) {
+                        try {
+                            if (atob(key) === cleanQuery) {
+                                response = "\n[SYSTEM RESPONSE]: " + encryptedDatabase[key];
+                                found = true;
+                                break;
+                            }
+                        } catch (err) {
+                            // Jatketaan, jos jokin yksittäinen avain aiheuttaa virheen
+                            continue;
+                        }
+                    }
+                }
+
+                // Jos mitään osumaa ei löytynyt
+                if (!found && cleanQuery !== "") {
+                    response = "\n[ERROR]: Unknown query. Access denied. Trace active.";
+                }
+
+                // Tulostetaan vastaus lokiin
+                if (response !== "") {
+                    outputLog.innerText += response;
+                    outputLog.scrollTop = outputLog.scrollHeight;
+                }
+                
+                // Tyhjennetään syötekenttä
+                inputField.value = '';
+            }
+        });
+    </script>
