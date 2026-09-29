@@ -1,1 +1,401 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE VAULT // GHOSTARY SYSTEM</title>
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: #39FF14;
+            font-family: monospace;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+        .ui-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .spacer {
+            height: 5vh;
+            width: 100%;
+        }
+        .spiral-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .spiral-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            animation: rotateSpiral 10s linear infinite;
+        }
+        @keyframes rotateSpiral {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .system-clock {
+            position: relative;
+            z-index: 3;
+            font-size: 1.8rem;
+            color: #FFFFFF;
+            text-shadow: 0 0 10px #39FF14, 0 0 20px #39FF14;
+            letter-spacing: 3px;
+            font-weight: bold;
+        }
+        .center-panel {
+            background: rgba(0,0,0,0.85);
+            padding: 20px;
+            border: 1px solid rgba(57,255,20,0.3);
+            max-width: 440px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            transition: border-color 0.5s ease;
+        }
+        .user-tag {
+            font-size: 0.75rem;
+            color: #00FFD8;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(57,255,20,0.2);
+            padding-bottom: 8px;
+        }
+        .chapters-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 15px;
+        }
+        .card-perspective {
+            perspective: 1000px;
+            width: 100%;
+            height: 140px;
+            cursor: pointer;
+        }
+        .card-flipper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .card-perspective.flipped .card-flipper {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border: 1px solid rgba(57,255,20,0.25);
+            box-sizing: border-box;
+            transition: border-color 0.5s ease;
+        }
+        .card-front {
+            background: rgba(5,5,5,0.8);
+            display: flex;
+            flex-direction: column;
+        }
+        .chapter-thumb {
+            width: 100%;
+            height: 105px;
+            background-size: cover;
+            background-position: center;
+            background-color: #111;
+        }
+        .chapter-meta {
+            padding: 6px 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            text-align: left;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.9);
+        }
+        .card-back {
+            background: rgba(0, 15, 0, 0.95);
+            color: #FFF;
+            transform: rotateY(180deg);
+            padding: 12px;
+            font-size: 0.75rem;
+            text-align: left;
+            overflow-y: auto;
+            border-color: #39FF14;
+            box-shadow: inset 0 0 10px rgba(57,255,20,0.3);
+            line-height: 1.4;
+        }
+        .chat-terminal {
+            margin-top: 20px;
+            border-top: 1px solid rgba(57,255,20,0.3);
+            padding-top: 15px;
+            text-align: left;
+            transition: border-color 0.5s ease;
+        }
+        .chat-logs {
+            height: 140px;
+            overflow-y: auto;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
+            background: rgba(0,0,0,0.8);
+            padding: 8px;
+            border: 1px solid rgba(57,255,20,0.15);
+            line-height: 1.4;
+            transition: border-color 0.5s ease;
+        }
+        .chat-input-row input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #39FF14;
+            color: #FFF;
+            padding: 8px;
+            font-family: monospace;
+            box-sizing: border-box;
+            transition: border-color 0.5s ease;
+        }
+        .chat-input-row input:focus {
+            outline: none;
+            box-shadow: 0 0 8px #39FF14;
+        }
+        .telemetry-box {
+            margin-top: 20px;
+            border-top: 1px dashed rgba(57,255,20,0.3);
+            padding-top: 15px;
+            text-align: left;
+            font-size: 0.7rem;
+            color: #a2ffa2;
+            line-height: 1.4;
+            transition: border-color 0.5s ease;
+        }
+        .bottom-panel {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 80px;
+            border: 1px dashed rgba(57,255,20,0.3);
+            padding: 10px;
+            box-sizing: border-box;
+            background: rgba(0,10,0,0.8);
+            transition: border-color 0.5s ease;
+        }
+        .laser-flash {
+            animation: flashAnimation 0.5s ease-out;
+        }
+        @keyframes flashAnimation {
+            0% { background: rgba(0, 255, 0, 0.5); }
+            100% { background: rgba(0, 0, 0, 0.85); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="ui-container">
+        <div class="spacer"></div>
+        
+        <!-- Vihreä spiraali ja kello -->
+        <div class="spiral-container">
+            <svg class="spiral-svg" viewBox="0 0 200 200">
+                <path d="M100,100 C110,90 110,70 95,65 C70,55 50,90 60,115 C75,150 130,150 150,115 C175,70 140,20 90,25 C30,30 10,100 35,150 C65,210 170,210 190,135" 
+                      fill="none" stroke="#39FF14" stroke-width="3" stroke-linecap="round" opacity="0.85" filter="drop-shadow(0px 0px 5px #39FF14)"/>
+            </svg>
+            <div class="system-clock" id="systemClock">96:00:00</div>
+        </div>
+        
+        <div class="center-panel" id="centerPanel">
+            <div class="user-tag" id="userTag">ID: COINING_PROFIT</div>
+
+            <div class="chapters-container">
+                <!-- CHAPTER I -->
+                <div class="card-perspective" onclick="this.classList.toggle('flipped')">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <div class="chapter-thumb" style="background-image:url('POPcorn.jpg');"></div>
+                            <div class="chapter-meta">Chapter I // The Synthetic Network</div>
+                        </div>
+                        <div class="card-back">
+                            Time to get popcorns now and enjoy the multiple art combining a movie, theatre, a music concert and a couple shades of a museum as well as trueblooded presentation of textgasm...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAPTER II -->
+                <div class="card-perspective" onclick="this.classList.toggle('flipped')">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <div class="chapter-thumb" style="background-image:url('Library.jpg');"></div>
+                            <div class="chapter-meta">Chapter II // Digital Museum</div>
+                        </div>
+                        <div class="card-back">
+                            [DATA] Digital Library indexes verified. Core indices archived. Cryptographic node configuration sequence operational.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAPTER III -->
+                <div class="card-perspective" onclick="this.classList.toggle('flipped')">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <div class="chapter-thumb" style="background-image:url('Einstein.jpg');"></div>
+                            <div class="chapter-meta">Chapter III // Einstein Telemetry Matrix</div>
+                        </div>
+                        <div class="card-back">
+                            [ENCRYPTED] Telemetry data active. Symmetrical wave density functions are monitoring node parameters.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAPTER IV -->
+                <div class="card-perspective" onclick="this.classList.toggle('flipped')">
+                    <div class="card-flipper">
+                        <div class="card-front">
+                            <div class="chapter-thumb" style="background-image:url('Shovel.jpg');"></div>
+Chapter IV // The Shovel Investigation
+
+
+[INVESTIGATION DATA] Ground excavation vectors mapped. Sub-surface anomalies confirmed. Structural ledger validation running.
+
+
+
+// SYSTEM ENGINE TELEMETRY
+
+201-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories.
+[SYSTEM DETECTED: KEY DECRYPTED]
+
+
+// Matrix-sade
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+const columns = Math.floor(width / 20) + 1;
+const yPositions = Array.from({ length: columns }).fill(0);
+function matrix() {
+ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+ctx.fillRect(0, 0, width, height);
+ctx.fillStyle = '#39FF14';
+ctx.font = '15pt monospace';
+yPositions.forEach((y, index) => {
+const text = String.fromCharCode(Math.floor(Math.random() * 128));
+const x = index * 20;
+ctx.fillText(text, x, y);
+if (y > 100 + Math.random() * 10000) yPositions[index] = 0;
+else yPositions[index] = y + 20;
+});
+}
+setInterval(matrix, 50);
+window.addEventListener('resize', () => {
+width = canvas.width = window.innerWidth;
+height = canvas.height = window.innerHeight;
+});
+// 96 tunnin kello
+let totalSeconds = 96 * 3600;
+const clockElement = document.getElementById('systemClock');
+function updateClock() {
+if (totalSeconds > 0) totalSeconds--;
+const hrs = Math.floor(totalSeconds / 3600);
+const mins = Math.floor((totalSeconds % 3600) / 60);
+const secs = totalSeconds % 60;
+clockElement.innerText =
+String(hrs).padStart(2, '0') + ':' +
+String(mins).padStart(2, '0') + ':' +
+String(secs).padStart(2, '0');
+}
+setInterval(updateClock, 1000);
+// Chatin koodilogiikka
+const inputField = document.getElementById('inputField');
+const dataBox = document.getElementById('dataBox');
+const chatLogs = document.getElementById('chatLogs');
+const centerPanel = document.getElementById('centerPanel');
+const TRIGGER_WORDS = ["SALASANA", "AVAIN", "KOODI"];
+const myGhostID = "COINING_PROFIT";
+function appendToChat(sender, message, isSystem = false) {
+const msg = document.createElement('div');
+msg.style.marginBottom = '4px';
+msg.style.color = isSystem ? '#FF3B30' : '#39FF14';
+msg.innerText = [${sender}]: ${message};
+chatLogs.appendChild(msg);
+chatLogs.scrollTop = chatLogs.scrollHeight;
+}
+appendToChat('SYSTEM', 'GHOSTARY TERMINAL ONLINE.', true);
+inputField.addEventListener('keydown', function(e) {
+if (e.key === 'Enter') {
+const rawInput = inputField.value;
+const cleanInput = rawInput.toUpperCase().trim();
+if (!cleanInput) return;
+if (cleanInput === "CHEMISTRY") {
+appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...", true);
+setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers.", true); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret.", true); }, 1800);
+inputField.value = '';
+return;
+}
+if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || cleanInput === "QUEEN" || cleanInput.includes("COORDINATES")) {
+appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...", true);
+setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified.", true); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously.", true); }, 1800);
+inputField.value = '';
+return;
+}
+if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {
+appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...", true);
+setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters.", true); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation.", true); }, 1800);
+inputField.value = '';
+return;
+}
+if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {
+appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.", true);
+setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously.", true); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens.", true); }, 1800);
+setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10.", true); }, 2800);
+inputField.value = '';
+return;
+}
+let isMatch = TRIGGER_WORDS.some(word => cleanInput.includes(word));
+if (cleanInput.includes("TIME TO GET POPCORNS")) isMatch = true;
+if (isMatch) {
+dataBox.style.display = 'block';
+centerPanel.classList.add('laser-flash');
+setTimeout(() => { centerPanel.classList.remove('laser-flash'); }, 500);
+appendToChat('SYSTEM', "UNSEALED CORE KEY!", true);
+inputField.value = '';
+return;
+}
+appendToChat(myGhostID, rawInput);
+inputField.value = '';
+}
+});
+
+
 
