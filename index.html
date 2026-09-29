@@ -30,6 +30,7 @@
             z-index: -1;
             opacity: 0.15;
             pointer-events: none;
+            display: block;
         }
 
         /* SIVUSTON PÄÄSÄILIÖ */
@@ -179,9 +180,7 @@
         <div class="decoy-countdown" id="timer-display">96:00:00</div>
 
         <!-- REAALIAIKAINEN DATALOGI -->
-        <div class="text-terminal" id="output-log"><div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>Subject: Ensgame.
-
-System ready for input. Ready to intercept query.</div>
+        <div class="text-terminal" id="output-log"><div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>Järjestelmä alustettu. Odotetaan syötettä datamatriisin aktivoimiseksi...</div>
 
         <!-- SYÖTEKENTTÄ PROMPTAAMISTA VARTEN -->
         <div class="input-terminal">
@@ -226,7 +225,6 @@ System ready for input. Ready to intercept query.</div>
         }
     </script>
 
-    <!-- MOOTTORIT JA LOGIIKKA -->
     <script>
         // 1. PYSYVÄ LASKURIMOOTTORI
         const TOTAL_SECONDS = 96 * 60 * 60;
@@ -259,7 +257,7 @@ System ready for input. Ready to intercept query.</div>
         updateTimer();
         const timerInterval = setInterval(updateTimer, 1000);
 
-        // 2. MATRIX-KOODISADE MOOTTORI
+        // 2. KANVAS-MATRIX MOOTTORI
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -270,14 +268,13 @@ System ready for input. Ready to intercept query.</div>
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        const katakana = "01";
-        const alphabet = katakana.split("");
+        const alphabet = ["0", "1"];
         const fontSize = 14;
-        let columns = canvas.width / fontSize;
+        let columns = Math.floor(canvas.width / fontSize) + 1;
 
         const rainDrops = [];
         for (let x = 0; x < columns; x++) {
-            rainDrops[x] = 1;
+            rainDrops[x] = Math.random() * -100;
         }
 
         function drawMatrix() {
@@ -299,8 +296,8 @@ System ready for input. Ready to intercept query.</div>
         }
         setInterval(drawMatrix, 30);
 
-        // 3. KRYPTATTU PROMPT-MATRIISI (BASE64)
-const encryptedDatabase = {
+        // 3. PROMPT-VASTAUKSET SUOJATTUNA (BASE64)
+        const encryptedDatabase = {
 "YmxvbmRl": "Check Chapter 3! [14-41]",
 "Zm9sZA==": "Check Chapter 4! [14-41]",
 "Y2hvdXg=": "Check Chapter 14! [14-41]",
@@ -319,7 +316,6 @@ const encryptedDatabase = {
 "Y3Jhd2xlcg==": "BOO!",
 "c2VycA==": "I am Watching YOU!",
 "YmFja2xpbms=": "Error 404",
-"Y2k9bTkyLjc=": "92,7.", // Suojattu cbet? ilman välimerkkejä
 "Y29kZQ==": "Da Vinci was a master of it, are you? ;)",
 "aGFjaw==": "Check the mirror, come on???",
 "d2hvaXM=": "I am the Master Ghost, something else?",
@@ -399,5 +395,3 @@ outputLog.scrollTop = outputLog.scrollHeight;
 inputField.value = '';
 }
 });
-
-
