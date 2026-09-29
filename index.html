@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DATAMATRIX ENGINE // STATUS: OPERATIONAL</title>
     <style>
-        /* GLOBAALI SIVUNOODI JA NOLLAUS - ESTÄÄ MOBIILIN HAJOAMISEN */
+        /* GLOBAALI SIVUNOODI JA NOLLAUS */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -226,11 +226,10 @@ System ready for input. Ready to intercept query.</div>
         }
     </script>
 
-    <!-- PYSYVÄ LASKURIMOOTTORI (LOCALSTORAGE-KORJAUS) -->
+    <!-- MOOTTORIT JA LOGIIKKA -->
     <script>
-        const TOTAL_SECONDS = 96 * 60 * 60; // 96 tuntia sekunteina
-        
-        // Käytetään localStoragea, jotta aika ei resetoitu selaimen sulkeutuessa
+        // 1. PYSYVÄ LASKURIMOOTTORI
+        const TOTAL_SECONDS = 96 * 60 * 60;
         let startTime = localStorage.getItem("matrix_timer_start_fixed");
         if (!startTime) {
             startTime = Date.now();
@@ -259,10 +258,8 @@ System ready for input. Ready to intercept query.</div>
 
         updateTimer();
         const timerInterval = setInterval(updateTimer, 1000);
-    </script>
 
-    <!-- MATRIX-KOODISADE MOOTTORI -->
-    <script>
+        // 2. MATRIX-KOODISADE MOOTTORI
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -275,7 +272,6 @@ System ready for input. Ready to intercept query.</div>
 
         const katakana = "01";
         const alphabet = katakana.split("");
-
         const fontSize = 14;
         let columns = canvas.width / fontSize;
 
@@ -298,10 +294,12 @@ System ready for input. Ready to intercept query.</div>
                 if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                     rainDrops[i] = 0;
                 }
-rainDrops[i]++;
-}
-}
-setInterval(drawMatrix, 30);
+                rainDrops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 30);
+
+        // 3. KRYPTATTU PROMPT-MATRIISI (BASE64)
 const encryptedDatabase = {
 "YmxvbmRl": "Check Chapter 3! [14-41]",
 "Zm9sZA==": "Check Chapter 4! [14-41]",
@@ -321,6 +319,7 @@ const encryptedDatabase = {
 "Y3Jhd2xlcg==": "BOO!",
 "c2VycA==": "I am Watching YOU!",
 "YmFja2xpbms=": "Error 404",
+"Y2k9bTkyLjc=": "92,7.", // Suojattu cbet? ilman välimerkkejä
 "Y29kZQ==": "Da Vinci was a master of it, are you? ;)",
 "aGFjaw==": "Check the mirror, come on???",
 "d2hvaXM=": "I am the Master Ghost, something else?",
@@ -373,6 +372,9 @@ found = true;
 } else if (cleanQuery === "what to do") {
 response = "\n[SYSTEM RESPONSE]: Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!";
 found = true;
+} else if (cleanQuery === "cbet") {
+response = "\n[SYSTEM RESPONSE]: 92,7.";
+found = true;
 }
 if (!found && cleanQuery !== "") {
 for (const key in encryptedDatabase) {
@@ -397,7 +399,5 @@ outputLog.scrollTop = outputLog.scrollHeight;
 inputField.value = '';
 }
 });
-
-
 
 
