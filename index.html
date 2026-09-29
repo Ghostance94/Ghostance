@@ -179,7 +179,7 @@
         <!-- LIVENÄ TIKITTÄVÄ LASKURI -->
         <div class="decoy-countdown" id="timer-display">96:00:00</div>
 
-        <!-- REAALIAIKAINEN DATALOGI – VASTAA NYT KUVIESI SISÄLTÖÄ -->
+        <!-- REAALIAIKAINEN DATALOGI -->
         <div class="text-terminal">
             <div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>
             <div id="output-log-content">INSERT A DECRYPTING KEY!</div>
@@ -202,7 +202,7 @@
             </ul>
         </div>
 
-        <!-- 8 STRATEGISEN JPG-KUVAN RUUDUKKO SIVUSTOSI MUKAISESTI -->
+        <!-- 8 STRATEGISEN JPG-KUVAN RUUDUKKO -->
         <div class="matrix-grid">
             <div class="image-card"><img src="img1.jpg" alt="NODE_01"><span>CHAPTER I</span></div>
             <div class="image-card"><img src="img2.jpg" alt="NODE_02"><span>CHAPTER II</span></div>
@@ -227,61 +227,48 @@
     </script>
 
     <script>
-        // 1. KÄYTTÄJÄKOHTAINEN JA REFRESH-KESTÄVÄ SE KUNNON KELLOMOOTTORI
+        // 1. UUSI VÄLIMUISTIN MURTAVA LASKURIMUUTTUJA (matrix_individual_start_v3)
         const TOTAL_SECONDS = 96 * 60 * 60;
-        let userStartTime = localStorage.getItem("matrix_individual_start");
-        
-        if (!userStartTime) {
+        let userStartTime = null;
+
+        try {
+            // Päivitetty muuttujan nimi pakottaa jokaisen selaimen luomaan tuoreen ajan heti
+            userStartTime = localStorage.getItem("matrix_individual_start_v3");
+            if (!userStartTime) {
+                userStartTime = Date.now();
+                localStorage.setItem("matrix_individual_start_v3", userStartTime);
+            } else {
+                userStartTime = Number(userStartTime);
+            }
+        } catch (e) {
             userStartTime = Date.now();
-            localStorage.setItem("matrix_individual_start", userStartTime);
-        } else {
-            userStartTime = Number(userStartTime);
         }
 
-        const workerCode = `
-            let timerId = null;
-            self.onmessage = function(e) {
-                if (e.data.action === 'start') {
-                    const startTime = e.data.startTime;
-                    const totalSeconds = e.data.totalSeconds;
-                    
-                    if(timerId) clearInterval(timerId);
-                    
-                    function tick() {
-                        const now = Date.now();
-                        const elapsedSeconds = Math.floor((now - startTime) / 1000);
-                        let remainingSeconds = totalSeconds - elapsedSeconds;
-                        if (remainingSeconds < 0) remainingSeconds = 0;
-                        
-                        self.postMessage({ remainingSeconds: remainingSeconds });
-                    }
-                    
-                    tick();
-                    timerId = setInterval(tick, 1000);
-                }
-            };
-        `;
+        const timerDisplay = document.getElementById("timer-display");
 
-        const blob = new Blob([workerCode], { type: 'application/javascript' });
-        const worker = new Worker(URL.createObjectURL(blob));
+        function runTimer() {
+            const now = Date.now();
+            const elapsedSeconds = Math.floor((now - userStartTime) / 1000);
+            let remainingSeconds = TOTAL_SECONDS - elapsedSeconds;
+            
+            if (remainingSeconds < 0) remainingSeconds = 0;
 
-        worker.onmessage = function(e) {
-            const remainingSeconds = e.data.remainingSeconds;
             const hours = Math.floor(remainingSeconds / 3600);
             const minutes = Math.floor((remainingSeconds % 3600) / 60);
             const seconds = remainingSeconds % 60;
 
-            document.getElementById("timer-display").innerText = 
+            timerDisplay.innerText = 
                 String(hours).padStart(2, '0') + ":" + 
                 String(minutes).padStart(2, '0') + ":" + 
                 String(seconds).padStart(2, '0');
                 
             if (remainingSeconds === 0) {
-                document.getElementById("timer-display").style.color = "#ff0000";
+                timerDisplay.style.color = "#ff0000";
             }
-        };
+        }
 
-        worker.postMessage({ action: 'start', startTime: userStartTime, totalSeconds: TOTAL_SECONDS });
+        runTimer();
+        setInterval(runTimer, 1000);
 
         // 2. KANVAS-MATRIX MOOTTORI (VERHO)
         const canvas = document.getElementById('matrix-canvas');
@@ -292,23 +279,25 @@
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-let columns = Math.floor(canvas.width / fontSize) + 1;
-if (rainDrops.length < columns) {
-for (let x = rainDrops.length; x < columns; x++) {
-rainDrops[x] = (Math.random() * -50);
-}
-}
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-function drawMatrix() {
-ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-ctx.fillStyle = '#00ff00';
-ctx.font = fontSize + 'px monospace';
-for (let i = 0; i < rainDrops.length; i++) {
-const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+            canvas.height = window.innerHeight;
+            let columns = Math.floor(canvas.width / fontSize) + 1;
+            if (rainDrops.length < columns) {
+                for (let x = rainDrops.length; x < columns; x++) {
+                    rainDrops[x] = (Math.random() * -50);
+                }
+            }
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
 ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
 if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
 rainDrops[i] = 0;
