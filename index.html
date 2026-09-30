@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fi">
 <head>
@@ -166,7 +165,7 @@
     <canvas id="matrix-canvas"></canvas>
 
     <div class="main-container">
-        <!-- Laskuri -->
+        <!-- Reaalikaikainen kelloelementti -->
         <div class="decoy-countdown" id="timer-display">96:00:00</div>
 
         <!-- Tulostusterminaali -->
@@ -190,14 +189,14 @@
                 <li><strong>Node 02:</strong> SIGNAL_ACQUIRED</li>
                 <li><strong>Node 03:</strong> ENCRYPTION_TRACKED</li>
             </ul>
-        
-<div style="width: 100%; margin-bottom: 25px; border: 1px solid #00ff00; background-color: rgba(5, 5, 5, 0.9); padding: 15px;">
-    <div class="log-header" style="border-bottom: 1px dashed #00ff00; padding-bottom: 8px; margin-bottom: 12px; font-weight: bold; letter-spacing: 1px;">// EXTERNAL DATA STREAMS</div>
-    <script async="async" data-cfasync="false" src="https://profitablecpmnetwork.com"></script>
-    <div id="container-9d7e72a2ce10d4ea3ced0c59a5133c8d11e"></div>
-</div>
+        </div>
 
-            
+        <!-- ADSTERRA NATIIVIBANNERILOHKO -->
+        <div style="width: 100%; margin-bottom: 25px; border: 1px solid #00ff00; background-color: rgba(5, 5, 5, 0.9); padding: 15px;">
+            <div class="log-header" style="border-bottom: 1px dashed #00ff00; padding-bottom: 8px; margin-bottom: 12px; font-weight: bold; letter-spacing: 1px;">// EXTERNAL DATA STREAMS</div>
+            <script async="async" data-cfasync="false" src="https://profitablecpmnetwork.com"></script>
+            <div id="container-9d7e72a2ce10d4ea3ced0c59a5133c8d11e"></div>
+        </div>
 
         <!-- Kuvamatriisi -->
         <div class="matrix-grid">
@@ -213,7 +212,7 @@
     </div>
 
     <script>
-        // Suojaukset (estetään hiiren oikea painike ja kehittäjänäkymät)
+        // Suojaukset (estetään hiiren oikea painike ja yleisimmät kehittäjänäkymät)
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
             if(e.keyCode == 123) return false;
@@ -235,7 +234,7 @@
                 startTime = Number(stored);
             }
         } catch (e) {
-            // localStoragen lukitus suojattu
+            // Suojattu localStoragen poikkeuksilta
         }
 
         const timerDisplay = document.getElementById("timer-display");
@@ -289,18 +288,16 @@
                     }
                 }
                 resizeCanvas();
-                window.addEventListener('resize', resizeCanvas);
-
-                function drawMatrix() {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#00ff00';
-                    ctx.font = fontSize + 'px monospace';
-
-                    for (let i = 0; i < rainDrops.length; i++) {
-                        const text = alphabet[Math.floor(Math.random() * alphabet.length)];
-                        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-                        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+window.addEventListener('resize', resizeCanvas);
+function drawMatrix() {
+ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = '#00ff00';
+ctx.font = fontSize + 'px monospace';
+for (let i = 0; i < rainDrops.length; i++) {
+const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
 rainDrops[i] = 0;
 }
 rainDrops[i]++;
@@ -342,7 +339,7 @@ if (e.key === 'Enter') {
 e.preventDefault();
 const originalInput = inputField.value.trim();
 const lowerInput = originalInput.toLowerCase();
-// Korjattu Regex erikoismerkkien poistoon (sulkeet suojattu)
+// Korjattu Regex erikoismerkkien turvalliseen poistamiseen
 let cleanQuery = lowerInput.replace(/[?!/#$%^&*()+=[]{};:'",<>.]/g, '');
 let found = false;
 let response = "";
@@ -366,10 +363,10 @@ found = true;
 response = "Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!";
 found = true;
 } else if (cleanQuery === "cbet") {
-response = "92,7.";
+response = "92,7. Expected Value mathematical victory established.";
 found = true;
 }
-// Käänteinen Base64-tarkistus (jos suoraa osumaa ei löytynyt)
+// Käänteinen Base64-tarkistus
 if (!found && cleanQuery !== "") {
 for (const key in encryptedDatabase) {
 try {
@@ -387,13 +384,12 @@ continue;
 if (!found && cleanQuery !== "") {
 response = "Unknown query. Access denied. Trace active.";
 }
-// Tulostetaan vastaus terminaaliin (Korjattu backtick-syntaksi)
+// Tulostetaan vastaus terminaaliin
 if (response !== "" && logContent && textTerminal) {
 const newEntry = document.createElement('div');
 newEntry.style.marginTop = "10px";
 newEntry.innerText = > ${originalInput}\n[SYSTEM]: ${response};
 logContent.appendChild(newEntry);
-// Skrollataan terminaali automaattisesti pohjaan
 textTerminal.scrollTop = textTerminal.scrollHeight;
 }
 // Tyhjennetään syötekenttä
@@ -401,3 +397,4 @@ inputField.value = '';
 }
 });
 }
+
