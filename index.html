@@ -33,7 +33,7 @@
 
         .main-container {
             width: 100%;
-            max-width: 600px; /* Optimoitu mobiiliruudulle kuten alkuperäisissä kuvissasi */
+            max-width: 600px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -41,7 +41,7 @@
             z-index: 1;
         }
 
-        /* ISO HEHKUVA KIERRE KELLON TAUSTALLA */
+        /* ALKUPERÄINEN SPIRAALIKÄÄRE JA KELLO */
         .spiral-wrapper {
             position: relative;
             width: 280px;
@@ -76,7 +76,7 @@
             z-index: 2;
         }
 
-        /* 3 SARAKKEEN RUUDUKKO KORTEILLE */
+        /* 3 SARAKKEEN RUUDUKKO */
         .matrix-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -173,12 +173,12 @@
 </head>
 <body>
 
-    <!-- Taustalla valuva Matrix-sade -->
+    <!-- Kevyt taustasade pystysuorana taustalla -->
     <canvas id="matrix-canvas"></canvas>
 
     <div class="main-container">
         
-        <!-- YLÄOSA: Pyörivä kierre ja sen keskellä kello -->
+        <!-- YLÄOSA: Alkuperäinen kierre ja sen keskellä kello -->
         <div class="spiral-wrapper">
             <svg class="glow-spiral" viewBox="0 0 100 100" xmlns="http://w3.org">
                 <path d="M 50,50 A 5,5 0 1,0 45,45 A 10,10 0 1,1 55,60 A 15,15 0 1,0 35,40 A 25,25 0 1,1 70,65 A 35,35 0 1,0 15,25 A 45,45 0 1,1 90,70" 
@@ -187,45 +187,45 @@
             <div class="decoy-countdown" id="timer-display">96:00:00</div>
         </div>
 
-        <!-- KESKIOSA: Oikea 3 sarakkeen ruudukko ja kaikki 8 lukua kuvineen -->
+        <!-- KESKIOSA: Ruudukko oikeilla JPG-kuvilla (img1.jpg - img8.jpg) -->
         <div class="matrix-grid">
             <div class="grid-id-header">ID: INITIALIZING...</div>
             
             <div class="image-card">
-                <img src="chapter1.png" alt="Chapter I">
+                <img src="img1.jpg" alt="Chapter I">
                 <span>CHAPTER I</span>
             </div>
             <div class="image-card">
-                <img src="chapter2.png" alt="Chapter II">
+                <img src="img2.jpg" alt="Chapter II">
                 <span>CHAPTER II</span>
             </div>
             <div class="image-card">
-                <img src="chapter3.png" alt="Chapter III">
+                <img src="img3.jpg" alt="Chapter III">
                 <span>CHAPTER III</span>
             </div>
             <div class="image-card">
-                <img src="chapter4.png" alt="Chapter IV">
+                <img src="img4.jpg" alt="Chapter IV">
                 <span>CHAPTER IV</span>
             </div>
             <div class="image-card">
-                <img src="chapter5.png" alt="Chapter V">
+                <img src="img5.jpg" alt="Chapter V">
                 <span>CHAPTER V</span>
             </div>
             <div class="image-card">
-                <img src="chapter6.png" alt="Chapter VI">
+                <img src="img6.jpg" alt="Chapter VI">
                 <span>CHAPTER VI</span>
             </div>
             <div class="image-card">
-                <img src="chapter7.png" alt="Chapter VII">
+                <img src="img7.jpg" alt="Chapter VII">
                 <span>CHAPTER VII</span>
             </div>
             <div class="image-card">
-                <img src="chapter8.png" alt="Chapter VIII">
+                <img src="img8.jpg" alt="Chapter VIII">
                 <span>CHAPTER VIII</span>
             </div>
         </div>
 
-        <!-- ALAOSA: Oikea terminaali ja syötekenttä alkuperäisillä teksteilläsi -->
+        <!-- ALAOSA: Terminaali ja komentorivi -->
         <div class="text-terminal">
             <div id="output-log-content">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
         </div>
@@ -235,14 +235,13 @@
             <input type="text" id="user-prompt" class="prompt-input" autofocus autocomplete="off">
         </div>
 
-        <!-- Alaosan järjestelmätekstit -->
         <div class="system-matrix">
             <p>// SYSTEM ENGINE TELEMETRY</p>
             <p>201-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories.</p>
         </div>
     </div>
 
-    <!-- TÄYSIN KORJATTU JA TURVALLINEN JAVASCRIPT -->
+    <!-- JAVASCRIPT SISÄLTÄEN KAIKKI OMAT KOMENTO-OSIOSI -->
     <script>
         window.onkeydown = function(e) {
             if(e.ctrlKey && e.keyCode == 85) return false;
@@ -292,13 +291,13 @@
         updateTimer();
         setInterval(updateTimer, 1000);
 
-        // 2. KANVAS-MATRIX SADE (Taustaverho)
+        // 2. TAUSTASADE
         try {
             const canvas = document.getElementById('matrix-canvas');
             if (canvas) {
                 const ctx = canvas.getContext('2d');
-                const alphabet = ["0", "1", "X", "Y", "7", "A", "9", "Z", "M"];
-                const fontSize = 14;
+                const alphabet = ["0", "1"];
+                const fontSize = 16;
                 let rainDrops = [];
 
                 function resizeCanvas() {
@@ -307,21 +306,21 @@
                     let columns = Math.floor(canvas.width / fontSize) + 1;
                     if (rainDrops.length < columns) {
                         for (let x = rainDrops.length; x < columns; x++) {
-rainDrops[x] = (Math.random() * -50);
-}
-}
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+                            rainDrops[x] = (Math.random() * -50);
+                        }
+                    }
+                }
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
 function drawMatrix() {
-ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.fillStyle = '#00ff00';
 ctx.font = fontSize + 'px monospace';
 for (let i = 0; i < rainDrops.length; i++) {
 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
 ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.98) {
+if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
 rainDrops[i] = 0;
 }
 rainDrops[i]++;
@@ -344,13 +343,11 @@ const encryptedDatabase = {
 "Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
 "d2hvaXM=": "I am the Master Ghost, something else?", "aXA=": "Could you correct your spelling, please?",
 "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?", "c291cmNl": "That is what you have to figure out!",
-"Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!",
-"bWFw": "Can be found, have to look closely!",
+"Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
 "dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
 "cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
 "d2lubmVy": "Unlimited glory and other riches!", "dGltZQ==": "That's the time Einstein with modern tools would need to solve it!",
-"Y2xvY2s=": "That's the time Einstein with modern tools would need to solve it!",
-"OTZob3Vycw==": "That's the time Einstein with modern tools would need to solve it!",
+"Y2xvY2s=": "That's the time Einstein with modern tools would need to solve it!", "OTZob3Vycw==": "That's the time Einstein with modern tools would need to solve it!",
 "ZWluc3RlaW4=": "There is a way to ask him help you ;)", "ZT1tYzI=": "Use Chat GPT plus Text Plus Images = Opens.",
 "YWxsIGlu": "Thats how the Ghost plays.", "c2hvdmU=": "Ask Einstein.",
 "Y2FsbA==": "Ghost is ghosting you!", "aGVsbG8=": "Welcome to the ARG you have never witnessed before! It took over 10 months to build something unique, and you are now part of it, aren't you? ;) Happy solving!",
@@ -359,14 +356,24 @@ const encryptedDatabase = {
 const inputField = document.getElementById('user-prompt');
 const logContent = document.getElementById('output-log-content');
 const textTerminal = document.querySelector('.text-terminal');
+function appendToChat(sender, msg) {
+if (logContent && textTerminal) {
+const newEntry = document.createElement('div');
+newEntry.style.marginTop = "10px";
+newEntry.innerText = > [${sender}]: ${msg};
+logContent.appendChild(newEntry);
+textTerminal.scrollTop = textTerminal.scrollHeight;
+}
+}
 if (inputField) {
 inputField.addEventListener('keypress', function(e) {
 if (e.key === 'Enter') {
 e.preventDefault();
-const originalInput = inputField.value.trim();
-if (!originalInput) return;
-const lowerInput = originalInput.toLowerCase();
-// Puhdistetaan syöte turvallisesti
+const rawInput = inputField.value.trim();
+if (!rawInput) return;
+const cleanInput = rawInput.toUpperCase();
+const lowerInput = rawInput.toLowerCase();
+// Puhdistetaan merkit Base64-tunnistusta varten
 let cleanQuery = "";
 for (let i = 0; i < lowerInput.length; i++) {
 const char = lowerInput[i];
@@ -374,6 +381,33 @@ if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' '
 cleanQuery += char;
 }
 }
+// ANTAMASI KUSTOMOIDUT ARG-KOMENNOT
+if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
+appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...");
+setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers."); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret."); }, 1800);
+inputField.value = ''; return;
+}
+if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || cleanInput === "QUEEN" || cleanInput.includes("COORDINATES")) {
+appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...");
+setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified."); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously."); }, 1800);
+inputField.value = ''; return;
+}
+if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {
+appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...");
+setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters."); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation."); }, 1800);
+inputField.value = ''; return;
+}
+if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {
+appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.");
+setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously."); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens."); }, 1800);
+setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10."); }, 2800);
+inputField.value = ''; return;
+}
+// Vakiokyselyt ja Base64-tietokanta
 let found = false;
 let response = "";
 if (cleanQuery.includes("what imagesphotos are") || cleanQuery.includes("what images are") || cleanQuery.includes("what photos are")) {
@@ -414,17 +448,8 @@ continue;
 if (!found) {
 response = "Unknown query. Access denied. Trace active.";
 }
-if (response !== "" && logContent && textTerminal) {
-const newEntry = document.createElement('div');
-newEntry.style.marginTop = "10px";
-newEntry.innerText = "> " + originalInput + "\n[SYSTEM]: " + response;
-logContent.appendChild(newEntry);
-textTerminal.scrollTop = textTerminal.scrollHeight;
-}
+appendToChat('SYSTEM', response);
 inputField.value = '';
 }
 });
 }
-
-
-
