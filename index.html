@@ -41,122 +41,55 @@
             z-index: 1;
         }
 
-        /* TURVALLINEN PAIKKA ADSTERRA-MAINOKSELLE YLHÄÄLLÄ */
-        #adsterra-top-wrapper {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 15px;
-            min-height: 50px;
-        }
-
-        /* ALKUPERÄINEN KAUNIS NEONKIERRE JA KELLO */
-        .spiral-wrapper {
-            position: relative;
-            width: 280px;
-            height: 280px;
-            margin: 10px auto 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .glow-spiral {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            filter: drop-shadow(0 0 15px rgba(0, 255, 0, 0.8));
-            animation: rotateSpiral 20s linear infinite;
-        }
-
-        @keyframes rotateSpiral {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
+        /* KELLO YLHÄÄLLÄ IRTI PROMPTISTA */
         .decoy-countdown {
             font-size: clamp(24px, 5vw, 36px);
             font-weight: bold;
             text-align: center;
+            margin: 20px 0 25px 0;
             letter-spacing: 2px;
             text-shadow: 0 0 10px #00ff00;
-            position: relative;
-            z-index: 2;
         }
 
-        /* 3 SARAKKEEN RUUDUKKO KUVILLE */
-        .matrix-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 100%;
-            margin-bottom: 25px;
-        }
-
-        .grid-id-header {
-            grid-column: span 3;
-            text-align: center;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            color: #00ff00;
-        }
-
-        .image-card {
-            border: 1px solid #00ff00;
-            background-color: rgba(5, 5, 5, 0.9);
-            padding: 6px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .image-card img {
-            width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: 6px;
-            object-fit: contain;
-        }
-
-        .image-card span {
-            font-size: 9px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #00ff00;
-            opacity: 0.8;
-        }
-
-        /* TERMINAALI JA SYÖTEPANEELI ALHAALLA */
+        /* YLEMPI TERMINAALILAATIKKO */
         .text-terminal {
             border: 1px solid #00ff00;
-            background-color: rgba(5, 5, 5, 0.95);
+            background-color: rgba(5, 5, 5, 0.9);
             padding: 16px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             white-space: pre-wrap;
             word-break: break-word;
             line-height: 1.5;
             font-size: clamp(12px, 3.5vw, 14px);
             box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.1);
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
+        .log-header {
+            border-bottom: 1px dashed #00ff00;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* KOMENTORIVI HETI TERMINAALIN ALLA KIINNI (KUTEN KUVASSASI) */
         .input-terminal {
             border: 1px solid #00ff00;
-            background-color: rgba(5, 5, 5, 0.95);
-            padding: 12px;
-            margin-bottom: 20px;
+            background-color: rgba(5, 5, 5, 0.9);
+            padding: 15px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         }
 
         .input-prompt {
             color: #00ff00;
             font-weight: bold;
             margin-right: 10px;
-            font-size: 14px;
+            font-size: 16px;
             white-space: nowrap;
         }
 
@@ -170,12 +103,47 @@
             outline: none;
         }
 
+        /* KUVAT ISOINA JONOSSA ALLEKKAIN (img1.jpg - img8.jpg) */
+        .matrix-images-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .image-card {
+            border: 1px solid #00ff00;
+            background-color: rgba(5, 5, 5, 0.9);
+            padding: 12px;
+            text-align: center;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+            object-fit: contain;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .image-card span {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #00ff00;
+            display: block;
+            margin-top: 5px;
+        }
+
         .system-matrix {
             font-size: 11px;
             line-height: 1.5;
             opacity: 0.8;
             border-top: 1px solid rgba(0, 255, 0, 0.3);
             padding-top: 10px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -186,35 +154,25 @@
 
     <div class="main-container">
         
-        <!-- 1. PAIKKA ADSTERRA-MAINOKSELLE (Tämä laatikko estää mainosta rikkomasta sivua) -->
-        <div id="adsterra-top-wrapper">
-            <!-- LIITÄ ADSTERRA-MAINOSSKRIPTISI TÄHÄN LAATIKON SISÄLLE SITTEN KUN HALUAT -->
-        </div>
-        
-        <!-- YLÄOSA: Pyörivä kaunis kierre ja kello -->
-        <div class="spiral-wrapper">
-            <svg class="glow-spiral" viewBox="0 0 100 100" xmlns="http://w3.org">
-                <path d="M 50,50 A 5,5 0 1,0 45,45 A 10,10 0 1,1 55,60 A 15,15 0 1,0 35,40 A 25,25 0 1,1 70,65 A 35,35 0 1,0 15,25 A 45,45 0 1,1 90,70" 
-                      fill="none" stroke="#00ff00" stroke-width="2.5" stroke-linecap="round"/>
-            </svg>
-            <div class="decoy-countdown" id="timer-display">96:00:00</div>
-        </div>
+        <!-- Kello ylhäällä -->
+        <div class="decoy-countdown" id="timer-display">96:00:00</div>
 
-        <!-- TERMINAALI OMASTA KOODISTASI -->
+        <!-- Terminaali omilla teksteilläsi -->
         <div class="text-terminal">
-            <div id="output-log-content">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
+            <div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>
+            <div id="output-log-content">Subject: "ENSGAME?"
+
+System ready for input. Ready to intercept query.</div>
         </div>
 
-        <!-- KOMENTORIVI OMASTA KOODISTASI -->
+        <!-- Komentorivi heti alla -->
         <div class="input-terminal">
-            <span class="input-prompt">Enter command:</span>
-            <input type="text" id="user-prompt" class="prompt-input" autofocus autocomplete="off">
+            <span class="input-prompt">&gt;</span>
+            <input type="text" id="user-prompt" class="prompt-input" placeholder="Enter keyword or query..." autofocus autocomplete="off">
         </div>
 
-        <!-- KESKIOSA: Ruudukko oikeilla JPG-kuvilla (img1.jpg - img8.jpg) -->
-        <div class="matrix-grid">
-            <div class="grid-id-header">ID: INITIALIZING...</div>
-            
+        <!-- KUVAT PERÄKKÄIN ISOINA -->
+        <div class="matrix-images-list">
             <div class="image-card">
                 <img src="img1.jpg" alt="Chapter I">
                 <span>CHAPTER I</span>
@@ -255,13 +213,13 @@
         </div>
     </div>
 
-    <!-- TÄYSIN SIIVOTTU JAVASCRIPT KAIKILLA ARG-KOMENNOILLASI -->
+    <!-- TOIMIVA JA VIRHEETÖN JAVASCRIPT LOGIIKOILLA -->
     <script>
         window.onkeydown = function(e) {
             if(e.ctrlKey && e.keyCode == 85) return false;
         };
 
-        // LASKURIMOOTTORI
+        // Laskurimoottori
         const TOTAL_SECONDS = 96 * 60 * 60;
         let startTime = Date.now();
 
@@ -305,7 +263,7 @@
         updateTimer();
         setInterval(updateTimer, 1000);
 
-        // KEVYT TAUSTASADE
+        // Kevyt pystysuora taustasade
         try {
             const canvas = document.getElementById('matrix-canvas');
             if (canvas) {
@@ -316,35 +274,37 @@
 
                 function resizeCanvas() {
                     canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-let columns = Math.floor(canvas.width / fontSize) + 1;
-if (rainDrops.length < columns) {
-for (let x = rainDrops.length; x < columns; x++) {
-rainDrops[x] = (Math.random() * -50);
-}
-}
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-function drawMatrix() {
-ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-ctx.fillStyle = '#00ff00';
-ctx.font = fontSize + 'px monospace';
-for (let i = 0; i < rainDrops.length; i++) {
-const text = alphabet[Math.floor(Math.random() * alphabet.length)];
-ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-rainDrops[i] = 0;
-}
-rainDrops[i]++;
-}
-}
-setInterval(drawMatrix, 40);
-}
-} catch (canvasError) {}
-// BASE64 TIETOKANTA
-const encryptedDatabase = {
+                    canvas.height = window.innerHeight;
+                    let columns = Math.floor(canvas.width / fontSize) + 1;
+                    if (rainDrops.length < columns) {
+                        for (let x = rainDrops.length; x < columns; x++) {
+                            rainDrops[x] = (Math.random() * -50);
+                        }
+                    }
+                }
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+
+                function drawMatrix() {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#00ff00';
+                    ctx.font = fontSize + 'px monospace';
+                    for (let i = 0; i < rainDrops.length; i++) {
+                        const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                            rainDrops[i] = 0;
+                        }
+                        rainDrops[i]++;
+                    }
+                }
+                setInterval(drawMatrix, 40);
+            }
+        } catch (canvasError) {}
+
+        // Base64 tietokanta
+        const encryptedDatabase = {
 "YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
 "Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hbG9n": "Check Chapter 19! [14-41]",
 "cm9pOTQ=": "Check Chapter 33! [14-41]", "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
@@ -355,7 +315,7 @@ const encryptedDatabase = {
 "c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
 "c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
 "Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
-"d2hvaXM=": "I am the Master Ghost, something else?", "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?", "c291cmNl": "That is what you have to figure out!",
+"d2hvaXM=": "I am the Master Ghost, something else?", "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?", "c91cmNl": "That is what you have to figure out!",
 "Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
 "dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
 "cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
@@ -373,7 +333,7 @@ function appendToChat(sender, msg) {
 if (logContent && textTerminal) {
 const newEntry = document.createElement('div');
 newEntry.style.marginTop = "10px";
-newEntry.innerText = > [${sender}]: ${msg};
+newEntry.innerText = \n> [${sender}]: ${msg};
 logContent.appendChild(newEntry);
 textTerminal.scrollTop = textTerminal.scrollHeight;
 }
@@ -393,7 +353,7 @@ if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' '
 cleanQuery += char;
 }
 }
-// ANTAMASI ARG-KOMENNOT VIIVEILLÄ
+// ARG-KOMENNOT VIIVEILLÄ
 if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
 appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...");
 setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers."); }, 800);
@@ -419,7 +379,7 @@ setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density
 setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10."); }, 2800);
 inputField.value = ''; return;
 }
-// Vakiokyselyt ja Base64-tietokanta
+// Vakiokyselyt ja Base64-haku
 let found = false;
 let response = "";
 if (cleanQuery.includes("what imagesphotos are") || cleanQuery.includes("what images are") || cleanQuery.includes("what photos are")) {
@@ -465,7 +425,3 @@ inputField.value = '';
 }
 });
 }
-
-
-
-
