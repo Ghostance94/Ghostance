@@ -41,12 +41,20 @@
             z-index: 1;
         }
 
-        /* ALKUPERÄINEN SPIRAALIKÄÄRE JA KELLO */
+        /* TURVALLINEN PAIKKA ADSTERRA-MAINOKSELLE YLHÄÄLLÄ */
+        #adsterra-top-wrapper {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+            min-height: 50px;
+        }
+
+        /* ALKUPERÄINEN KAUNIS NEONKIERRE JA KELLO */
         .spiral-wrapper {
             position: relative;
             width: 280px;
             height: 280px;
-            margin: 20px auto;
+            margin: 10px auto 20px auto;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -76,7 +84,7 @@
             z-index: 2;
         }
 
-        /* 3 SARAKKEEN RUUDUKKO */
+        /* 3 SARAKKEEN RUUDUKKO KUVILLE */
         .matrix-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -173,18 +181,34 @@
 </head>
 <body>
 
-    <!-- Kevyt taustasade pystysuorana taustalla -->
+    <!-- Kevyt taustasade taustalla -->
     <canvas id="matrix-canvas"></canvas>
 
     <div class="main-container">
         
-        <!-- YLÄOSA: Alkuperäinen kierre ja sen keskellä kello -->
+        <!-- 1. PAIKKA ADSTERRA-MAINOKSELLE (Tämä laatikko estää mainosta rikkomasta sivua) -->
+        <div id="adsterra-top-wrapper">
+            <!-- LIITÄ ADSTERRA-MAINOSSKRIPTISI TÄHÄN LAATIKON SISÄLLE SITTEN KUN HALUAT -->
+        </div>
+        
+        <!-- YLÄOSA: Pyörivä kaunis kierre ja kello -->
         <div class="spiral-wrapper">
             <svg class="glow-spiral" viewBox="0 0 100 100" xmlns="http://w3.org">
                 <path d="M 50,50 A 5,5 0 1,0 45,45 A 10,10 0 1,1 55,60 A 15,15 0 1,0 35,40 A 25,25 0 1,1 70,65 A 35,35 0 1,0 15,25 A 45,45 0 1,1 90,70" 
                       fill="none" stroke="#00ff00" stroke-width="2.5" stroke-linecap="round"/>
             </svg>
             <div class="decoy-countdown" id="timer-display">96:00:00</div>
+        </div>
+
+        <!-- TERMINAALI OMASTA KOODISTASI -->
+        <div class="text-terminal">
+            <div id="output-log-content">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
+        </div>
+
+        <!-- KOMENTORIVI OMASTA KOODISTASI -->
+        <div class="input-terminal">
+            <span class="input-prompt">Enter command:</span>
+            <input type="text" id="user-prompt" class="prompt-input" autofocus autocomplete="off">
         </div>
 
         <!-- KESKIOSA: Ruudukko oikeilla JPG-kuvilla (img1.jpg - img8.jpg) -->
@@ -225,29 +249,19 @@
             </div>
         </div>
 
-        <!-- ALAOSA: Terminaali ja komentorivi -->
-        <div class="text-terminal">
-            <div id="output-log-content">[SYSTEM] GHOSTARY TERMINAL ONLINE.</div>
-        </div>
-
-        <div class="input-terminal">
-            <span class="input-prompt">Enter command:</span>
-            <input type="text" id="user-prompt" class="prompt-input" autofocus autocomplete="off">
-        </div>
-
         <div class="system-matrix">
             <p>// SYSTEM ENGINE TELEMETRY</p>
             <p>201-SYSTEM telemetry logs verified. Quantitative systems validation running real-time diagnostics on localized distributed network directories.</p>
         </div>
     </div>
 
-    <!-- JAVASCRIPT SISÄLTÄEN KAIKKI OMAT KOMENTO-OSIOSI -->
+    <!-- TÄYSIN SIIVOTTU JAVASCRIPT KAIKILLA ARG-KOMENNOILLASI -->
     <script>
         window.onkeydown = function(e) {
             if(e.ctrlKey && e.keyCode == 85) return false;
         };
 
-        // 1. REAALIAIKAINEN LASKURIMOOTTORI
+        // LASKURIMOOTTORI
         const TOTAL_SECONDS = 96 * 60 * 60;
         let startTime = Date.now();
 
@@ -291,7 +305,7 @@
         updateTimer();
         setInterval(updateTimer, 1000);
 
-        // 2. TAUSTASADE
+        // KEVYT TAUSTASADE
         try {
             const canvas = document.getElementById('matrix-canvas');
             if (canvas) {
@@ -302,16 +316,16 @@
 
                 function resizeCanvas() {
                     canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                    let columns = Math.floor(canvas.width / fontSize) + 1;
-                    if (rainDrops.length < columns) {
-                        for (let x = rainDrops.length; x < columns; x++) {
-                            rainDrops[x] = (Math.random() * -50);
-                        }
-                    }
-                }
-                resizeCanvas();
-                window.addEventListener('resize', resizeCanvas);
+canvas.height = window.innerHeight;
+let columns = Math.floor(canvas.width / fontSize) + 1;
+if (rainDrops.length < columns) {
+for (let x = rainDrops.length; x < columns; x++) {
+rainDrops[x] = (Math.random() * -50);
+}
+}
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 function drawMatrix() {
 ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -329,7 +343,7 @@ rainDrops[i]++;
 setInterval(drawMatrix, 40);
 }
 } catch (canvasError) {}
-// 3. BASE64 TIETOKANTA JA KOMENTORIVI
+// BASE64 TIETOKANTA
 const encryptedDatabase = {
 "YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
 "Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hbG9n": "Check Chapter 19! [14-41]",
@@ -341,8 +355,7 @@ const encryptedDatabase = {
 "c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
 "c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
 "Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
-"d2hvaXM=": "I am the Master Ghost, something else?", "aXA=": "Could you correct your spelling, please?",
-"bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?", "c291cmNl": "That is what you have to figure out!",
+"d2hvaXM=": "I am the Master Ghost, something else?", "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?", "c291cmNl": "That is what you have to figure out!",
 "Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
 "dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
 "cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
@@ -373,7 +386,6 @@ const rawInput = inputField.value.trim();
 if (!rawInput) return;
 const cleanInput = rawInput.toUpperCase();
 const lowerInput = rawInput.toLowerCase();
-// Puhdistetaan merkit Base64-tunnistusta varten
 let cleanQuery = "";
 for (let i = 0; i < lowerInput.length; i++) {
 const char = lowerInput[i];
@@ -381,7 +393,7 @@ if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' '
 cleanQuery += char;
 }
 }
-// ANTAMASI KUSTOMOIDUT ARG-KOMENNOT
+// ANTAMASI ARG-KOMENNOT VIIVEILLÄ
 if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
 appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...");
 setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers."); }, 800);
@@ -453,3 +465,7 @@ inputField.value = '';
 }
 });
 }
+
+
+
+
