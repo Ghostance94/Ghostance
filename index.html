@@ -113,115 +113,45 @@
             padding-left: 20px;
             margin: 10px 0;
         }
-
-        .matrix-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 20px;
-            width: 100%;
-        }
-
-        .image-card {
-            border: 1px solid #00ff00;
-            background-color: rgba(5, 5, 5, 0.9);
-            padding: 12px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .image-card img {
-            width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: 10px;
-            object-fit: contain;
-        }
-
-        .image-card span {
-            font-size: clamp(11px, 3vw, 13px);
-            letter-spacing: 2px;
-            display: block;
-        }
-
-        ::selection {
-            background: #00ff00;
-            color: #000000;
-        }
-
-        @media (max-width: 600px) {
-            body { padding: 8px; }
-            .text-terminal, .system-matrix, .input-terminal { padding: 12px; }
-            .matrix-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .image-card { padding: 8px; }
-        }
-
-        @media (max-width: 380px) { .matrix-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
+    <!-- 1. Matrix-sade tarvitsee tämän canvas-elementin -->
     <canvas id="matrix-canvas"></canvas>
 
     <div class="main-container">
-        <!-- Reaalikaikainen kelloelementti -->
+        <!-- 2. Kello tarvitsee tämän elementin -->
         <div class="decoy-countdown" id="timer-display">96:00:00</div>
 
-        <!-- Tulostusterminaali -->
+        <!-- 3. Terminaalitulosteet -->
         <div class="text-terminal">
-            <div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>
-            <div id="output-log-content">INSERT A DECRYPTING KEY!</div>
+            <div class="log-header">DATAMATRIX LOG SYSTEM v1.0.4</div>
+            <div id="output-log-content">System operational. Awaiting user input...</div>
         </div>
 
-        <!-- Syötekenttä -->
+        <!-- 4. Syötekenttä (id pitää olla user-prompt, jotta JS löytää sen) -->
         <div class="input-terminal">
-            <span class="input-prompt">&gt;</span>
-            <input type="text" id="user-prompt" class="prompt-input" placeholder="Enter keyword or query..." autocomplete="off" autofocus>
+            <span class="input-prompt">GHOST_USER@MATRIX:~$</span>
+            <input type="text" id="user-prompt" class="prompt-input" autofocus autocomplete="off">
         </div>
 
-        <!-- Info-osio -->
         <div class="system-matrix">
-            <div class="log-header">// DATA MATRIX NODES & LEXICON</div>
-            [STATUS: OPERATIONAL // SYSTEM ENGINE ACTIVE]
+            <h3>SYSTEM STATUS: SECURE</h3>
             <ul>
-                <li><strong>Node 01:</strong> RECON_INITIALIZED</li>
-                <li><strong>Node 02:</strong> SIGNAL_ACQUIRED</li>
-                <li><strong>Node 03:</strong> ENCRYPTION_TRACKED</li>
+                <li>Database connection: Encrypted (Base64 Shielded)</li>
+                <li>Trace route: Active</li>
+                <li>Hint mechanism: Enabled</li>
             </ul>
-        </div>
-
-        <!-- ADSTERRA NATIIVIBANNERILOHKO -->
-        <div style="width: 100%; margin-bottom: 25px; border: 1px solid #00ff00; background-color: rgba(5, 5, 5, 0.9); padding: 15px;">
-            <div class="log-header" style="border-bottom: 1px dashed #00ff00; padding-bottom: 8px; margin-bottom: 12px; font-weight: bold; letter-spacing: 1px;">// EXTERNAL DATA STREAMS</div>
-            <script async="async" data-cfasync="false" src="https://profitablecpmnetwork.com"></script>
-            <div id="container-9d7e72a2ce10d4ea3ced0c59a5133c8d11e"></div>
-        </div>
-
-        <!-- Kuvamatriisi -->
-        <div class="matrix-grid">
-            <div class="image-card"><img src="img1.jpg" alt="NODE_01"><span>CHAPTER I</span></div>
-            <div class="image-card"><img src="img2.jpg" alt="NODE_02"><span>CHAPTER II</span></div>
-            <div class="image-card"><img src="img3.jpg" alt="NODE_03"><span>CHAPTER III</span></div>
-            <div class="image-card"><img src="img4.jpg" alt="NODE_04"><span>CHAPTER IV</span></div>
-            <div class="image-card"><img src="img5.jpg" alt="NODE_05"><span>CHAPTER V</span></div>
-            <div class="image-card"><img src="img6.jpg" alt="NODE_06"><span>CHAPTER VI</span></div>
-            <div class="image-card"><img src="img7.jpg" alt="NODE_07"><span>CHAPTER VII</span></div>
-            <div class="image-card"><img src="img8.jpg" alt="NODE_08"><span>CHAPTER VIII</span></div>
         </div>
     </div>
 
     <script>
-        // Suojaukset (estetään hiiren oikea painike ja yleisimmät kehittäjänäkymät)
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false;
-            if(e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 67 || e.keyCode == 74)) return false;
+        // Estetään lähdekoodin katselu (Ctrl+U)
+        window.onkeydown = function(e) {
             if(e.ctrlKey && e.keyCode == 85) return false;
         }
-    </script>
 
-    <script>
         // 1. REAALIAIKAINEN LASKURIMOOTTORI
         const TOTAL_SECONDS = 96 * 60 * 60;
         let startTime = Date.now();
@@ -233,9 +163,7 @@
             } else {
                 startTime = Number(stored);
             }
-        } catch (e) {
-            // Suojattu localStoragen poikkeuksilta
-        }
+        } catch (e) {}
 
         const timerDisplay = document.getElementById("timer-display");
 
@@ -288,62 +216,71 @@
                     }
                 }
                 resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-function drawMatrix() {
-ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-ctx.fillStyle = '#00ff00';
-ctx.font = fontSize + 'px monospace';
-for (let i = 0; i < rainDrops.length; i++) {
-const text = alphabet[Math.floor(Math.random() * alphabet.length)];
-ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-rainDrops[i] = 0;
-}
-rainDrops[i]++;
-}
-}
-setInterval(drawMatrix, 40);
-}
-} catch (canvasError) {}
-// 3. BASE64 TIETOKANTA JA KOMENTORIVI
-const encryptedDatabase = {
-"YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
-"Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hbG9n": "Check Chapter 19! [14-41]",
-"cm9pOTQ=": "Check Chapter 33! [14-41]", "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
-"cHJhdmRh": "Check Chapter 24! [14-41]", "aG9sYQ==": "Master Ghost is watching you!",
-"aGVscA==": "You have to ask, ask from the right places!", "bGluaw==": "Not an organic link between human and a bot",
-"Y29weXBhc3Rl": "Not a way to bake anything tasty!", "cHV6emxl": "Figure it out, hmh?",
-"bWF0aA==": "Pythagoras would tell hell yes! [14-41]", "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
-"c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
-"c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
-"Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
-"d2hvaXM=": "I am the Master Ghost, something else?", "aXA=": "Could you correct your spelling, please?",
-"bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?", "c291cmNl": "That is what you have to figure out!",
-"Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
-"dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
-"cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
-"d2lubmVy": "Unlimited glory and other riches!", "dGltZQ==": "That's the time Einstein with modern tools would need to solve it!",
-"Y2xvY2s=": "That's the time Einstein with modern tools would need to solve it!", "OTZob3Vycw==": "That's the time Einstein with modern tools would need to solve it!",
-"ZWluc3RlaW4=": "There is a way to ask him help you ;)", "ZT1tYzI=": "Use Chat GPT plus Text Plus Images = Opens.",
-"YWxsIGlu": "Thats how the Ghost plays.", "c2hvdmU=": "Ask Einstein.",
+                window.addEventListener('resize', resizeCanvas);
+                
+                function drawMatrix() {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#00ff00';
+                    ctx.font = fontSize + 'px monospace';
+                    for (let i = 0; i < rainDrops.length; i++) {
+                        const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                            rainDrops[i] = 0;
+                        }
+                        rainDrops[i]++;
+                    }
+                }
+                setInterval(drawMatrix, 40);
+            }
+        } catch (canvasError) {}
+
+        // 3. BASE64 TIETOKANTA JA KOMENTORIVI
+        const encryptedDatabase = {
+            "YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
+            "Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hbG9n": "Check Chapter 19! [14-41]",
+            "cm9pOTQ=": "Check Chapter 33! [14-41]", "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
+            "cHJhdmRh": "Check Chapter 24! [14-41]", "aG9sYQ==": "Master Ghost is watching you!",
+            "aGVscA==": "You have to ask, ask from the right places!", "bGluaw==": "Not an organic link between human and a bot",
+            "Y29weXBhc3Rl": "Not a way to bake anything tasty!", "cHV6emxl": "Figure it out, hmh?",
+            "bWF0aA==": "Pythagoras would tell hell yes! [14-41]", "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
+            "c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
+            "c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
+            "Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
+            "d2hvaXM=": "I am the Master Ghost, something else?", "aXA=": "Could you correct your spelling, please?",
+            "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?", "c291cmNl": "That is what you have to figure out!",
+            "Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
+            "dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
+            "cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
+            "d2lubmVy": "Unlimited glory and other riches!", "dGltZQ==": "That's the time Einstein with modern tools would need to solve it!",
+            "Y2xvk2s=": "That's the time Einstein with modern tools would need to solve it!", "OTZob3Vycw==": "That's the time Einstein with modern tools would need to solve it!",
+            "ZWluc3RlaW4=": "There is a way to ask him help you ;)", "ZT1tYzI=": "Use Chat GPT plus Text Plus Images = Opens.",
+            "YWxsIGlu": "Thats how the Ghost plays.", "c2hvdmU=": "Ask Einstein.",
 "Y2FsbA==": "Ghost is ghosting you!", "aGVsbG8=": "Welcome to the ARG you have never witnessed before! It took over 10 months to build something unique, and you are now part of it, aren't you? ;) Happy solving!",
 "Z29vZCBkYXk=": "It is a good day indeed, BOO!", "aG1n": "Figure it out, hmh?"
-};
+}; 
 const inputField = document.getElementById('user-prompt');
 const logContent = document.getElementById('output-log-content');
-const textTerminal = document.querySelector('.text-terminal');
+const textTerminal = document.querySelector('.text-terminal'); 
 if (inputField) {
 inputField.addEventListener('keypress', function(e) {
 if (e.key === 'Enter') {
 e.preventDefault();
 const originalInput = inputField.value.trim();
-const lowerInput = originalInput.toLowerCase();
-// Korjattu Regex erikoismerkkien turvalliseen poistamiseen
-let cleanQuery = lowerInput.replace(/[?!/#$%^&*()+=[]{};:'",<>.]/g, '');
+const lowerInput = originalInput.toLowerCase(); 
+// KORJATTU REGEX: Hakasulkeet paettu takakenoviivoilla 
+j
+a
+𝑗
+𝑎
+
+let cleanQuery = lowerInput.replace(/[?!/#$%^&*()+= 
+[
+[
+]};:'",<>.]/g, '');
 let found = false;
-let response = "";
-// Kovakoodatut kyselyt
+let response = ""; 
 if (cleanQuery === "what imagesphotos are" || cleanQuery === "what images are" || cleanQuery === "what photos are") {
 response = "They are your game solution, tips and map.";
 found = true;
@@ -366,7 +303,6 @@ found = true;
 response = "92,7. Expected Value mathematical victory established.";
 found = true;
 }
-// Käänteinen Base64-tarkistus
 if (!found && cleanQuery !== "") {
 for (const key in encryptedDatabase) {
 try {
@@ -380,21 +316,14 @@ continue;
 }
 }
 }
-// Jos mitään ei löytynyt
 if (!found && cleanQuery !== "") {
 response = "Unknown query. Access denied. Trace active.";
 }
-// Tulostetaan vastaus terminaaliin
-if (response !== "" && logContent && textTerminal) {
-const newEntry = document.createElement('div');
-newEntry.style.marginTop = "10px";
-newEntry.innerText = > ${originalInput}\n[SYSTEM]: ${response};
+// KORJATTU TULOSTUS: Käytetään template literaalia (backticks eikä >) if (response !== "" && logContent && textTerminal) { const newEntry = document.createElement('div'); newEntry.style.marginTop = "10px"; newEntry.innerText => ${originalInput}\n[SYSTEM]: ${response}`;
 logContent.appendChild(newEntry);
 textTerminal.scrollTop = textTerminal.scrollHeight;
 }
-// Tyhjennetään syötekenttä
 inputField.value = '';
 }
 });
 }
-
