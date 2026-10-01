@@ -21,19 +21,6 @@
             transition: background-color 0.1s ease;
         }
 
-        /* MATRIX-VERHO TAUSTALLA - SIIRRETTY KAUKO-TAUSTALLE */
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            opacity: 0.35;
-            pointer-events: none;
-            display: block;
-        }
-
         .main-container {
             width: 100%;
             max-width: 600px;
@@ -202,9 +189,6 @@
 </head>
 <body>
 
-    <!-- Verho / Matrix-koodisade taustalla -->
-    <canvas id="matrix-canvas"></canvas>
-
     <div class="main-container">
         
         <!-- Kello ja sen ympärillä oleva spiraali -->
@@ -274,7 +258,7 @@ System ready for input. Ready to intercept query.</div>
         </div>
     </div>
 
-    <!-- SCRIPT - TÄYSIN EHJÄT SULUT JA MUUTTUJAT -->
+    <!-- SCRIPT - TÄYSIN EHJÄ JA PUHDAS KOKONAISUUS -->
     <script>
         window.onkeydown = function(e) {
             if(e.ctrlKey && e.keyCode == 85) return false;
@@ -313,56 +297,22 @@ System ready for input. Ready to intercept query.</div>
                 const minsStr = m < 10 ? "0" + m : m;
                 const secsStr = s < 10 ? "0" + s : s;
                 timerDisplay.innerText = hoursStr + ":" + minsStr + ":" + secsStr;
-}
-if (flashTimer > 0) {
-flashTimer--;
-document.body.style.backgroundColor = flashColor;
-if (flashTimer === 0) {
-document.body.style.backgroundColor = "#000000";
-}
-}
-}
-updateTimer();
-setInterval(updateTimer, 1000);
-// MATRIX-VERHON ANIMAATIO
-try {
-const canvas = document.getElementById('matrix-canvas');
-if (canvas) {
-const ctx = canvas.getContext('2d');
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789X5Z9K7";
-const chars = alphabet.split("");
-const fontSize = 16;
-let rainDrops = [];
-function resizeCanvas() {
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-let columns = Math.floor(canvas.width / fontSize) + 1;
-if (rainDrops.length < columns) {
-for (let x = rainDrops.length; x < columns; x++) {
-rainDrops[x] = (Math.random() * -50);
-}
-}
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-function drawMatrix() {
-ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-ctx.fillStyle = '#00ff00';
-ctx.font = fontSize + 'px monospace';
-for (let i = 0; i < rainDrops.length; i++) {
-const text = chars[Math.floor(Math.random() * chars.length)];
-ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-rainDrops[i] = 0;
-}
-rainDrops[i]++;
-}
-setInterval(drawMatrix, 40);
-}
-    
-// Base64 vastaukset
-const encryptedDatabase = {
+            }
+
+            if (flashTimer > 0) {
+                flashTimer--;
+                document.body.style.backgroundColor = flashColor;
+                if (flashTimer === 0) {
+                    document.body.style.backgroundColor = "#000000";
+                }
+            }
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+
+        // Base64 tietokanta
+        const encryptedDatabase = {
 "YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
 "Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hbG9n": "Check Chapter 19! [14-41]",
 "cm9pOTQ=": "Check Chapter 33! [14-41]", "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
@@ -414,7 +364,7 @@ if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' '
 cleanQuery += char;
 }
 }
-// Tulostetaan pelaajan prompti
+// Tulostetaan pelaajan oma syöte heti
 appendToChat(myGhostID, rawInput);
 if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
 setTimeout(() => {
@@ -507,5 +457,3 @@ inputField.value = '';
 }
 });
 }
-
-
