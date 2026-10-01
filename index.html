@@ -463,7 +463,7 @@ foundQuery = true;
 responseText = "92,7. Expected Value mathematical victory established.";
 foundQuery = true;
 }
-                    if (!foundQuery) {
+                           if (!foundQuery) {
                         for (const key in encryptedDatabase) {
                             try {
                                 if (atob(key).toLowerCase() === cleanQuery) {
@@ -482,7 +482,7 @@ foundQuery = true;
                     }
 
                     setTimeout(() => { appendToChat('SYSTEM', responseText, true); }, 400);
-                    (inputField) inputField.value = '';
+                    inputField.value = '';
                 }
             });
         }
@@ -523,3 +523,4 @@ foundQuery = true;
     </script>
 </body>
 </html>
+            
