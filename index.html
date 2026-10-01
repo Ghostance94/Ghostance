@@ -480,29 +480,20 @@ foundQuery = true;
                     if (!foundQuery) {
                         responseText = "Unknown query. Access denied. Trace active.";
                     }
-
                     setTimeout(() => { appendToChat('SYSTEM', responseText, true); }, 400);
+                    
+                    // KORJAUS: Haetaan tekstikenttä ja tyhjennetään se suoraan ilman virheitä
                     const inputField = document.getElementById('user-prompt');
-                    inputField.value = '';
+                    if (inputField) {
+                        inputField.value = '';
+                    }
                 }
             });
         }
-    // --- KELLOMOOTTORI ALKAA ---
-    (function() {
-        const timerDisplay = document.getElementById("timer-display");
-        const TOTAL_SECONDS = 96 * 60 * 60;
-        let startTime = Date.now();
 
-        try {
-            let stored = localStorage.getItem("matrix_individual_start_v5");
-            if (!stored) {
-                localStorage.setItem("matrix_individual_start_v5", startTime.toString());
-            } else {
-                startTime = Number(stored);
-            }
-        } catch (e) {}
-
-        function updateTimer() {
+        // --- 2. KELLON AUTOMAATTINEN NOLLAUS JA PALAUTUS (96 TUNTIA) ---
+        const originalUpdateTimer = updateTimer;
+        updateTimer = function() {
             const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
             let remainingSeconds = TOTAL_SECONDS - elapsedSeconds;
             
@@ -524,15 +515,17 @@ foundQuery = true;
                 const secsStr = s < 10 ? "0" + s : s;
                 timerDisplay.innerText = hoursStr + ":" + minsStr + ":" + secsStr;
             }
-        }
 
-        updateTimer();
-        setInterval(updateTimer, 1000);
-    })();
-    // --- KELLOMOOTTORI LOPPUU ---
-
-</script>
+            if (flashTimer > 0) {
+                flashTimer--;
+                document.body.style.backgroundColor = flashColor;
+                if (flashTimer === 0) {
+                    document.body.style.backgroundColor = "#000000";
+                }
+            }
+        };
+    </script>
 </body>
 </html>
 
-        
+                    
