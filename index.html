@@ -457,6 +457,38 @@ inputField.value = '';
 }
 });
 }
+            // --- 96 TUNNIN KELLO ALKAA (IKUINEN LOOPPI) ---
+  let kelloElementti = Array.from(document.querySelectorAll('*')).find(el => el.textContent.trim() === "96:00:00");
+  if (!kelloElementti) {
+    kelloElementti = Array.from(document.querySelectorAll('*')).find(el => /^\d{2}:\d{2}:\d{2}$/.test(el.textContent.trim()));
+  }
+  if (kelloElementti) {
+    let aikaOsat = kelloElementti.textContent.trim().split(":");
+    let tunnit = parseInt(aikaOsat) || 96;
+    let minuutit = parseInt(aikaOsat) || 0;
+    let sekunnit = parseInt(aikaOsat) || 0;
+    let yhteensaSekunteja = (tunnit * 3600) + (minuutit * 60) + sekunnit;
+
+    setInterval(function() {
+      if (yhteensaSekunteja > 0) {
+        yhteensaSekunteja--;
+      } else {
+        // KUN KELLO MENEE NOLLAAN, TÄMÄ PALAUTTAA SEN TAKAISIN 96 TUNTIIN
+        yhteensaSekunteja = 96 * 60 * 60; 
+      }
+      
+      let h = Math.floor(yhteensaSekunteja / 3600);
+      let m = Math.floor((yhteensaSekunteja % 3600) / 60);
+      let s = yhteensaSekunteja % 60;
+      kelloElementti.textContent = 
+        (h < 10 ? "0" + h : h) + ":" + 
+        (m < 10 ? "0" + m : m) + ":" + 
+        (s < 10 ? "0" + s : s);
+    }, 1000);
+  }
+  // --- 96 TUNNIN KELLO LOPPUU ---
+
+
 </script>
 </body>
 </html>
