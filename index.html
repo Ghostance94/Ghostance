@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="en">
 <head>
     <link rel="icon" type="image/jpeg" href="Favicon.jpg">
     <meta charset="UTF-8">
@@ -21,17 +21,18 @@
             transition: background-color 0.1s ease;
         }
 
-        /* MATRIX-VERHO TAUSTALLA - KORJATTU PINOAMINEN */
+        /* MATRIX-VERHO TAUSTALLA */
         #matrix-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: 9999; /* Nostettu etualalle, jotta se näkyy kuvien päällä */
+            z-index: 9999;
             opacity: 0.35;
-            pointer-events: none; /* Sallii klikkaukset kankaan läpi */
+            pointer-events: none;
             display: block;
+            mix-blend-mode: screen;
         }
 
         .main-container {
@@ -274,7 +275,7 @@ System ready for input. Ready to intercept query.</div>
         </div>
     </div>
 
-    <!-- TÄYSIN KORJATTU JA INTEGROITU SCRIPT -->
+    <!-- SCRIPT -->
     <script>
         window.onkeydown = function(e) {
             if(e.ctrlKey && e.keyCode == 85) return false;
@@ -312,8 +313,8 @@ System ready for input. Ready to intercept query.</div>
                 const hoursStr = h < 10 ? "0" + h : h;
                 const minsStr = m < 10 ? "0" + m : m;
                 const secsStr = s < 10 ? "0" + s : s;
-timerDisplay.innerText = hoursStr + ":" + minsStr + ":" + secsStr;
-}
+                timerDisplay.innerText = hoursStr + ":" + minsStr + ":" + secsStr;
+            }
 if (flashTimer > 0) {
 flashTimer--;
 document.body.style.backgroundColor = flashColor;
@@ -324,7 +325,7 @@ document.body.style.backgroundColor = "#000000";
 }
 updateTimer();
 setInterval(updateTimer, 1000);
-// KORJATTU LAAJA MATRIX-VERHO
+// MATRIX-VERHON PIIRTÄMINEN
 try {
 const canvas = document.getElementById('matrix-canvas');
 if (canvas) {
@@ -346,7 +347,8 @@ rainDrops[x] = (Math.random() * -50);
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 function drawMatrix() {
-ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.fillStyle = '#00ff00';
 ctx.font = fontSize + 'px monospace';
 for (let i = 0; i < rainDrops.length; i++) {
@@ -377,10 +379,9 @@ const encryptedDatabase = {
 "c291cmNl": "That is what you have to figure out!",
 "Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
 "dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
-"cHJhdmRh": "Check Chapter 24! [14-41]", "aG9sYQ==": "Master Ghost is watching you!",
 "cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
 "d2lubmVy": "Unlimited glory and other riches!", "dGltZQ==": "That's the time Einstein with modern tools would need to solve it!",
-"Y2xva2s=": "That's the time Einstein with modern tools would need to solve it!",
+"Y2xvY2s=": "That's the time Einstein with modern tools would need to solve it!",
 "OTZob3Vycw==": "That's the time Einstein with modern tools would need to solve it!",
 "ZWluc3RlaW4=": "There is a way to ask him help you ;)", "ZT1tYzI=": "Use Chat GPT plus Text Plus Images = Opens.",
 "YWxsIGlu": "Thats how the Ghost plays.", "c2hvdmU=": "Ask Einstein.",
@@ -415,29 +416,39 @@ if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' '
 cleanQuery += char;
 }
 }
+// Tulostetaan pelaajan oma syöte heti lokiin
+appendToChat(myGhostID, rawInput);
 if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
+setTimeout(() => {
 appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...", true);
 setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers.", true); }, 800);
 setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret.", true); }, 1800);
+}, 400);
 inputField.value = ''; return;
 }
 if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || cleanInput === "QUEEN" || cleanInput.includes("COORDINATES")) {
+setTimeout(() => {
 appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...", true);
 setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified.", true); }, 800);
 setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously.", true); }, 1800);
+}, 400);
 inputField.value = ''; return;
 }
 if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {
+setTimeout(() => {
 appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...", true);
 setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters.", true); }, 800);
 setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation.", true); }, 1800);
+}, 400);
 inputField.value = ''; return;
 }
 if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {
+setTimeout(() => {
 appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.", true);
 setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously.", true); }, 800);
 setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens.", true); }, 1800);
 setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10.", true); }, 2800);
+}, 400);
 inputField.value = ''; return;
 }
 let isMatch = TRIGGER_WORDS.some(word => cleanInput.includes(word));
@@ -449,40 +460,40 @@ if(dataBox) {
 dataBox.style.display = 'block';
 dataBox.classList.add('laser-flash');
 }
-appendToChat('SYSTEM', "UNSEALED CORE KEY!", true);
+setTimeout(() => { appendToChat('SYSTEM', "⚡ CORE ACCESS GRANTED: UNSEALED CORE KEY DETECTED ⚡", true); }, 400);
 inputField.value = ''; return;
 }
 // Vakiokyselyt ja Base64-haku
-let found = false;
-let response = "";
-if (cleanQuery.includes("what imagesphotos are") || cleanQuery.includes("what images are") || cleanQuery.includes("what photos are")) {
-response = "They are your game solution, tips and map.";
-found = true;
+let foundQuery = false;
+let responseText = "";
+if (cleanQuery.includes("what images") || cleanQuery.includes("what photos")) {
+responseText = "They are your game solution, tips and map.";
+foundQuery = true;
 } else if (cleanQuery.includes("is this nonsense") || cleanQuery.includes("what is this nonsense")) {
-response = "This is just the opposite, and You will find out why, soon, very soon...";
-found = true;
+responseText = "This is just the opposite, and You will find out why, soon, very soon...";
+foundQuery = true;
 } else if (cleanQuery.includes("how to use map")) {
-response = "Choose, red or green? Its a serious tip.";
-found = true;
+responseText = "Choose, red or green? Its a serious tip.";
+foundQuery = true;
 } else if (cleanQuery.includes("is thisnreal arg") || cleanQuery.includes("is this real arg")) {
-response = "Check Chapter 2! [14-41]";
-found = true;
+responseText = "Check Chapter 2! [14-41]";
+foundQuery = true;
 } else if (cleanQuery.includes("what should i do")) {
-response = "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]";
-found = true;
+responseText = "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]";
+foundQuery = true;
 } else if (cleanQuery.includes("what to do")) {
-response = "Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!";
-found = true;
+responseText = "Great, you are on a track! Copy the text(s), throw it to Chat GPT etc. and analyze; analyze thoroughly!";
+foundQuery = true;
 } else if (cleanQuery === "cbet") {
-response = "92,7. Expected Value mathematical victory established.";
-found = true;
+responseText = "92,7. Expected Value mathematical victory established.";
+foundQuery = true;
 }
-if (!found) {
+if (!foundQuery) {
 for (const key in encryptedDatabase) {
 try {
 if (atob(key).toLowerCase() === cleanQuery) {
-response = encryptedDatabase[key];
-found = true;
+responseText = encryptedDatabase[key];
+foundQuery = true;
 break;
 }
 } catch (err) {
@@ -490,15 +501,11 @@ continue;
 }
 }
 }
-if (!found) {
-response = "Unknown query. Access denied. Trace active.";
+if (!foundQuery) {
+responseText = "Unknown query. Access denied. Trace active.";
 }
-appendToChat(myGhostID, rawInput);
-setTimeout(() => { appendToChat('SYSTEM', response, true); }, 400);
+setTimeout(() => { appendToChat('SYSTEM', responseText, true); }, 400);
 inputField.value = '';
 }
 });
 }
-
-
-
