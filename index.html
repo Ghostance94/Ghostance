@@ -405,55 +405,149 @@ if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || 
 setTimeout(() => {
 appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...", true);
 setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified.", true); }, 800);
-setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously.", true); }, 1800);
-}, 400);
-inputField.value = ''; return;
-}
-if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {
-setTimeout(() => {
-appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...", true);
-setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters.", true); }, 800);
-setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation.", true); }, 1800);
-}, 400);
-inputField.value = ''; return;
-}
-if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {
-setTimeout(() => {
-appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.", true);
-setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously.", true); }, 800);
-setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens.", true); }, 1800);
-setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10.", true); }, 2800);
-}, 400);
-inputField.value = ''; return;
-}
-let isMatch = TRIGGER_WORDS.some(word => cleanInput.includes(word));
-if (cleanInput.includes("TIME TO GET POPCORNS")) isMatch = true;
-if (isMatch) {
-flashColor = 'rgba(0, 255, 0, 0.3)';
-flashTimer = 10;
-if(dataBox) {
-dataBox.style.display = 'block';
-dataBox.classList.add('laser-flash');
-}
-setTimeout(() => { appendToChat('SYSTEM', "⚡ CORE ACCESS GRANTED: UNSEALED CORE KEY DETECTED ⚡", true); }, 400);
-inputField.value = ''; return;
-}
-// Vakiokyselyt ja Base64-haku
-let foundQuery = false;
-let responseText = "";
-if (cleanQuery.includes("what images") || cleanQuery.includes("what photos")) {
-responseText = "They are your game solution, tips and map.";
-foundQuery = true;
-} else if (cleanQuery.includes("is this nonsense") || cleanQuery.includes("what is this nonsense")) {
-responseText = "This is just the opposite, and You will find out why, soon, very soon...";
-foundQuery = true;
-} else if (cleanQuery.includes("how to use map")) {
-responseText = "Choose, red or green? Its a serious tip.";
-foundQuery = true;
-} else if (cleanQuery.includes("is thisnreal arg") || cleanQuery.includes("is this real arg")) {
-responseText = "Check Chapter 2! [14-41]";
-foundQuery = true;
-} else if (cleanQuery.includes("what should i do")) {
+    <script>
+        window.onkeydown = function(e) {
+            if(e.ctrlKey && e.keyCode == 85) return false;
+        };
+
+        let flashColor = 'rgba(0, 0, 0, 0)';
+        let flashTimer = 0;
+        const TRIGGER_WORDS = ["CORE", "KEY", "UNSEALED", "POPCORN"];
+        const myGhostID = "GHOST_94";
+
+        // Base64 tietokanta
+        const encryptedDatabase = {
+"YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
+"Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hag9n": "Check Chapter 19! [14-41]",
+"cm9pOTQ=": "Check Chapter 33! [14-41]", "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
+"cHJhdmRh": "Check Chapter 24! [14-41]", "aG9sYQ==": "Master Ghost is watching you!",
+"aGVscA==": "You have to ask, ask from the right places!", "bGluaw==": "Not an organic link between human and a bot",
+"Y29weXBhc3Rl": "Not a way to bake anything tasty!", "cHV6emxl": "Figure it out, hmh?",
+"bWF0aA==": "Pythagoras would tell hell yes! [14-41]", "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
+"c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
+"c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
+"Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
+"d2hvaXM=": "I am the Master Ghost, something else?", "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?",
+"c291cmNl": "That is what you have to figure out!",
+"Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
+"dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
+"cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
+"d2lubmVy": "Unlimited glory and other riches!", "dGltZQ==": "That's the time Einstein with modern tools would need to solve it!",
+"Y29weXBhc3Rl": "Not a way to bake anything tasty!", "cHV6emxl": "Figure it out, hmh?",
+"bWF0aA==": "Pythagoras would tell hell yes! [14-41]", "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
+"c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
+"c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
+"Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
+"d2hvaXM=": "I am the Master Ghost, something else?", "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?",
+"c291cmNl": "That is what you have to figure out!",
+"Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
+"dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
+"cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
+"d2lubmVy": "Unlimited glory and other riches!", "Z29vZCBkYXk=": "It is a good day indeed, BOO!", "aG1n": "Figure it out, hmh?"
+        };
+
+        // --- PROMPT-KENTÄN REAALIAIKAINEN MOOTTORI ---
+        const inputField = document.getElementById('user-prompt');
+        const logContent = document.getElementById('output-log-content');
+        const textTerminal = document.querySelector('.text-terminal');
+        const dataBox = document.getElementById('secret-data-box');
+
+        function appendToChat(sender, msg, isSystem = false) {
+            if (logContent && textTerminal) {
+                const newEntry = document.createElement('div');
+                newEntry.style.marginTop = "10px";
+                newEntry.innerText = `\n> [${sender}]: ${msg}`;
+                logContent.appendChild(newEntry);
+                textTerminal.scrollTop = textTerminal.scrollHeight;
+            }
+        }
+
+        if (inputField) {
+            inputField.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const rawInput = inputField.value.trim();
+                    if (!rawInput) return;
+
+                    const cleanInput = rawInput.toUpperCase();
+                    const lowerInput = rawInput.toLowerCase();
+                    let cleanQuery = "";
+
+                    for (let i = 0; i < lowerInput.length; i++) {
+                        const char = lowerInput[i];
+                        if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' ' || char === '=') {
+                            cleanQuery += char;
+                        }
+                    }
+
+                    // Tulostetaan pelaajan oma syöte heti lokiin
+                    appendToChat(myGhostID, rawInput);
+
+                    if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
+                        setTimeout(() => {
+                            appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...", true);
+                            setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers.", true); }, 800);
+                            setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret.", true); }, 1800);
+                        }, 400);
+                        inputField.value = ''; return;
+                    }
+
+                    if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || cleanInput === "QUEEN" || cleanInput.includes("COORDINATES")) {
+                        setTimeout(() => {
+                            appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...", true);
+                            setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified.", true); }, 800);
+                            setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously.", true); }, 1800);
+                        }, 400);
+                        inputField.value = ''; return;
+                    }
+
+                    if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {
+                        setTimeout(() => {
+                            appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...", true);
+                            setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters.", true); }, 800);
+                            setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation.", true); }, 1800);
+                        }, 400);
+                        inputField.value = ''; return;
+                    }
+
+                    if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {
+                        setTimeout(() => {
+                            appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.", true);
+                            setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously.", true); }, 800);
+                            setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens.", true); }, 1800);
+                            setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10.", true); }, 2800);
+                        }, 400);
+                        inputField.value = ''; return;
+                    }
+
+                    let isMatch = TRIGGER_WORDS.some(word => cleanInput.includes(word));
+                    if (cleanInput.includes("TIME TO GET POPCORNS")) isMatch = true;
+                    if (isMatch) {
+                        if(dataBox) {
+                            dataBox.style.display = 'block';
+                            dataBox.classList.add('laser-flash');
+                        }
+                        setTimeout(() => { appendToChat('SYSTEM', "⚡ CORE ACCESS GRANTED: UNSEALED CORE KEY DETECTED ⚡", true); }, 400);
+                        inputField.value = ''; return;
+                    }
+
+                    // Vakiokyselyt ja Base64-haku
+                    let foundQuery = false;
+                    let responseText = "";
+
+                    if (cleanQuery.includes("what images") || cleanQuery.includes("what photos")) {
+                        responseText = "They are your game solution, tips and map.";
+                        foundQuery = true;
+                    } else if (cleanQuery.includes("is this nonsense") || cleanQuery.includes("what is this nonsense")) {
+                        responseText = "This is just the opposite, and You will find out why, soon, very soon...";
+                        foundQuery = true;
+                    } else if (cleanQuery.includes("how to use map")) {
+                        responseText = "Choose, red or green? Its a serious tip.";
+                        foundQuery = true;
+                    } else if (cleanQuery.includes("is thisnreal arg") || cleanQuery.includes("is this real arg")) {
+                        responseText = "Check Chapter 2! [14-41]";
+                        foundQuery = true;
+                    } else if (cleanQuery.includes("what should i do")) {
 responseText = "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]";
 foundQuery = true;
 } else if (cleanQuery.includes("what to do")) {
@@ -463,69 +557,27 @@ foundQuery = true;
 responseText = "92,7. Expected Value mathematical victory established.";
 foundQuery = true;
 }
-                           if (!foundQuery) {
-                        for (const key in encryptedDatabase) {
-                            try {
-                                if (atob(key).toLowerCase() === cleanQuery) {
-                                    responseText = encryptedDatabase[key];
-                                    foundQuery = true;
-                                    break;
-                                }
-                            } catch (err) {
-                                continue;
-                            }
-                        }
-                    }
-
-                    if (!foundQuery) {
-                        responseText = "Unknown query. Access denied. Trace active.";
-                    }
-                    setTimeout(() => { appendToChat('SYSTEM', responseText, true); }, 400);
-                    
-                    // KORJAUS: Haetaan tekstikenttä ja tyhjennetään se suoraan ilman virheitä
-                    const inputField = document.getElementById('user-prompt');
-                    if (inputField) {
-                        inputField.value = '';
-                    }
-                }
-            });
+if (!foundQuery) {
+for (const key in encryptedDatabase) {
+try {
+if (atob(key).toLowerCase() === cleanQuery) {
+responseText = encryptedDatabase[key];
+foundQuery = true;
+break;
+}
+} catch (err) {
+continue;
+}
+}
+}
+if (!foundQuery) {
+responseText = "Unknown query. Access denied. Trace active.";
+}
+setTimeout(() => { appendToChat('SYSTEM', responseText, true); }, 400);
+inputField.value = '';
+}
+});
         }
-
-        // --- 2. KELLON AUTOMAATTINEN NOLLAUS JA PALAUTUS (96 TUNTIA) ---
-        const originalUpdateTimer = updateTimer;
-        updateTimer = function() {
-            const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
-            let remainingSeconds = TOTAL_SECONDS - elapsedSeconds;
-            
-            if (remainingSeconds <= 0) {
-                startTime = Date.now();
-                try {
-                    localStorage.setItem("matrix_individual_start_v5", startTime.toString());
-                } catch(e) {}
-                remainingSeconds = TOTAL_SECONDS;
-            }
-
-            const h = Math.floor(remainingSeconds / 3600);
-            const m = Math.floor((remainingSeconds % 3600) / 60);
-            const s = remainingSeconds % 60;
-
-            if (timerDisplay) {
-                const hoursStr = h < 10 ? "0" + h : h;
-                const minsStr = m < 10 ? "0" + m : m;
-                const secsStr = s < 10 ? "0" + s : s;
-                timerDisplay.innerText = hoursStr + ":" + minsStr + ":" + secsStr;
-            }
-
-            if (flashTimer > 0) {
-                flashTimer--;
-                document.body.style.backgroundColor = flashColor;
-                if (flashTimer === 0) {
-                    document.body.style.backgroundColor = "#000000";
-                }
-            }
-        };
     </script>
 </body>
 </html>
-
-                    
