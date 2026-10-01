@@ -482,6 +482,7 @@ foundQuery = true;
                     }
 
                     setTimeout(() => { appendToChat('SYSTEM', responseText, true); }, 400);
+                    const inputField = document.getElementById('user-prompt');
                     inputField.value = '';
                 }
             });
