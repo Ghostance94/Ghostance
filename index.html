@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-version="2.0">
+<html lang="en">
 <head>
     <link rel="icon" type="image/jpeg" href="Favicon.jpg">
     <meta charset="UTF-8">
@@ -258,7 +258,7 @@ System ready for input. Ready to intercept query.</div>
         </div>
     </div>
 
-    <!-- MOOTTORI KORJATTUNA JALOPULLISESSA MUODOSSA -->
+    <!-- JAVASCRIPT-MOOTTORI TÄYSIN SULJETUILLA SULUILLA -->
     <script>
         window.onkeydown = function(e) {
             if(e.ctrlKey && e.keyCode == 85) return false;
@@ -311,8 +311,8 @@ System ready for input. Ready to intercept query.</div>
         updateTimer();
         setInterval(updateTimer, 1000);
 
-        // KORJATTU ALOITUSSULKU TÄHÄN
-const encryptedDatabase = {
+        // Base64 tietokanta
+        const encryptedDatabase = {
 "YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
 "Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hbG9n": "Check Chapter 19! [14-41]",
 "cm9pOTQ=": "Check Chapter 33! [14-41]", "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
@@ -364,6 +364,7 @@ if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' '
 cleanQuery += char;
 }
 }
+// Tulostetaan pelaajan oma syöte heti lokiin
 appendToChat(myGhostID, rawInput);
 if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
 setTimeout(() => {
@@ -410,6 +411,7 @@ dataBox.classList.add('laser-flash');
 setTimeout(() => { appendToChat('SYSTEM', "⚡ CORE ACCESS GRANTED: UNSEALED CORE KEY DETECTED ⚡", true); }, 400);
 inputField.value = ''; return;
 }
+// Vakiokyselyt ja Base64-haku
 let foundQuery = false;
 let responseText = "";
 if (cleanQuery.includes("what images") || cleanQuery.includes("what photos")) {
@@ -455,6 +457,3 @@ inputField.value = '';
 }
 });
 }
-
-
-
