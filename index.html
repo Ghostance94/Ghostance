@@ -21,7 +21,7 @@
             transition: background-color 0.1s ease;
         }
 
-        /* MATRIX-VERHO TAUSTALLA */
+        /* MATRIX-VERHO TAUSTALLA - SIIRRETTY KAUKO-TAUSTALLE */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -32,7 +32,6 @@
             opacity: 0.35;
             pointer-events: none;
             display: block;
-            
         }
 
         .main-container {
@@ -275,7 +274,7 @@ System ready for input. Ready to intercept query.</div>
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPT - TÄYSIN EHJÄT SULUT JA MUUTTUJAT -->
     <script>
         window.onkeydown = function(e) {
             if(e.ctrlKey && e.keyCode == 85) return false;
@@ -314,7 +313,7 @@ System ready for input. Ready to intercept query.</div>
                 const minsStr = m < 10 ? "0" + m : m;
                 const secsStr = s < 10 ? "0" + s : s;
                 timerDisplay.innerText = hoursStr + ":" + minsStr + ":" + secsStr;
-            }
+}
 if (flashTimer > 0) {
 flashTimer--;
 document.body.style.backgroundColor = flashColor;
@@ -325,7 +324,7 @@ document.body.style.backgroundColor = "#000000";
 }
 updateTimer();
 setInterval(updateTimer, 1000);
-// MATRIX-VERHON PIIRTÄMINEN
+// MATRIX-VERHON ANIMAATIO
 try {
 const canvas = document.getElementById('matrix-canvas');
 if (canvas) {
@@ -363,7 +362,7 @@ rainDrops[i]++;
 setInterval(drawMatrix, 40);
 }
 } catch (canvasError) {}
-// Base64 tietokanta
+// Base64 vastaukset
 const encryptedDatabase = {
 "YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
 "Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hbG9n": "Check Chapter 19! [14-41]",
@@ -416,7 +415,7 @@ if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' '
 cleanQuery += char;
 }
 }
-// Tulostetaan pelaajan oma syöte heti lokiin
+// Tulostetaan pelaajan prompti
 appendToChat(myGhostID, rawInput);
 if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
 setTimeout(() => {
@@ -509,3 +508,5 @@ inputField.value = '';
 }
 });
 }
+
+
