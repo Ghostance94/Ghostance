@@ -31,7 +31,6 @@
             z-index: 1;
         }
 
-        /* HEHKUVA VIHREÄ SPIRAALI KELLON YMPÄRILLÄ */
         .spiral-container {
             position: relative;
             width: 100%;
@@ -50,14 +49,11 @@
             z-index: 1;
             background: radial-gradient(circle, rgba(0,255,0,0.15) 0%, transparent 70%);
             border-radius: 50%;
-            box-shadow: 
-                0 0 40px rgba(0, 255, 0, 0.4),
-                inset 0 0 40px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.4), inset 0 0 40px rgba(0, 255, 0, 0.4);
             filter: drop-shadow(0 0 20px #00ff00);
             pointer-events: none;
         }
 
-        /* KELLO SPIRAALIN KESKELLÄ */
         .decoy-countdown {
             font-size: clamp(32px, 7vw, 46px);
             font-weight: bold;
@@ -68,7 +64,6 @@
             z-index: 2;
         }
 
-        /* YLEMPI TERMINAALILAATIKKO */
         .text-terminal {
             border: 1px solid #00ff00;
             background-color: rgba(5, 5, 5, 0.9);
@@ -91,7 +86,6 @@
             letter-spacing: 1px;
         }
 
-        /* KOMENTORIVI HETI TERMINAALIN ALLA */
         .input-terminal {
             border: 1px solid #00ff00;
             background-color: rgba(5, 5, 5, 0.9);
@@ -120,7 +114,6 @@
             outline: none;
         }
 
-        /* SALAINEN LASERDATA-LAATIKKO */
         #secret-data-box {
             display: none;
             border: 2px solid #00ff00;
@@ -133,7 +126,6 @@
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
         }
 
-        /* LASER-VÄLÄHDYSEFEKTI */
         .laser-flash {
             animation: laserGlow 0.4s ease-out alternate 2;
         }
@@ -143,7 +135,6 @@
             100% { border-color: #ffffff; box-shadow: 0 0 50px #ffffff, inset 0 0 20px #00ff00; }
         }
 
-        /* KUVAT ISOINA JONOSSA ALLEKKAIN */
         .matrix-images-list {
             display: flex;
             flex-direction: column;
@@ -191,13 +182,11 @@
 
     <div class="main-container">
         
-        <!-- Kello ja sen ympärillä oleva spiraali -->
         <div class="spiral-container">
             <div class="spiral-bg"></div>
             <div class="decoy-countdown" id="timer-display">96:00:00</div>
         </div>
 
-        <!-- Terminaali omilla teksteilläsi -->
         <div class="text-terminal">
             <div class="log-header">// UNLOCKED SYSTEM ENGINE DATA LOGS</div>
             <div id="output-log-content">Subject: "ENSGAME?"
@@ -205,18 +194,15 @@
 System ready for input. Ready to intercept query.</div>
         </div>
 
-        <!-- Komentorivi heti alla -->
         <div class="input-terminal">
             <span class="input-prompt">&gt;</span>
             <input type="text" id="user-prompt" class="prompt-input" placeholder="Enter keyword or query..." autofocus autocomplete="off">
         </div>
 
-        <!-- SALAINEN LAATIKKO JOKA AUKEAA POPCORNSISTA -->
         <div id="secret-data-box">
             ⚡ CORE ACCESS GRANTED: UNSEALED CORE KEY DETECTED ⚡
         </div>
 
-        <!-- KUVAT PERÄKKÄIN ISOINA -->
         <div class="matrix-images-list">
             <div class="image-card">
                 <img src="img1.jpg" alt="Chapter I">
@@ -258,7 +244,6 @@ System ready for input. Ready to intercept query.</div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT-MOOTTORI TÄYSIN SULJETUILLA SULUILLA -->
     <script>
         window.onkeydown = function(e) {
             if(e.ctrlKey && e.keyCode == 85) return false;
@@ -269,70 +254,28 @@ System ready for input. Ready to intercept query.</div>
         const TRIGGER_WORDS = ["CORE", "KEY", "UNSEALED", "POPCORN"];
         const myGhostID = "GHOST_94";
 
-        const TOTAL_SECONDS = 96 * 60 * 60;
-        let startTime = Date.now();
-
-        try {
-            let stored = localStorage.getItem("matrix_individual_start_v5");
-            if (!stored) {
-                localStorage.setItem("matrix_individual_start_v5", startTime.toString());
-            } else {
-                startTime = Number(stored);
-            }
-        } catch (e) {}
-
-        const timerDisplay = document.getElementById("timer-display");
-
-        function updateTimer() {
-            const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
-            let remainingSeconds = TOTAL_SECONDS - elapsedSeconds;
-            if (remainingSeconds < 0) remainingSeconds = 0;
-
-            const h = Math.floor(remainingSeconds / 3600);
-            const m = Math.floor((remainingSeconds % 3600) / 60);
-            const s = remainingSeconds % 60;
-
-            if (timerDisplay) {
-                const hoursStr = h < 10 ? "0" + h : h;
-                const minsStr = m < 10 ? "0" + m : m;
-                const secsStr = s < 10 ? "0" + s : s;
-                timerDisplay.innerText = hoursStr + ":" + minsStr + ":" + secsStr;
-            }
-
-            if (flashTimer > 0) {
-                flashTimer--;
-                document.body.style.backgroundColor = flashColor;
-                if (flashTimer === 0) {
-                    document.body.style.backgroundColor = "#000000";
-                }
-            }
-        }
-
-        updateTimer();
-        setInterval(updateTimer, 1000);
-
         // Base64 tietokanta
         const encryptedDatabase = {
-"YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
-"Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hbG9n": "Check Chapter 19! [14-41]",
-"cm9pOTQ=": "Check Chapter 33! [14-41]", "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
-"cHJhdmRh": "Check Chapter 24! [14-41]", "aG9sYQ==": "Master Ghost is watching you!",
-"aGVscA==": "You have to ask, ask from the right places!", "bGluaw==": "Not an organic link between human and a bot",
-"Y29weXBhc3Rl": "Not a way to bake anything tasty!", "cHV6emxl": "Figure it out, hmh?",
-"bWF0aA==": "Pythagoras would tell hell yes! [14-41]", "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
-"c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
-"c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
-"Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
-"d2hvaXM=": "I am the Master Ghost, something else?", "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?",
-"c291cmNl": "That is what you have to figure out!",
-"Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
-"dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
-"cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
-"d2lubmVy": "Unlimited glory and other riches!", "dGltZQ==": "That's the time Einstein with modern tools would need to solve it!",
-"Y2xvY2s=": "That's the time Einstein with modern tools would need to solve it!",
-"OTZob3Vycw==": "That's the time Einstein with modern tools would need to solve it!",
-"ZWluc3RlaW4=": "There is a way to ask him help you ;)", "ZT1tYzI=": "Use Chat GPT plus Text Plus Images = Opens.",
-"YWxsIGlu": "Thats how the Ghost plays.", "c2hvdmU=": "Ask Einstein.",
+            "YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
+            "Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hbG9n": "Check Chapter 19! [14-41]",
+            "cm9pOTQ=": "Check Chapter 33! [14-41]", "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
+            "cHJhdmRh": "Check Chapter 24! [14-41]", "aG9sYQ==": "Master Ghost is watching you!",
+            "aGVscA==": "You have to ask, ask from the right places!", "bGluaw==": "Not an organic link between human and a bot",
+            "Y29weXBhc3Rl": "Not a way to bake anything tasty!", "cHV6emxl": "Figure it out, hmh?",
+            "bWF0aA==": "Pythagoras would tell hell yes! [14-41]", "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
+            "c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
+            "c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
+            "Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
+            "d2hvaXM=": "I am the Master Ghost, something else?", "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?",
+            "c291cmNl": "That is what you have to figure out!",
+            "Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
+            "dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
+            "cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
+            "d2lubmVy": "Unlimited glory and other riches!", "dGltZQ==": "That's the time Einstein with modern tools would need to solve it!",
+            "Y2xvY2s=": "That's the time Einstein with modern tools would need to solve it!",
+            "OTZob3Vycw==": "That's the time Einstein with modern tools would need to solve it!",
+            "ZWluc3RlaW4=": "There is a way to ask him help you ;)", "ZT1tYzI=": "Use Chat GPT plus Text Plus Images = Opens.",
+            "YWxsIGlu": "Thats how the Ghost plays.", "c2hvdmU=": "Ask Einstein.",
 "Y2FsbA==": "Ghost is ghosting you!", "aGVsbG8=": "Welcome to the ARG you have never witnessed before! It took over 10 months to build something unique, and you are now part of it, aren't you? ;) Happy solving!",
 "Z29vZCBkYXk=": "It is a good day indeed, BOO!", "aG1n": "Figure it out, hmh?"
 };
@@ -340,34 +283,7 @@ const inputField = document.getElementById('user-prompt');
 const logContent = document.getElementById('output-log-content');
 const textTerminal = document.querySelector('.text-terminal');
 const dataBox = document.getElementById('secret-data-box');
-function appendToChat(sender, msg, isSystem = false) {
-if (logContent && textTerminal) {
-const newEntry = document.createElement('div');
-newEntry.style.marginTop = "10px";
-newEntry.innerText = \n> [${sender}]: ${msg};
-logContent.appendChild(newEntry);
-textTerminal.scrollTop = textTerminal.scrollHeight;
-}
-}
-if (inputField) {
-inputField.addEventListener('keypress', function(e) {
-if (e.key === 'Enter') {
-e.preventDefault();
-const rawInput = inputField.value.trim();
-if (!rawInput) return;
-const cleanInput = rawInput.toUpperCase();
-const lowerInput = rawInput.toLowerCase();
-let cleanQuery = "";
-for (let i = 0; i < lowerInput.length; i++) {
-const char = lowerInput[i];
-if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' ' || char === '=') {
-cleanQuery += char;
-           
-const inputField = document.getElementById('user-prompt');
-const logContent = document.getElementById('output-log-content');
-const textTerminal = document.querySelector('.text-terminal');
-const dataBox = document.getElementById('secret-data-box');
-function appendToChat(sender, msg, isSystem = false) {
+function appendToChat(sender, msg) {
 if (logContent && textTerminal) {
 const newEntry = document.createElement('div');
 newEntry.style.marginTop = "10px";
@@ -391,163 +307,65 @@ if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' '
 cleanQuery += char;
 }
 }
-// Tulostetaan pelaajan oma syöte heti lokiin
 appendToChat(myGhostID, rawInput);
 if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
 setTimeout(() => {
-appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...", true);
-setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers.", true); }, 800);
-setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret.", true); }, 1800);
+appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...");
+setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers."); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret."); }, 1800);
 }, 400);
 inputField.value = ''; return;
 }
 if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || cleanInput === "QUEEN" || cleanInput.includes("COORDINATES")) {
 setTimeout(() => {
-appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...", true);
-setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified.", true); }, 800);
-    <script>
-        window.onkeydown = function(e) {
-            if(e.ctrlKey && e.keyCode == 85) return false;
-        };
-
-        let flashColor = 'rgba(0, 0, 0, 0)';
-        let flashTimer = 0;
-        const TRIGGER_WORDS = ["CORE", "KEY", "UNSEALED", "POPCORN"];
-        const myGhostID = "GHOST_94";
-
-        // Base64 tietokanta
-        const encryptedDatabase = {
-"YmxvbmRl": "Check Chapter 3! [14-41]", "Zm9sZA==": "Check Chapter 4! [14-41]",
-"Y2hvdXg=": "Check Chapter 14! [14-41]", "YW5hag9n": "Check Chapter 19! [14-41]",
-"cm9pOTQ=": "Check Chapter 33! [14-41]", "NzVzZWNyZXRz": "Check Chapter 30! [14-41]",
-"cHJhdmRh": "Check Chapter 24! [14-41]", "aG9sYQ==": "Master Ghost is watching you!",
-"aGVscA==": "You have to ask, ask from the right places!", "bGluaw==": "Not an organic link between human and a bot",
-"Y29weXBhc3Rl": "Not a way to bake anything tasty!", "cHV6emxl": "Figure it out, hmh?",
-"bWF0aA==": "Pythagoras would tell hell yes! [14-41]", "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
-"c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
-"c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
-"Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
-"d2hvaXM=": "I am the Master Ghost, something else?", "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?",
-"c291cmNl": "That is what you have to figure out!",
-"Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
-"dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
-"cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
-"d2lubmVy": "Unlimited glory and other riches!", "dGltZQ==": "That's the time Einstein with modern tools would need to solve it!",
-"Y29weXBhc3Rl": "Not a way to bake anything tasty!", "cHV6emxl": "Figure it out, hmh?",
-"bWF0aA==": "Pythagoras would tell hell yes! [14-41]", "bWF0aGVtYXRpY3M=": "Pythagoras would tell hell yes! [14-41]",
-"c2Vv": "Would you like to have a glass of toxiwesome drink? ;)", "Y3Jhd2xlcg==": "BOO!",
-"c2VycA==": "I am Watching YOU!", "YmFja2xpbms=": "Error 404",
-"Y29kZQ==": "Da Vinci was a master of it, are you? ;)", "aGFjaw==": "Check the mirror, come on???",
-"d2hvaXM=": "I am the Master Ghost, something else?", "bWV0YWRhdGE=": "Are you sure? Need a shovel? Drill? Dynamite?",
-"c291cmNl": "That is what you have to figure out!",
-"Y2hhcHRlciAz": "Released in a flash, stay tuned and find the tips!", "bWFw": "Can be found, have to look closely!",
-"dHJvcGh5": "Unlimited glory and other riches!", "cmV3YXJk": "Unlimited glory and other riches!",
-"cHJpemU=": "Unlimited glory and other riches!", "d2lu": "Unlimited glory and other riches!",
-"d2lubmVy": "Unlimited glory and other riches!", "Z29vZCBkYXk=": "It is a good day indeed, BOO!", "aG1n": "Figure it out, hmh?"
-        };
-
-        // --- PROMPT-KENTÄN REAALIAIKAINEN MOOTTORI ---
-        const inputField = document.getElementById('user-prompt');
-        const logContent = document.getElementById('output-log-content');
-        const textTerminal = document.querySelector('.text-terminal');
-        const dataBox = document.getElementById('secret-data-box');
-
-        function appendToChat(sender, msg, isSystem = false) {
-            if (logContent && textTerminal) {
-                const newEntry = document.createElement('div');
-                newEntry.style.marginTop = "10px";
-                newEntry.innerText = `\n> [${sender}]: ${msg}`;
-                logContent.appendChild(newEntry);
-                textTerminal.scrollTop = textTerminal.scrollHeight;
-            }
-        }
-
-        if (inputField) {
-            inputField.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const rawInput = inputField.value.trim();
-                    if (!rawInput) return;
-
-                    const cleanInput = rawInput.toUpperCase();
-                    const lowerInput = rawInput.toLowerCase();
-                    let cleanQuery = "";
-
-                    for (let i = 0; i < lowerInput.length; i++) {
-                        const char = lowerInput[i];
-                        if ((char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || char === ' ' || char === '=') {
-                            cleanQuery += char;
-                        }
-                    }
-
-                    // Tulostetaan pelaajan oma syöte heti lokiin
-                    appendToChat(myGhostID, rawInput);
-
-                    if (cleanInput === "CHOUX" || cleanInput === "MATRIX" || cleanInput.includes("MOLECULAR")) {
-                        setTimeout(() => {
-                            appendToChat('SYSTEM', "MOLECULAR MATRIX ENGAGED: Scanning chemical prompt layers...", true);
-                            setTimeout(() => { appendToChat('SYSTEM', "REACTION CONFIRMED: High-precision chemistry calculated on paper layers.", true); }, 800);
-                            setTimeout(() => { appendToChat('SYSTEM', "FREQUENCY RESONANCE: Premium choux techniques are sealed directly into the [C4, E4, G4m] sequence. The technique remains a closed secret.", true); }, 1800);
-                        }, 400);
-                        inputField.value = ''; return;
-                    }
-
-                    if (cleanInput === "CHESS" || cleanInput === "SHAKH" || cleanInput === "MAT" || cleanInput === "QUEEN" || cleanInput.includes("COORDINATES")) {
-                        setTimeout(() => {
-                            appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...", true);
-                            setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified.", true); }, 800);
-                            setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously.", true); }, 1800);
-                        }, 400);
-                        inputField.value = ''; return;
-                    }
-
-                    if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {
-                        setTimeout(() => {
-                            appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...", true);
-                            setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters.", true); }, 800);
-                            setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation.", true); }, 1800);
-                        }, 400);
-                        inputField.value = ''; return;
-                    }
-
-                    if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {
-                        setTimeout(() => {
-                            appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.", true);
-                            setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously.", true); }, 800);
-                            setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens.", true); }, 1800);
-                            setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10.", true); }, 2800);
-                        }, 400);
-                        inputField.value = ''; return;
-                    }
-
-                    let isMatch = TRIGGER_WORDS.some(word => cleanInput.includes(word));
-                    if (cleanInput.includes("TIME TO GET POPCORNS")) isMatch = true;
-                    if (isMatch) {
-                        if(dataBox) {
-                            dataBox.style.display = 'block';
-                            dataBox.classList.add('laser-flash');
-                        }
-                        setTimeout(() => { appendToChat('SYSTEM', "⚡ CORE ACCESS GRANTED: UNSEALED CORE KEY DETECTED ⚡", true); }, 400);
-                        inputField.value = ''; return;
-                    }
-
-                    // Vakiokyselyt ja Base64-haku
-                    let foundQuery = false;
-                    let responseText = "";
-
-                    if (cleanQuery.includes("what images") || cleanQuery.includes("what photos")) {
-                        responseText = "They are your game solution, tips and map.";
-                        foundQuery = true;
-                    } else if (cleanQuery.includes("is this nonsense") || cleanQuery.includes("what is this nonsense")) {
-                        responseText = "This is just the opposite, and You will find out why, soon, very soon...";
-                        foundQuery = true;
-                    } else if (cleanQuery.includes("how to use map")) {
-                        responseText = "Choose, red or green? Its a serious tip.";
-                        foundQuery = true;
-                    } else if (cleanQuery.includes("is thisnreal arg") || cleanQuery.includes("is this real arg")) {
-                        responseText = "Check Chapter 2! [14-41]";
-                        foundQuery = true;
-                    } else if (cleanQuery.includes("what should i do")) {
+appendToChat('SYSTEM', "TACTICAL CHESSBOARD MONITOR ACTIVATED...");
+setTimeout(() => { appendToChat('SYSTEM', "STATE: Plate is empty. Game finished. Real psychological aikido verified."); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "ANALYSIS: Who has the last Queen left? The endgame coordinates are hidden across multiple vector fields simultaneously."); }, 1800);
+}, 400);
+inputField.value = ''; return;
+}
+if (cleanInput === "FIBONACCI" || cleanInput === "CRYPTEX" || cleanInput === "ENIGMA" || cleanInput === "DA VINCI") {
+setTimeout(() => {
+appendToChat('SYSTEM', "CRYPTOGRAPHIC DECRYPTOR INITIATED...");
+setTimeout(() => { appendToChat('SYSTEM', "RECURSION: Capitalized psychological beacons detected. Forward and backward word-pairs linked through golden ratio filters."); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "WARNING: Cryptex alignment spans 75 operational locks. Symmetric data-siphon requires multi-tier key validation."); }, 1800);
+}, 400);
+inputField.value = ''; return;
+}
+if (cleanInput === "GAUSS" || cleanInput === "CURVE" || cleanInput === "FRAKTAL" || cleanInput === "FRACTAL" || cleanInput === "DENSITY") {
+setTimeout(() => {
+appendToChat('SYSTEM', "CRITICAL DATA NOTICE: Layered text-matrix detected.");
+setTimeout(() => { appendToChat('SYSTEM', "STRUCTURE: Narrative is fractally engineered. Multi-tier injection addresses bots, support humans, and the ledger public simultaneously."); }, 800);
+setTimeout(() => { appendToChat('SYSTEM', "WARNING: Symmetrical Gaussian Density validation requires 100% of the transmission tokens."); }, 1800);
+setTimeout(() => { appendToChat('SYSTEM', "STATUS: Locked. Remaining sequence segments are obscured across the 14-week timeline. Full mathematical validation unseals at Week 10."); }, 2800);
+}, 400);
+inputField.value = ''; return;
+}
+let isMatch = TRIGGER_WORDS.some(word => cleanInput.includes(word));
+if (cleanInput.includes("TIME TO GET POPCORNS")) isMatch = true;
+if (isMatch) {
+if(dataBox) {
+dataBox.style.display = 'block';
+dataBox.classList.add('laser-flash');
+}
+setTimeout(() => { appendToChat('SYSTEM', "⚡ CORE ACCESS GRANTED: UNSEALED CORE KEY DETECTED ⚡"); }, 400);
+inputField.value = ''; return;
+}
+let foundQuery = false;
+let responseText = "";
+if (cleanQuery.includes("what images") || cleanQuery.includes("what photos")) {
+responseText = "They are your game solution, tips and map.";
+foundQuery = true;
+} else if (cleanQuery.includes("is this nonsense") || cleanQuery.includes("what is this nonsense")) {
+responseText = "This is just the opposite, and You will find out why, soon, very soon...";
+foundQuery = true;
+} else if (cleanQuery.includes("how to use map")) {
+responseText = "Choose, red or green? Its a serious tip.";
+foundQuery = true;
+} else if (cleanQuery.includes("is thisnreal arg") || cleanQuery.includes("is this real arg")) {
+responseText = "Check Chapter 2! [14-41]";
+foundQuery = true;
+} else if (cleanQuery.includes("what should i do")) {
 responseText = "You take a deck of cards, count 13 cards from the top and turn the 14th card on the table; if it's a Queen, email me immediately! [14-41]";
 foundQuery = true;
 } else if (cleanQuery.includes("what to do")) {
@@ -573,11 +391,12 @@ continue;
 if (!foundQuery) {
 responseText = "Unknown query. Access denied. Trace active.";
 }
-setTimeout(() => { appendToChat('SYSTEM', responseText, true); }, 400);
+setTimeout(() => { appendToChat('SYSTEM', responseText); }, 400);
 inputField.value = '';
 }
 });
-        }
-    </script>
+}
+
+</script>
 </body>
 </html>
