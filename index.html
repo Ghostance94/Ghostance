@@ -42,18 +42,6 @@
             aspect-ratio: 1 / 1;
         }
 
-        .spiral-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            background: radial-gradient(circle, rgba(0,255,0,0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            box-shadow: 0 0 40px rgba(0, 255, 0, 0.4), inset 0 0 40px rgba(0, 255, 0, 0.4);
-            filter: drop-shadow(0 0 20px #00ff00);
-            pointer-events: none;
-        }
-
         .decoy-countdown {
             font-size: clamp(32px, 7vw, 46px);
             font-weight: bold;
@@ -86,7 +74,6 @@
             letter-spacing: 1px;
         }
 
-                /* KOMENTORIVI HETI TERMINAALIN ALLA */
         .input-terminal {
             border: 1px solid #00ff00;
             background-color: rgba(5, 5, 5, 0.9);
@@ -95,11 +82,9 @@
             display: flex;
             align-items: center;
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-            position: relative;  /* Tämä lisätty */
-            z-index: 9999;       /* Tämä nostaa boksin kaiken muun yläpuolelle */
+            position: relative;
+            z-index: 9999;
         }
-
-        
 
         .input-prompt {
             color: #00ff00;
@@ -185,10 +170,12 @@
 </head>
 <body>
 
+    <!-- INTEGRITU MATRIX CANVAS TAUSTAJÄRJESTELMÄ -->
+    <canvas id="matrixCanvas" style="position: absolute; top: 0; left: 0; width: 100%; z-index: -1; pointer-events: none;"></canvas>
+
     <div class="main-container">
         
         <div class="spiral-container">
-            <div class="spiral-bg"></div>
             <div class="decoy-countdown" id="timer-display">96:00:00</div>
         </div>
 
@@ -383,7 +370,7 @@ foundQuery = true;
 if (!foundQuery) {
 for (const key in encryptedDatabase) {
 try {
-if (atob(key).toLowerCase() === cleanQuery) {
+if (atob(key).toLowerCase() === cleanQuery.trim()) {
 responseText = encryptedDatabase[key];
 foundQuery = true;
 break;
@@ -401,7 +388,103 @@ inputField.value = '';
 }
 });
 }
+// --- INTEGROITU INFERNO-SPIRAALI JA AJASTINMEKANIIKKA ---
+function initMatrixScene() {
+const canvas = document.getElementById('matrixCanvas');
+if (!canvas) return;
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+const TOTAL_DURATION_MS = 96 * 60 * 60 * 1000;
+const FIXED_START_TIME = Date.now();
+const katakana = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const alphabet = katakana.split("");
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const rainDrops = Array(Math.floor(columns)).fill(1);
+let rotationOffset = 0;
+function draw() {
+const spiralContainer = document.querySelector('.spiral-container');
+let centerX = canvas.width / 2;
+let centerY = 200;
+if (spiralContainer) {
+const rect = spiralContainer.getBoundingClientRect();
+centerX = rect.left + rect.width / 2 + window.scrollX;
+centerY = rect.top + rect.height / 2 + window.scrollY;
+}
+ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+// 1. MATRIX-KOODISADE
+ctx.fillStyle = '#00FF00';
+ctx.font = fontSize + 'px monospace';
+for (let i = 0; i < rainDrops.length; i++) {
+const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+rainDrops[i] = 0;
+}
+rainDrops[i]++;
+}
+// 2. REAALIAIKALASKENTA
+const now = Date.now();
+const timeElapsed = now - FIXED_START_TIME;
+const currentLoopElapsed = timeElapsed % TOTAL_DURATION_MS;
+const timeRemainingMs = TOTAL_DURATION_MS - currentLoopElapsed;
+let displayString = "00:00:00";
+let progressRatio = 0;
+if (timeRemainingMs > 0) {
+progressRatio = timeRemainingMs / TOTAL_DURATION_MS;
+let totalSeconds = Math.floor(timeRemainingMs / 1000);
+let hours = Math.floor(totalSeconds / 3600);
+let minutes = Math.floor((totalSeconds % 3600) / 60);
+let seconds = totalSeconds % 60;
+hours = hours < 10 ? '0' + hours : hours;
+minutes = minutes < 10 ? '0' + minutes : minutes;
+seconds = seconds < 10 ? '0' + seconds : seconds;
+displayString = hours + ":" + minutes + ":" + seconds;
+}
+const timerDisplay = document.getElementById('timer-display');
+if (timerDisplay) {
+timerDisplay.innerText = displayString;
+}
+// 3. LOGARITMINEN SPIRAALI (Cyber-neonvihreä #39FF14)
+if (progressRatio > 0) {
+ctx.save();
+ctx.strokeStyle = '#39FF14';
+ctx.lineWidth = 2;
+ctx.shadowBlur = 15;
+ctx.shadowColor = '#39FF14';
+ctx.beginPath();
+let angle = 0;
+let a = 0.5 * progressRatio;
+let b = 0.15;
+for (let i = 0; i < 400; i++) {
+angle = i * 0.1 + rotationOffset;
+let r = a * Math.exp(b * (i * 0.1)) * (progressRatio * 1.5);
+let x = centerX + r * Math.cos(angle);
+let y = centerY + r * Math.sin(angle);
+if (i === 0) {
+ctx.moveTo(x, y);
+} else {
+ctx.lineTo(x, y);
+}
+}
+ctx.stroke();
+ctx.restore();
+rotationOffset += 0.03;
+}
+}
+setInterval(draw, 33);
+window.addEventListener('resize', () => {
+canvas.width = window.innerWidth;
+canvas.height = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+});
+}
+window.addEventListener('DOMContentLoaded', initMatrixScene);
+initMatrixScene();
 
-</script>
+    </script>
 </body>
 </html>
+
+
