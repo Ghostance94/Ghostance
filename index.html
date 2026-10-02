@@ -86,6 +86,7 @@
             letter-spacing: 1px;
         }
 
+                /* KOMENTORIVI HETI TERMINAALIN ALLA */
         .input-terminal {
             border: 1px solid #00ff00;
             background-color: rgba(5, 5, 5, 0.9);
@@ -94,7 +95,11 @@
             display: flex;
             align-items: center;
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+            position: relative;  /* Tämä lisätty */
+            z-index: 9999;       /* Tämä nostaa boksin kaiken muun yläpuolelle */
         }
+
+        
 
         .input-prompt {
             color: #00ff00;
@@ -214,27 +219,27 @@ System ready for input. Ready to intercept query.</div>
             </div>
             <div class="image-card">
                 <img src="img3.jpg" alt="Chapter III">
-                <span>CHAPTER III</span>
-            </div>
+                <span>CHAPTER III // EINSTEIN DILATION </span>
+           </div>
             <div class="image-card">
-                <img src="img4.jpg" alt="Chapter IV">
-                <span>CHAPTER IV</span>
+                <img src="img4.jpg" alt="Chapter IV">               
+                <span>CHAPTER IV // 75 SECRETS RECEIPE</span>
             </div>
             <div class="image-card">
                 <img src="img5.jpg" alt="Chapter V">
-                <span>CHAPTER V</span>
+                <span>CHAPTER V // TIME TRAVEL </span>
             </div>
             <div class="image-card">
                 <img src="img6.jpg" alt="Chapter VI">
-                <span>CHAPTER VI</span>
+                <span>CHAPTER VI // ENERGY </span>
             </div>
             <div class="image-card">
                 <img src="img7.jpg" alt="Chapter VII">
-                <span>CHAPTER VII</span>
+                <span>CHAPTER VII // BREADCRUMBS ON THE WAY </span>
             </div>
             <div class="image-card">
                 <img src="img8.jpg" alt="Chapter VIII">
-                <span>CHAPTER VIII</span>
+                <span>CHAPTER VIII // THE CASE </span>
             </div>
         </div>
 
