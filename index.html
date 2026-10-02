@@ -425,10 +425,20 @@ rainDrops[i] = 0;
 }
 rainDrops[i]++;
 }
-// 2. REAALIAIKALASKENTA
-const now = Date.now();
+// Kello
+  const now = Date.now();
+if(!localStorage.getItem('arg_looppi')){localStorage.setItem('arg_looppi', now)}
+let fixedStart = parseInt(localStorage.getItem('arg_looppi'));
+if((now - fixedStart) >= TOTAL_DURATION_MS){
+    fixedStart = now;
+    localStorage.setItem('arg_looppi', now);
+}
+const FIXED_START_TIME = fixedStart;
 const timeElapsed = now - FIXED_START_TIME;
 const currentLoopElapsed = timeElapsed % TOTAL_DURATION_MS;
+
+
+
 const timeRemainingMs = TOTAL_DURATION_MS - currentLoopElapsed;
 let displayString = "00:00:00";
 let progressRatio = 0;
