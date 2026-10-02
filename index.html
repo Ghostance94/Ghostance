@@ -298,7 +298,7 @@ textTerminal.scrollTop = textTerminal.scrollHeight;
 }
 }
 if (inputField) {
-inputField.addEventListener('keypress', function(e) {
+inputField.addEventListener('keydown', function(e) {
 if (e.key === 'Enter') {
 e.preventDefault();
 const rawInput = inputField.value.trim();
