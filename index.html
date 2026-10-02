@@ -292,7 +292,7 @@ function appendToChat(sender, msg) {
 if (logContent && textTerminal) {
 const newEntry = document.createElement('div');
 newEntry.style.marginTop = "10px";
-newEntry.innerText = \n> [${sender}]: ${msg};
+newEntry.innerText = `\n> [${sender}]: ${msg}`;
 logContent.appendChild(newEntry);
 textTerminal.scrollTop = textTerminal.scrollHeight;
 }
